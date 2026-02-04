@@ -3,13 +3,14 @@ import * as React from "react";
 
 import { cn } from "@/utils/cn";
 import { X } from "lucide-react";
+import { Label } from "./Label";
 
 const inputVariants = cva(
-  "text-foreground flex w-full shadow-inner-bottom peer rounded-md bg-background px-3 py-2 text-base md:text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:ring-offset-0",
+  "text-foreground shadow-md flex w-full peer rounded-xl bg-background px-3 py-2 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:ring-offset-0",
   {
     variants: {
       variant: {
-        default: "border focus-visible:border-primary",
+        default: "border border-neutral-500 focus-visible:border-primary",
         success: "border border-success",
         error: "border border-error",
       },
@@ -34,7 +35,6 @@ export interface InputProps
   onClear?: () => void;
   label?: string;
   labelClassName?: string;
-  isEmpty?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -52,8 +52,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       readOnly,
       placeholder,
       label,
-      labelClassName,
-      isEmpty = true,
       ...props
     },
     ref,
@@ -83,86 +81,73 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       }
     };
 
-    const inputElement = (
-      <div className="relative w-full">
-        <input
-          {...props}
-          id={id}
-          type={type}
-          className={cn(
-            inputVariants({ variant: actualVariant, size }),
-            startIcon && "pl-10",
-            showClearIcon && "pr-9",
-            className,
-          )}
-          ref={inputRef}
-          value={value}
-          disabled={disabled}
-          readOnly={readOnly}
-          placeholder={placeholder || " "}
-          aria-invalid={error}
-        />
+    const labelElement = label ? <Label htmlFor={id}>{label}</Label> : null;
 
-        {label && (
-          <label
-            htmlFor={id}
-            onClick={handleClick}
-            className={cn(
-              "absolute left-3 text-muted-foreground text-base md:text-base transition-all duration-200 bg-background px-1 cursor-text",
-              !placeholder &&
-                "peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2",
-              startIcon && "peer-placeholder-shown:left-9 ",
-              "peer-focus:left-5 peer-focus:top-[-0.6rem] peer-focus:translate-y-0 peer-focus:text-xs peer-focus:font-medium peer-focus:text-primary",
-              (value || !isEmpty || placeholder) &&
-                "top-[-0.6rem] translate-y-0 text-xs md:text-xs font-medium text-foreground left-5 h-[11px]",
-              labelClassName,
-              actualVariant === "error" && "text-error peer-focus:text-error",
-              disabled && "cursor-not-allowed opacity-50",
-            )}
-          >
-            {label}
-          </label>
+    const inputElement = (
+      <input
+        {...props}
+        id={id}
+        type={type}
+        className={cn(
+          inputVariants({ variant: actualVariant, size }),
+          startIcon && "pl-10",
+          showClearIcon && "pr-9",
+          className,
         )}
-      </div>
+        ref={inputRef}
+        value={value}
+        disabled={disabled}
+        readOnly={readOnly}
+        placeholder={placeholder}
+        aria-invalid={error}
+      />
     );
 
     if (startIcon || showClearIcon) {
       return (
-        <div
-          className={cn(
-            "relative flex items-center focus-within:text-primary text-foreground w-full",
-            actualVariant === "error" && "text-error focus-within:text-error",
-          )}
-        >
-          {startIcon && (
-            <div
-              onClick={handleClick}
-              className={cn(
-                "absolute left-3 z-10 flex items-center cursor-pointer",
-                disabled && "opacity-50 cursor-not-allowed",
-              )}
-            >
-              {startIcon}
-            </div>
-          )}
-          {inputElement}
-          {showClearIcon && (
-            <div className="absolute right-3 z-10 flex items-center gap-1">
-              <button
-                type="button"
-                onClick={onClear}
-                aria-label="Clear input"
-                className="flex h-5 w-5 items-center justify-center text-muted-foreground"
+        <div className="flex flex-col gap-1">
+          {labelElement}
+          <div
+            className={cn(
+              "relative flex items-center focus-within:text-primary text-neutral-600 w-full",
+              actualVariant === "error" && "text-error focus-within:text-error",
+            )}
+          >
+            {startIcon && (
+              <div
+                onClick={handleClick}
+                className={cn(
+                  "absolute left-3 z-10 flex items-center cursor-pointer",
+                  disabled && "opacity-50 cursor-not-allowed",
+                )}
               >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          )}
+                {startIcon}
+              </div>
+            )}
+            {inputElement}
+            {showClearIcon && (
+              <div className="absolute right-3 z-10 flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={onClear}
+                  aria-label="Clear input"
+                  className="flex h-5 w-5 items-center justify-center text-muted-foreground"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       );
     }
 
-    return inputElement;
+    return (
+      <div className="flex flex-col gap-1">
+        {labelElement}
+        {inputElement}
+      </div>
+    );
   },
 );
 

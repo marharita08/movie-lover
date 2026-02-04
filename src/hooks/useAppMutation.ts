@@ -6,7 +6,7 @@ import {
 
 import { toast } from "@/hooks/useToast";
 
-import { HttpException } from "@/types/exception";
+import { HttpException } from "@/types/exception.type";
 
 type AppMutationProps<
   TData = unknown,

@@ -47,7 +47,7 @@ const SelectWithTags = ({
           <button
             type="button"
             className={cn(
-              "flex min-h-11 w-full text-base text-foreground items-center justify-between rounded-md border bg-background px-3 py-2 placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 shadow-inner-bottom focus:outline-none peer group",
+              "flex min-h-11 w-full text-base text-foreground items-center justify-between rounded-xl border border-neutral-500 bg-background px-3 py-2 placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 shadow-inner-bottom focus:outline-none peer group",
               "h-fit",
               error && "border-error hover:border-error",
             )}
@@ -57,11 +57,12 @@ const SelectWithTags = ({
                 ? values.map((value) => (
                     <div
                       key={value.key}
-                      className="bg-primary/10 rounded-lg px-[6px] py-[1.5px] text-base text-foreground flex items-center"
+                      className="bg-primary-100 rounded-lg px-[6px] py-[1.5px] text-base text-foreground flex items-center"
                     >
                       {value.label}
                       <Button
                         variant="ghost"
+                        size="icon"
                         className="w-[18px] h-[18px] ml-1"
                         onClick={(e) => handleRemove(value, e)}
                       >

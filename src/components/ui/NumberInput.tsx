@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { cn } from "@/utils/cn";
 
@@ -32,25 +32,22 @@ const NumberInput: React.FC<NumberInputProps> = ({
   hideButtons = false,
 }) => {
   const [typedValue, setTypedValue] = useState(String(value));
-  const [isFocused, setIsFocused] = useState(false);
-
-  useEffect(() => {
-    if (!isFocused) {
-      setTypedValue(String(value));
-    }
-  }, [value, isFocused]);
 
   const handleMinus = () => {
-    if (value && value > min) {
+    if (value !== undefined && value > min) {
       const decimals = step.toString().split(".")[1]?.length ?? 0;
-      onChange(parseFloat((value - step).toFixed(decimals)));
+      const newValue = parseFloat((value - step).toFixed(decimals));
+      onChange(newValue);
+      setTypedValue(String(newValue));
     }
   };
 
   const handlePlus = () => {
-    if (value && value < max) {
+    if (value !== undefined && value < max) {
       const decimals = step.toString().split(".")[1]?.length ?? 0;
-      onChange(parseFloat((value + step).toFixed(decimals)));
+      const newValue = parseFloat((value + step).toFixed(decimals));
+      onChange(newValue);
+      setTypedValue(String(newValue));
     }
   };
 
@@ -82,11 +79,10 @@ const NumberInput: React.FC<NumberInputProps> = ({
     }
 
     onChange(numericValue);
+    setTypedValue(String(numericValue));
   };
 
   const handleBlur = () => {
-    setIsFocused(false);
-
     const normalized = typedValue.replace(",", ".");
     const decimals = step.toString().split(".")[1]?.length ?? 0;
     let numericValue = parseFloat(normalized);
@@ -102,6 +98,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
     setTypedValue(numericValue.toString());
     if (numericValue !== value) {
       onChange(numericValue);
+      setTypedValue(String(numericValue));
     }
   };
 
@@ -116,12 +113,11 @@ const NumberInput: React.FC<NumberInputProps> = ({
         isEmpty={!value}
         onChange={handleInputChange}
         onBlur={handleBlur}
-        onFocus={() => setIsFocused(true)}
         className="pr-8"
         disabled={disabled}
       />
       {!hideButtons && (
-        <div className="absolute right-2 top-[3px] flex items-center justify-center flex-col text-muted-foreground">
+        <div className="absolute right-2 bottom-[3px] flex items-center justify-center flex-col text-muted-foreground">
           <Button
             className="p-0 h-[18px]"
             type="button"

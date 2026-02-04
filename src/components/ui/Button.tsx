@@ -5,18 +5,18 @@ import * as React from "react";
 import { cn } from "@/utils/cn";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-base font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-xl text-base font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
         destructive: "bg-error text-primary-foreground hover:bg-error/90",
         outline:
-          "border border-primary text-primary bg-background hover:bg-primary/5",
+          "border border-primary text-primary bg-background hover:bg-secondary-100",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 border secondary-border",
-        ghost: "text-foreground",
-        link: "text-primary underline-offset-[6px] hover:underline disabled:text-muted-foreground disabled:underline p-0",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/90 ",
+        ghost: "text-foreground hover:text-primary",
+        link: "text-primary underline-offset-[6px] hover:underline disabled:text-muted-foreground disabled:underline p-0 w-fit",
       },
       size: {
         default: "h-11 px-4 py-2",
@@ -54,4 +54,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-export { Button, buttonVariants };
+export { Button };

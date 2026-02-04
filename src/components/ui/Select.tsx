@@ -3,6 +3,7 @@ import { Check, ChevronDown } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/utils/cn";
+import { Label } from "./Label";
 
 const Select = SelectPrimitive.Root;
 
@@ -14,56 +15,45 @@ interface SelectTriggerProps extends React.ComponentPropsWithoutRef<
   typeof SelectPrimitive.Trigger
 > {
   label?: string;
-  value?: string;
   error?: boolean;
   startIcon?: React.ReactNode;
+  placeholder?: string;
 }
 
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   SelectTriggerProps
->(({ className, children, label, value, error, startIcon, ...props }, ref) => {
+>(({ id, className, label, error, startIcon, placeholder, ...props }, ref) => {
   return (
-    <div className="relative w-full">
+    <div className="w-full">
+      {label && <Label htmlFor={id}>{label}</Label>}
       <SelectPrimitive.Trigger
         ref={ref}
         className={cn(
-          "flex gap-2 h-11 w-full text-base text-foreground items-center justify-between rounded-md border bg-background px-3 py-2 placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 data-[state=open]:border-primary shadow-inner-bottom focus:outline-none peer group",
+          "cursor-pointer data-placeholder:text-muted-foreground flex gap-2 h-11 w-full text-base text-foreground items-center justify-between rounded-xl border border-neutral-500 bg-background px-3 py-2 placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 data-[state=open]:border-primary focus:outline-none peer group",
           error &&
             "border-error data-[state=open]:border-error hover:border-error",
           className,
         )}
+        id={id}
         {...props}
       >
         <div className="flex items-center gap-2 min-w-0 flex-1">
           {startIcon && (
-            <div className="left-3 flex items-center cursor-pointer text-muted-foreground group-data-[state=open]:text-primary shrink-0 w-[18px] h-[18px]">
+            <div className="left-3 flex items-center cursor-pointer text-neutral-600 group-data-[state=open]:text-primary shrink-0 w-[18px] h-[18px]">
               {startIcon}
             </div>
           )}
-          {children || <SelectValue placeholder=" " />}
+          <SelectValue placeholder={placeholder} />
         </div>
         <SelectPrimitive.Icon asChild>
           <ChevronDown
             className={cn(
-              "h-4 w-4 text-foreground transition-transform group-data-[state=open]:rotate-180 group-data-[state=open]:text-primary shrink-0",
+              "h-4 w-4 text-neutral-600 transition-transform group-data-[state=open]:rotate-180 group-data-[state=open]:text-primary shrink-0",
               error && "text-error group-data-[state=open]:text-error",
             )}
           />
         </SelectPrimitive.Icon>
-        {label && (
-          <label
-            className={cn(
-              "absolute left-3 text-muted-foreground text-base transition-all duration-200 bg-background px-1 cursor-pointer top-1/2 -translate-y-1/2 group-data-[state=open]:text-primary",
-              startIcon && "left-9",
-              value &&
-                "top-[-0.6rem] translate-y-0 text-xs font-medium text-foreground peer-data-[state=open]:text-primary left-5 h-[11px]",
-              error && "text-error group-data-[state=open]:text-error",
-            )}
-          >
-            {label}
-          </label>
-        )}
       </SelectPrimitive.Trigger>
     </div>
   );
@@ -88,7 +78,7 @@ const SelectContent = React.forwardRef<
       <SelectPrimitive.Content
         ref={ref}
         className={cn(
-          "relative z-50 min-w-32 rounded-md border bg-background text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+          "relative z-50 min-w-32 rounded-md border border-neutral-500 bg-background text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
           position === "popper" &&
             "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
           className,
@@ -131,7 +121,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-base text-foreground outline-none data-highlighted:bg-primary/5 data-disabled:pointer-events-none data-disabled:opacity-50 focus:bg-primary/5",
+      "relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-base text-foreground outline-none data-highlighted:bg-secondary-100 data-disabled:pointer-events-none data-disabled:opacity-50 focus:bg-secondary-100",
       className,
     )}
     {...props}
