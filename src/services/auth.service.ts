@@ -4,6 +4,7 @@ import { httpService } from "./http.service";
 import type { AuthResponse } from "@/types/auth-response.type";
 import type { EmailVerificationValidationSchemaType } from "@/pages/email-verification/validation/email-verfication.validation-schema";
 import type { User } from "@/types/user.type";
+import type { SendOtpRequest } from "@/types/send-otp-request";
 
 class AuthService {
   async login(data: LoginValidationSchemaType): Promise<AuthResponse> {
@@ -32,6 +33,17 @@ class AuthService {
   async getCurrentUser(): Promise<User> {
     return await httpService.get<User>("/auth/user");
   }
-}
+
+  async sendOtp(data: SendOtpRequest): Promise<{ message: string }> {
+    return await httpService.post<{ message: string }, SendOtpRequest>(
+      "/auth/send-otp",
+      data,
+    );
+  }
+
+  async logout(): Promise<void> {
+    return await httpService.delete("/auth/logout");
+  }
+};
 
 export const authService = new AuthService();

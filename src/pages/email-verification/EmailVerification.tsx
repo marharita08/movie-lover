@@ -12,10 +12,15 @@ import { useVerifyEmail } from "@/hooks/useVerifyEmail";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Sphere } from "@/components/ui/Sphere";
+import { useSendOtp } from "@/hooks/useSendOtp";
+import { OtpPurpose } from "@/const/otp-purpose";
+import { useOtpCountdown } from "@/hooks/useOtpCountdown";
 
 export const EmailVerification = () => {
   const email = localStorage.getItem(StorageKey.EMAIL) || "";
   const navigate = useNavigate();
+
+  const { secondsLeft, isFinished, reset } = useOtpCountdown();
 
   const form = useForm<EmailVerificationValidationSchemaType>({
     resolver: zodResolver(EmailVerificationValidationSchema),
@@ -29,12 +34,27 @@ export const EmailVerification = () => {
     if (!email) {
       navigate(RouterKey.LOGIN);
     }
-  });
+  }, [email, navigate]);
 
   const verifyEmailMutation = useVerifyEmail();
+  const sendOtpMutation = useSendOtp();
 
   const handleSubmit = (data: EmailVerificationValidationSchemaType) => {
     verifyEmailMutation.mutate(data);
+  };
+
+  const handleResend = () => {
+    sendOtpMutation.mutate(
+      {
+        email,
+        purpose: OtpPurpose.EMAIL_VERIFICATION,
+      },
+      {
+        onSuccess: () => {
+          reset();
+        },
+      },
+    );
   };
 
   const codeWatch = form.watch("code");
@@ -73,6 +93,21 @@ export const EmailVerification = () => {
           <Button type="submit" className="w-full mt-6">
             Verify
           </Button>
+        </div>
+        <div className="text-center mt-6">
+          Didn't receive the code?{" "}
+          {isFinished ? (
+            <Button
+              type="button"
+              variant="link"
+              className="p-0 h-fit"
+              onClick={handleResend}
+            >
+              Resend
+            </Button>
+          ) : (
+            <span>Resend available in {secondsLeft} seconds</span>
+          )}
         </div>
       </form>
     </div>

@@ -8,6 +8,7 @@ import { EmailVerification } from "./pages/email-verification/EmailVerification"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthGuard } from "./guards/AuthGuard";
 import { NotFound } from "./pages/not-found/NotFound";
+import { Lists } from "./pages/lists/Lists";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,14 @@ function App() {
               element={
                 <AuthGuard>
                   <Dashboard />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path={RouterKey.LISTS}
+              element={
+                <AuthGuard>
+                  <Lists />
                 </AuthGuard>
               }
             />
