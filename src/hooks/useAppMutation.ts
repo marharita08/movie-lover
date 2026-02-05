@@ -36,8 +36,6 @@ export const useAppMutation = <
     mutationKey,
     ...params,
     onError: (error, variables, context, mutation) => {
-      console.log(error);
-      console.log(defaultErrorHandling && error instanceof HttpException);
       if (defaultErrorHandling && error instanceof HttpException) {
         const { body } = error;
         toast({

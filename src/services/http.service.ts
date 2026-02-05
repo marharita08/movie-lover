@@ -1,3 +1,4 @@
+import { useAccessTokenStore } from "@/store/access-token.store";
 import { HttpException, type HttpExceptionBody } from "@/types/exception.type";
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
@@ -25,15 +26,17 @@ class HttpService {
     this.baseUrl = baseUrl;
   }
 
-  private get accessToken(): string | null {
-    return localStorage.getItem("accessToken");
+  private get accessToken(): string | undefined {
+    return useAccessTokenStore.getState().accessToken;
   }
 
-  private set accessToken(token: string | null) {
+  private set accessToken(token: string | undefined) {
+    const { setAccessToken, removeAccessToken } =
+      useAccessTokenStore.getState();
     if (token) {
-      localStorage.setItem("accessToken", token);
+      setAccessToken(token);
     } else {
-      localStorage.removeItem("accessToken");
+      removeAccessToken();
     }
   }
 
@@ -108,14 +111,14 @@ class HttpService {
         retry: true,
       });
     } catch {
-      this.accessToken = null;
+      this.accessToken = undefined;
       throw new Error("Unauthorized");
     }
   }
 
   private async refreshToken(): Promise<string> {
     const response = await fetch(`${this.baseUrl}/auth/refresh`, {
-      method: "POST",
+      method: "GET",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",

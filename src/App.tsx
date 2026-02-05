@@ -6,6 +6,8 @@ import { Signup } from "./pages/signup/Signup";
 import { Toaster } from "./components/ui/Toaster";
 import { EmailVerification } from "./pages/email-verification/EmailVerification";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthGuard } from "./guards/AuthGuard";
+import { NotFound } from "./pages/not-found/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -16,13 +18,21 @@ function App() {
         <Toaster />
         <BrowserRouter>
           <Routes>
-            <Route path={RouterKey.DASHBOARD} element={<Dashboard />} />
+            <Route
+              path={RouterKey.DASHBOARD}
+              element={
+                <AuthGuard>
+                  <Dashboard />
+                </AuthGuard>
+              }
+            />
             <Route path={RouterKey.LOGIN} element={<Login />} />
             <Route path={RouterKey.SIGNUP} element={<Signup />} />
             <Route
               path={RouterKey.EMAIL_VERIFICATION}
               element={<EmailVerification />}
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </div>

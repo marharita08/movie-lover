@@ -39,7 +39,7 @@
   --success-foreground: 255 255 255;
 
   --warning: 217 164 65; /* #D9A441 */
-  --warning-foreground: 30 30 30;
+  --warning-foreground: 255 255 255;
 
   --error: 192 74 74; /* #C04A4A */
   --error-foreground: 255 255 255;
