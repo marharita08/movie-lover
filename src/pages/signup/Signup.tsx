@@ -12,6 +12,7 @@ import {
 import { MailIcon, UserIcon } from "lucide-react";
 import { useSignUp } from "@/hooks/useSignUp";
 import { StorageKey } from "@/const";
+import { Sphere } from "@/components/ui/Sphere";
 
 const Signup = () => {
   const form = useForm<SignUpValidationSchemaType>({
@@ -35,7 +36,14 @@ const Signup = () => {
 
   return (
     <div className="flex justify-center items-center h-screen bg-primary-900 overflow-hidden relative">
-      <form className="bg-card p-8 w-full max-w-[500px] rounded-xl shadow-md" onSubmit={form.handleSubmit(handleSubmit)}>
+      <Sphere className="w-10 h-10 absolute bottom-40 left-50" />
+      <Sphere className="w-15 h-15 absolute top-20 left-30" />
+      <Sphere className="w-13 h-13 absolute top-18 left-[calc(50%+7.5rem)]" />
+      <Sphere className="w-20 h-20 absolute bottom-20 right-40" />
+      <form
+        className="bg-card p-8 w-full max-w-[500px] rounded-xl shadow-md"
+        onSubmit={form.handleSubmit(handleSubmit)}
+      >
         <h1 className="text-2xl font-bold mb-6 text-center">Sign up</h1>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">

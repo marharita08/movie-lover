@@ -1,3 +1,5 @@
+import { HttpException, type HttpExceptionBody } from "@/types/exception.type";
+
 type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
 type QueryParams =
@@ -80,12 +82,17 @@ class HttpService {
       return this.handle401<TResponse, TBody>(url, config);
     }
 
+    const body = (
+      response.headers.get("Content-Type")?.includes("application/json")
+        ? await response.json()
+        : await response.text()
+    ) as TResponse;
+
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText || response.statusText);
+      throw new HttpException(response, body as HttpExceptionBody);
     }
 
-    return response.json() as Promise<TResponse>;
+    return body;
   }
 
   private async handle401<TResponse, TBody>(

@@ -74,6 +74,10 @@
   --neutral-600: 108 128 122; /* #6C807A */
   --neutral-700: 74 96 89; /* #4A6059 */
   --neutral-800: 42 64 57; /* #2A4039 */
+
+  --sphere-dark: #0f1e1b;
+  --sphere-medium: #3e5b4b;
+  --sphere-light: #bfc47c;
 }
 
 @theme {
@@ -135,10 +139,8 @@
   --color-neutral-600: rgb(var(--neutral-600));
   --color-neutral-700: rgb(var(--neutral-700));
   --color-neutral-800: rgb(var(--neutral-800));
-}
 
-/*body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}*/
+  --color-sphere-dark: rgb(var(--sphere-dark));
+  --color-sphere-medium: rgb(var(--sphere-medium));
+  --color-sphere-light: rgb(var(--sphere-light));
+}

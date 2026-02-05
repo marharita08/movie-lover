@@ -5,7 +5,14 @@ export const SignUpValidationSchema = z.object({
   email: z.string().email({ message: "Email is required" }),
   password: z
     .string()
-    .min(8, { message: "Password must be at least 8 characters" }),
+    .min(8, { message: "Password must be at least 8 characters" })
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&()[\]{}#^+=_-]).{8,}$/,
+      {
+        message:
+          "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
+      },
+    ),
 });
 
 export type SignUpValidationSchemaType = z.infer<typeof SignUpValidationSchema>;
