@@ -5,16 +5,21 @@ import { authService } from "@/services/auth.service";
 import { useAccessTokenStore } from "@/store/access-token.store";
 
 import { useAppMutation } from "./useAppMutation";
+import { toast } from "./useToast";
 
-export const useLogout = () => {
+export const useDeleteAccount = () => {
   const navigate = useNavigate();
   const { removeAccessToken } = useAccessTokenStore();
 
-  return useAppMutation([MutationKey.LOGOUT], {
-    mutationFn: authService.logout,
+  return useAppMutation([MutationKey.DELETE_ACCOUNT], {
+    mutationFn: authService.deleteAccount,
     onSuccess: () => {
       removeAccessToken();
       navigate(RouterKey.LOGIN);
+      toast({
+        title: "Account deleted successfully",
+        variant: "success",
+      });
     },
   });
 };

@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
+
 import { MutationKey, RouterKey, StorageKey } from "@/const";
 import { authService } from "@/services/auth.service";
-import { useAppMutation } from "./useAppMutation";
 import { useAccessTokenStore } from "@/store/access-token.store";
-import { useNavigate } from "react-router-dom";
+
+import { useAppMutation } from "./useAppMutation";
 
 export const useVerifyEmail = () => {
   const { setAccessToken } = useAccessTokenStore();

@@ -1,14 +1,16 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { RouterKey } from "./const";
-import { Dashboard } from "./pages/dashboard/Dashboard";
-import { Login } from "./pages/login/Login";
-import { Signup } from "./pages/signup/Signup";
-import { Toaster } from "./components/ui/Toaster";
-import { EmailVerification } from "./pages/email-verification/EmailVerification";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import { Toaster } from "./components/ui/Toaster";
+import { RouterKey } from "./const";
 import { AuthGuard } from "./guards/AuthGuard";
-import { NotFound } from "./pages/not-found/NotFound";
+import { Dashboard } from "./pages/dashboard/Dashboard";
+import { EmailVerification } from "./pages/email-verification/EmailVerification";
 import { Lists } from "./pages/lists/Lists";
+import { Login } from "./pages/login/Login";
+import { NotFound } from "./pages/not-found/NotFound";
+import { Signup } from "./pages/signup/Signup";
+import { UserProfile } from "./pages/user-profile/UserProfile";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +34,14 @@ function App() {
               element={
                 <AuthGuard>
                   <Lists />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path={RouterKey.USER_PROFILE}
+              element={
+                <AuthGuard>
+                  <UserProfile />
                 </AuthGuard>
               }
             />

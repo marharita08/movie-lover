@@ -3,6 +3,7 @@ import { Check, ChevronDown } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/utils/cn";
+
 import { Label } from "./Label";
 
 const Select = SelectPrimitive.Root;
@@ -30,7 +31,7 @@ const SelectTrigger = React.forwardRef<
       <SelectPrimitive.Trigger
         ref={ref}
         className={cn(
-          "cursor-pointer data-placeholder:text-muted-foreground flex gap-2 h-11 w-full text-base text-foreground items-center justify-between rounded-xl border border-neutral-500 bg-background px-3 py-2 placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 data-[state=open]:border-primary focus:outline-none peer group",
+          "data-placeholder:text-muted-foreground text-foreground bg-background placeholder:text-muted-foreground data-[state=open]:border-primary peer group flex h-11 w-full cursor-pointer items-center justify-between gap-2 rounded-xl border border-neutral-500 px-3 py-2 text-base focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
           error &&
             "border-error data-[state=open]:border-error hover:border-error",
           className,
@@ -38,9 +39,9 @@ const SelectTrigger = React.forwardRef<
         id={id}
         {...props}
       >
-        <div className="flex items-center gap-2 min-w-0 flex-1">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
           {startIcon && (
-            <div className="left-3 flex items-center cursor-pointer text-neutral-600 group-data-[state=open]:text-primary shrink-0 w-[18px] h-[18px]">
+            <div className="group-data-[state=open]:text-primary left-3 flex h-[18px] w-[18px] shrink-0 cursor-pointer items-center text-neutral-600">
               {startIcon}
             </div>
           )}
@@ -49,7 +50,7 @@ const SelectTrigger = React.forwardRef<
         <SelectPrimitive.Icon asChild>
           <ChevronDown
             className={cn(
-              "h-4 w-4 text-neutral-600 transition-transform group-data-[state=open]:rotate-180 group-data-[state=open]:text-primary shrink-0",
+              "group-data-[state=open]:text-primary h-4 w-4 shrink-0 text-neutral-600 transition-transform group-data-[state=open]:rotate-180",
               error && "text-error group-data-[state=open]:text-error",
             )}
           />
@@ -78,7 +79,7 @@ const SelectContent = React.forwardRef<
       <SelectPrimitive.Content
         ref={ref}
         className={cn(
-          "relative z-50 min-w-32 rounded-md border border-neutral-500 bg-background text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+          "bg-background text-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 min-w-32 rounded-md border border-neutral-500 shadow-md",
           position === "popper" &&
             "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
           className,
@@ -88,11 +89,11 @@ const SelectContent = React.forwardRef<
       >
         <SelectPrimitive.Viewport
           className={cn(
-            "p-1 h-(--radix-select-trigger-height) w-full min-w-(--radix-select-trigger-width) max-w-(--radix-select-trigger-width)",
+            "h-(--radix-select-trigger-height) w-full max-w-(--radix-select-trigger-width) min-w-(--radix-select-trigger-width) p-1",
             viewportClassName,
           )}
         >
-          <div className="max-h-[158px] overflow-y-auto overflow-x-hidden">
+          <div className="max-h-[158px] overflow-x-hidden overflow-y-auto">
             {children}
           </div>
         </SelectPrimitive.Viewport>
@@ -108,7 +109,7 @@ const SelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Label
     ref={ref}
-    className={cn("py-1.5 pl-8 pr-2 text-sm font-semibold", className)}
+    className={cn("py-1.5 pr-2 pl-8 text-sm font-semibold", className)}
     {...props}
   />
 ));
@@ -121,18 +122,18 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-base text-foreground outline-none data-highlighted:bg-secondary-100 data-disabled:pointer-events-none data-disabled:opacity-50 focus:bg-secondary-100",
+      "text-foreground data-highlighted:bg-secondary-100 focus:bg-secondary-100 relative flex w-full cursor-pointer items-center rounded-sm py-1.5 pr-8 pl-2 text-base outline-none select-none data-disabled:pointer-events-none data-disabled:opacity-50",
       className,
     )}
     {...props}
   >
     <SelectPrimitive.ItemText asChild>
-      <span className="block truncate flex-1 min-w-0">{children}</span>
+      <span className="block min-w-0 flex-1 truncate">{children}</span>
     </SelectPrimitive.ItemText>
 
-    <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center shrink-0">
+    <span className="absolute right-2 flex h-3.5 w-3.5 shrink-0 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <Check className="h-4 w-4 text-primary" />
+        <Check className="text-primary h-4 w-4" />
       </SelectPrimitive.ItemIndicator>
     </span>
   </SelectPrimitive.Item>
@@ -145,7 +146,7 @@ const SelectSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Separator
     ref={ref}
-    className={cn("-mx-1 my-1 h-px bg-muted", className)}
+    className={cn("bg-muted -mx-1 my-1 h-px", className)}
     {...props}
   />
 ));
@@ -153,11 +154,11 @@ SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
 export {
   Select,
-  SelectGroup,
-  SelectValue,
-  SelectTrigger,
   SelectContent,
-  SelectLabel,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectSeparator,
+  SelectTrigger,
+  SelectValue,
 };

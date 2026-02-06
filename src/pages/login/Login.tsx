@@ -1,17 +1,19 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { MailIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+
+import { Button } from "@/components/ui/Button";
+import { Sphere } from "@/components/ui/Sphere";
+import { useLogin } from "@/hooks/useLogin";
+
+import { Input } from "../../components/ui/Input";
+import InputError from "../../components/ui/InputError";
+import PasswordInput from "../../components/ui/PasswordInput";
 import {
   LoginValidationSchema,
   type LoginValidationSchemaType,
 } from "./validation/login.validation-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../../components/ui/Input";
-import InputError from "../../components/ui/InputError";
-import PasswordInput from "../../components/ui/PasswordInput";
-import { Button } from "@/components/ui/Button";
-import { Link } from "react-router-dom";
-import { MailIcon } from "lucide-react";
-import { useLogin } from "@/hooks/useLogin";
-import { Sphere } from "@/components/ui/Sphere";
 
 const Login = () => {
   const form = useForm<LoginValidationSchemaType>({
@@ -29,23 +31,23 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-primary-900 overflow-hidden relative">
-      <Sphere className="w-10 h-10 absolute bottom-40 left-50" />
-      <Sphere className="w-15 h-15 absolute top-20 left-30" />
-      <Sphere className="w-13 h-13 absolute top-28 left-[calc(50%+7.5rem)]" />
-      <Sphere className="w-20 h-20 absolute bottom-20 right-40" />
+    <div className="bg-primary-900 relative flex h-screen items-center justify-center overflow-hidden bg-cover bg-center">
+      <Sphere className="absolute bottom-40 left-50 h-10 w-10" />
+      <Sphere className="absolute top-20 left-30 h-15 w-15" />
+      <Sphere className="absolute top-28 left-[calc(50%+7.5rem)] h-13 w-13" />
+      <Sphere className="absolute right-40 bottom-20 h-20 w-20" />
       <form
-        className="bg-card p-8 w-full max-w-[500px] rounded-xl shadow-md"
+        className="bg-card w-full max-w-[500px] rounded-xl p-8 shadow-md"
         onSubmit={form.handleSubmit(handleSubmit)}
       >
-        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+        <h1 className="mb-6 text-center text-2xl font-bold">Login</h1>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <Input
               {...form.register("email")}
               label="Email"
               error={!!form.formState.errors.email?.message}
-              startIcon={<MailIcon className="w-4 h-4" />}
+              startIcon={<MailIcon className="h-4 w-4" />}
               placeholder="jane.smith@example.com"
             />
             <InputError error={form.formState.errors.email?.message} />
@@ -59,10 +61,10 @@ const Login = () => {
             <InputError error={form.formState.errors.password?.message} />
           </div>
         </div>
-        <Button type="submit" className="w-full mt-6">
+        <Button type="submit" className="mt-6 w-full">
           Login
         </Button>
-        <div className="text-center mt-8">
+        <div className="mt-8 text-center">
           Don't have an account?{" "}
           <Button type="button" variant="link" asChild className="p-0">
             <Link to="/signup">Sign up</Link>

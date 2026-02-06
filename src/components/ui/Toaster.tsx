@@ -1,3 +1,5 @@
+import { AlertTriangleIcon, CheckIcon, InfoIcon, XIcon } from "lucide-react";
+
 import {
   Toast,
   ToastClose,
@@ -8,7 +10,6 @@ import {
 } from "@/components/ui/Toast";
 import { useToast } from "@/hooks/useToast";
 import { cn } from "@/utils/cn";
-import { InfoIcon, AlertTriangleIcon, XIcon, CheckIcon } from "lucide-react";
 
 const varianToDetails = {
   default: {
@@ -46,15 +47,15 @@ export function Toaster() {
 
         return (
           <Toast key={id} variant={variant} {...props}>
-            <div className="w-full flex items-stretch justify-between gap-2 overflow-hidden py-1 px-2">
+            <div className="flex w-full items-stretch justify-between gap-2 overflow-hidden px-2 py-1">
               <div className="flex items-center gap-2">
                 <div
                   className={cn(
-                    "w-6 h-6 rounded-full flex items-center justify-center",
+                    "flex h-6 w-6 items-center justify-center rounded-full",
                     className,
                   )}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="h-4 w-4" />
                 </div>
                 <div className="grid gap-1">
                   {title && <ToastTitle>{title}</ToastTitle>}

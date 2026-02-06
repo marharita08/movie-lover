@@ -61,7 +61,7 @@ const ToastAction = React.forwardRef<
   <ToastPrimitives.Action
     ref={ref}
     className={cn(
-      "inline-flex pr-1 h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors group-[.destructive]:border-muted/40 hover:bg-secondary group-[.destructive]:hover:border-error/30 group-[.destructive]:hover:bg-error group-[.destructive]:hover:text-primary-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 group-[.destructive]:focus:ring-error disabled:pointer-events-none disabled:opacity-50",
+      "ring-offset-background group-[.destructive]:border-muted/40 hover:bg-secondary group-[.destructive]:hover:border-error/30 group-[.destructive]:hover:bg-error group-[.destructive]:hover:text-primary-foreground focus:ring-ring group-[.destructive]:focus:ring-error inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 pr-1 text-sm font-medium transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none disabled:opacity-50",
       className,
     )}
     {...props}
@@ -76,7 +76,7 @@ const ToastClose = React.forwardRef<
   <ToastPrimitives.Close
     ref={ref}
     className={cn(
-      "cursor-pointer rounded-md h-[36px] w-[36px] flex items-center justify-center",
+      "flex h-[36px] w-[36px] cursor-pointer items-center justify-center rounded-md",
       className,
     )}
     toast-close=""
@@ -116,13 +116,13 @@ type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>;
 type ToastActionElement = React.ReactElement<typeof ToastAction>;
 
 export {
-  type ToastProps,
-  type ToastActionElement,
-  ToastProvider,
-  ToastViewport,
   Toast,
-  ToastTitle,
-  ToastDescription,
-  ToastClose,
   ToastAction,
+  type ToastActionElement,
+  ToastClose,
+  ToastDescription,
+  type ToastProps,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
 };

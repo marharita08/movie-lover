@@ -1,8 +1,9 @@
 import { cva, type VariantProps } from "class-variance-authority";
+import { X } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/utils/cn";
-import { X } from "lucide-react";
+
 import { Label } from "./Label";
 
 const inputVariants = cva(
@@ -109,7 +110,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {labelElement}
           <div
             className={cn(
-              "relative flex items-center focus-within:text-primary text-neutral-600 w-full",
+              "focus-within:text-primary relative flex w-full items-center text-neutral-600",
               actualVariant === "error" && "text-error focus-within:text-error",
             )}
           >
@@ -117,8 +118,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               <div
                 onClick={handleClick}
                 className={cn(
-                  "absolute left-3 z-10 flex items-center cursor-pointer",
-                  disabled && "opacity-50 cursor-not-allowed",
+                  "absolute left-3 z-10 flex cursor-pointer items-center",
+                  disabled && "cursor-not-allowed opacity-50",
                 )}
               >
                 {startIcon}
@@ -131,9 +132,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                   type="button"
                   onClick={onClear}
                   aria-label="Clear input"
-                  className="flex h-5 w-5 items-center justify-center text-muted-foreground"
+                  className="text-muted-foreground flex h-5 w-5 items-center justify-center"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="h-4 w-4" />
                 </button>
               </div>
             )}

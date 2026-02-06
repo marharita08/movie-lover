@@ -1,20 +1,22 @@
-import { RouterKey, StorageKey } from "@/const";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import {
-  type EmailVerificationValidationSchemaType,
-  EmailVerificationValidationSchema,
-} from "./validation/email-verfication.validation-schema";
+import { useNavigate } from "react-router-dom";
+
+import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import InputError from "@/components/ui/InputError";
-import { Button } from "@/components/ui/Button";
-import { useVerifyEmail } from "@/hooks/useVerifyEmail";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Sphere } from "@/components/ui/Sphere";
-import { useSendOtp } from "@/hooks/useSendOtp";
+import { RouterKey, StorageKey } from "@/const";
 import { OtpPurpose } from "@/const/otp-purpose";
 import { useOtpCountdown } from "@/hooks/useOtpCountdown";
+import { useSendOtp } from "@/hooks/useSendOtp";
+import { useVerifyEmail } from "@/hooks/useVerifyEmail";
+
+import {
+  EmailVerificationValidationSchema,
+  type EmailVerificationValidationSchemaType,
+} from "./validation/email-verfication.validation-schema";
 
 export const EmailVerification = () => {
   const email = localStorage.getItem(StorageKey.EMAIL) || "";
@@ -60,16 +62,16 @@ export const EmailVerification = () => {
   const codeWatch = form.watch("code");
 
   return (
-    <div className="flex justify-center items-center h-screen bg-primary-900 overflow-hidden relative">
-      <Sphere className="w-10 h-10 absolute bottom-40 left-50" />
-      <Sphere className="w-15 h-15 absolute top-20 left-30" />
-      <Sphere className="w-13 h-13 absolute top-28 left-[calc(50%+7.5rem)]" />
-      <Sphere className="w-20 h-20 absolute bottom-20 right-40" />
+    <div className="bg-primary-900 relative flex h-screen items-center justify-center overflow-hidden">
+      <Sphere className="absolute bottom-40 left-50 h-10 w-10" />
+      <Sphere className="absolute top-20 left-30 h-15 w-15" />
+      <Sphere className="absolute top-28 left-[calc(50%+7.5rem)] h-13 w-13" />
+      <Sphere className="absolute right-40 bottom-20 h-20 w-20" />
       <form
-        className="bg-card p-8 w-full max-w-[500px] rounded-xl shadow-md"
+        className="bg-card w-full max-w-[500px] rounded-xl p-8 shadow-md"
         onSubmit={form.handleSubmit(handleSubmit)}
       >
-        <h1 className="text-2xl font-bold mb-6 text-center">
+        <h1 className="mb-6 text-center text-2xl font-bold">
           Email Verification
         </h1>
         <div className="flex flex-col gap-4">
@@ -90,17 +92,17 @@ export const EmailVerification = () => {
             />
             <InputError error={form.formState.errors.code?.message} />
           </div>
-          <Button type="submit" className="w-full mt-6">
+          <Button type="submit" className="mt-6 w-full">
             Verify
           </Button>
         </div>
-        <div className="text-center mt-6">
+        <div className="mt-6 text-center">
           Didn't receive the code?{" "}
           {isFinished ? (
             <Button
               type="button"
               variant="link"
-              className="p-0 h-fit"
+              className="h-fit p-0"
               onClick={handleResend}
             >
               Resend

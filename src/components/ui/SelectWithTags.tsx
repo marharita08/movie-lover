@@ -47,7 +47,7 @@ const SelectWithTags = ({
           <button
             type="button"
             className={cn(
-              "flex min-h-11 w-full text-base text-foreground items-center justify-between rounded-xl border border-neutral-500 bg-background px-3 py-2 placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 shadow-inner-bottom focus:outline-none peer group",
+              "text-foreground bg-background placeholder:text-muted-foreground shadow-inner-bottom peer group flex min-h-11 w-full items-center justify-between rounded-xl border border-neutral-500 px-3 py-2 text-base focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
               "h-fit",
               error && "border-error hover:border-error",
             )}
@@ -57,13 +57,13 @@ const SelectWithTags = ({
                 ? values.map((value) => (
                     <div
                       key={value.key}
-                      className="bg-primary-100 rounded-lg px-[6px] py-[1.5px] text-base text-foreground flex items-center"
+                      className="bg-primary-100 text-foreground flex items-center rounded-lg px-[6px] py-[1.5px] text-base"
                     >
                       {value.label}
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="w-[18px] h-[18px] ml-1"
+                        className="ml-1 h-[18px] w-[18px]"
                         onClick={(e) => handleRemove(value, e)}
                       >
                         <X className="h-[14px] w-[14px]" />
@@ -74,17 +74,17 @@ const SelectWithTags = ({
             </div>
             <ChevronDown
               className={cn(
-                "h-4 w-4 text-foreground transition-transform ",
-                open && "rotate-180 text-primary",
+                "text-foreground h-4 w-4 transition-transform",
+                open && "text-primary rotate-180",
               )}
             />
           </button>
           {label && (
             <label
               className={cn(
-                "absolute left-3 text-muted-foreground text-base md:text-base transition-all duration-200 bg-background px-1 cursor-pointer top-1/2 -translate-y-1/2",
+                "text-muted-foreground bg-background absolute top-1/2 left-3 -translate-y-1/2 cursor-pointer px-1 text-base transition-all duration-200 md:text-base",
                 values.length > 0
-                  ? "top-[-0.6rem] translate-y-0 text-xs md:text-xs font-medium text-foreground h-[11px]"
+                  ? "text-foreground top-[-0.6rem] h-[11px] translate-y-0 text-xs font-medium md:text-xs"
                   : "",
                 error && "text-error",
               )}
@@ -98,7 +98,7 @@ const SelectWithTags = ({
       <PopoverContent
         side="bottom"
         align="start"
-        className="z-50 mt-1 rounded-md border bg-background text-foreground shadow-md p-1 max-h-[158px] overflow-y-auto min-w-(--radix-popover-trigger-width)"
+        className="bg-background text-foreground z-50 mt-1 max-h-[158px] min-w-(--radix-popover-trigger-width) overflow-y-auto rounded-md border p-1 shadow-md"
       >
         {options.map((option) => {
           const selected = values.find((v) => v.key === option.key);
@@ -107,7 +107,7 @@ const SelectWithTags = ({
               key={option.key}
               onClick={() => toggleValue(option)}
               className={cn(
-                "relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-foreground text-base",
+                "text-foreground relative flex w-full cursor-pointer items-center rounded-sm py-1.5 pr-8 pl-2 text-base select-none",
                 "hover:bg-muted/30",
                 selected && "font-medium",
               )}
@@ -115,7 +115,7 @@ const SelectWithTags = ({
               {option.label}
               {selected && (
                 <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
-                  <Check className="h-4 w-4 text-primary" />
+                  <Check className="text-primary h-4 w-4" />
                 </span>
               )}
             </div>

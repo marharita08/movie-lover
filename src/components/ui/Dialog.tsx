@@ -25,7 +25,7 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      "fixed inset-0 bg-foreground/10 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "bg-foreground/10 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 backdrop-blur-sm",
       nested ? "z-50" : "z-50",
       className,
     )}
@@ -54,7 +54,7 @@ const DialogContent = React.forwardRef<
       <DialogPrimitive.Content
         ref={ref}
         className={cn(
-          "border-neutral-500 fixed max-w-none h-screen md:h-fit sm:w-screen sm:rounded-none inset-0 md:left-[50%] md:top-[50%] grid md:max-w-lg md:translate-x-[-50%] md:translate-y-[-50%] border bg-background shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] md:rounded-[18px]",
+          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed inset-0 grid h-screen max-w-none border border-neutral-500 shadow-lg duration-200 sm:w-screen sm:rounded-none md:top-[50%] md:left-[50%] md:h-fit md:max-w-lg md:translate-x-[-50%] md:translate-y-[-50%] md:rounded-[18px]",
           nested ? "z-50" : "z-50",
           className,
         )}
@@ -62,8 +62,8 @@ const DialogContent = React.forwardRef<
       >
         {children}
         {!hideCloseButton && (
-          <DialogPrimitive.Close className="cursor-pointer absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity data-[state=open]:bg-accent data-[state=open]:text-muted-foreground hover:opacity-100 focus:outline-none disabled:pointer-events-none">
-            <div className="flex items-center justify-center h-11 w-11">
+          <DialogPrimitive.Close className="ring-offset-background data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none">
+            <div className="flex h-11 w-11 items-center justify-center">
               <X className="h-5 w-5" />
               <span className="sr-only">Close</span>
             </div>
@@ -81,7 +81,7 @@ const DialogHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "h-[66px] flex flex-col items-center space-y-1.5 text-center sm:text-left px-4 py-3",
+      "flex h-[66px] flex-col items-center space-y-1.5 px-4 py-3 text-center sm:text-left",
       className,
     )}
     {...props}
@@ -110,7 +110,7 @@ const DialogTitle = React.forwardRef<
   <DialogPrimitive.Title
     ref={ref}
     className={cn(
-      "text-body-19 font-semibold md:text-h3 h-11 flex items-center leading-none tracking-tight",
+      "md:text-h3 flex h-11 items-center text-lg leading-none font-semibold tracking-tight",
       className,
     )}
     {...props}
@@ -124,7 +124,7 @@ const DialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cn("text-muted-foreground text-sm", className)}
     {...props}
   />
 ));
@@ -132,13 +132,13 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {
   Dialog,
-  DialogPortal,
-  DialogOverlay,
   DialogClose,
-  DialogTrigger,
   DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
   DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
 };

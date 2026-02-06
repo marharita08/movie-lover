@@ -5,7 +5,6 @@ import {
 } from "@tanstack/react-query";
 
 import { toast } from "@/hooks/useToast";
-
 import { HttpException } from "@/types/exception.type";
 
 type AppMutationProps<

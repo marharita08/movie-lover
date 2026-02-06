@@ -1,16 +1,16 @@
 import { format, parse } from "date-fns";
+import { ArrowRightIcon, CalendarIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { type DateRange } from "react-day-picker";
 
-import { Input } from "@/components/ui/Input";
 import { Calendar } from "@/components/ui/Calendar";
+import { Input } from "@/components/ui/Input";
 import InputError from "@/components/ui/InputError";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/Popover";
-import { ArrowRightIcon, CalendarIcon } from "lucide-react";
 
 const DATE_FORMAT = "MMM d";
 
@@ -118,12 +118,12 @@ const DatesPicker: React.FC<DatesPickerProps> = ({
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger
-        className="flex items-center gap-2 cursor-default"
+        className="flex cursor-default items-center gap-2"
         onClick={(e) => {
           e.preventDefault();
         }}
       >
-        <div className="grid grid-cols-[auto_18px_auto] gap-x-2 items-center w-full">
+        <div className="grid w-full grid-cols-[auto_18px_auto] items-center gap-x-2">
           <Input
             label="Start date"
             startIcon={<CalendarIcon />}
@@ -133,7 +133,7 @@ const DatesPicker: React.FC<DatesPickerProps> = ({
             ref={startDateRef}
             error={!!startDateError}
           />
-          <ArrowRightIcon className="w-4 h-4 text-neutral-500" />
+          <ArrowRightIcon className="h-4 w-4 text-neutral-500" />
           <Input
             label="End date"
             startIcon={<CalendarIcon />}

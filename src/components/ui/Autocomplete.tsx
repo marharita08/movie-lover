@@ -92,7 +92,7 @@ export function Autocomplete<T>({
           <div className="relative">
             <div
               className={cn(
-                "flex min-h-11 w-full text-base md:text-base text-foreground items-center justify-between rounded-xl border border-neutral-500 bg-background px-3 py-2 placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 shadow-inner-bottom focus:outline-none peer group",
+                "text-foreground bg-background placeholder:text-muted-foreground shadow-inner-bottom peer group flex min-h-11 w-full items-center justify-between rounded-xl border border-neutral-500 px-3 py-2 text-base focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-base",
                 "h-fit",
                 open && "border-primary hover:border-primary",
                 error && "border-error hover:border-error",
@@ -103,7 +103,7 @@ export function Autocomplete<T>({
               {startIcon && (
                 <div
                   className={cn(
-                    "text-neutral-600 w-[18px] h-[18px]",
+                    "h-[18px] w-[18px] text-neutral-600",
                     open && "text-primary",
                     error && "text-error",
                   )}
@@ -123,7 +123,7 @@ export function Autocomplete<T>({
                   }
                 }}
                 className={cn(
-                  "w-full h-full pr-3 bg-transparent outline-none focus:outline-none focus:ring-0",
+                  "h-full w-full bg-transparent pr-3 outline-none focus:ring-0 focus:outline-none",
                   startIcon && "pl-2",
                   disabled && "cursor-not-allowed",
                   inputClassName,
@@ -140,8 +140,8 @@ export function Autocomplete<T>({
               />
               <ChevronDown
                 className={cn(
-                  "h-4 w-4 shrink-0 text-neutral-600 transition-transform ",
-                  open && "rotate-180 text-primary",
+                  "h-4 w-4 shrink-0 text-neutral-600 transition-transform",
+                  open && "text-primary rotate-180",
                   error && "text-error",
                   disabled && "opacity-50",
                 )}
@@ -153,13 +153,13 @@ export function Autocomplete<T>({
         <PopoverContent
           onOpenAutoFocus={(e) => e.preventDefault()}
           className={cn(
-            "z-50 mt-1 rounded-md border bg-background text-foreground shadow-md p-1 max-h-[158px] overflow-y-auto min-w-(--radix-popover-trigger-width) max-w-(--radix-popover-trigger-width)",
+            "bg-background text-foreground z-50 mt-1 max-h-[158px] max-w-(--radix-popover-trigger-width) min-w-(--radix-popover-trigger-width) overflow-y-auto rounded-md border p-1 shadow-md",
             contentClassName,
           )}
           align={align}
         >
           {filteredItems.length === 0 && (
-            <div className="px-3 py-2 text-sm text-muted-foreground">
+            <div className="text-muted-foreground px-3 py-2 text-sm">
               No results
             </div>
           )}
@@ -169,7 +169,7 @@ export function Autocomplete<T>({
             return (
               <div
                 className={cn(
-                  "relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-foreground text-base",
+                  "text-foreground relative flex w-full cursor-pointer items-center rounded-sm py-1.5 pr-8 pl-2 text-base select-none",
                   "hover:bg-secondary-100",
                   selected && "font-medium",
                 )}
@@ -182,7 +182,7 @@ export function Autocomplete<T>({
                 {renderItem(item)}
                 {selected && (
                   <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
-                    <Check className="h-4 w-4 text-primary" />
+                    <Check className="text-primary h-4 w-4" />
                   </span>
                 )}
               </div>

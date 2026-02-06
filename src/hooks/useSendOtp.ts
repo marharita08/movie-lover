@@ -1,6 +1,7 @@
 import { MutationKey } from "@/const";
-import { useAppMutation } from "./useAppMutation";
 import { authService } from "@/services/auth.service";
+
+import { useAppMutation } from "./useAppMutation";
 import { toast } from "./useToast";
 
 export const useSendOtp = () => {

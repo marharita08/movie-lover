@@ -6,7 +6,6 @@ import {
 import { useEffect } from "react";
 
 import { toast } from "@/hooks/useToast";
-
 import { HttpException } from "@/types/exception.type";
 
 type AppQueryProps<

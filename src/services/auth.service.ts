@@ -1,10 +1,12 @@
+import type { EmailVerificationValidationSchemaType } from "@/pages/email-verification/validation/email-verfication.validation-schema";
 import type { SignUpValidationSchemaType } from "@/pages/signup/validation/sign-up.validation-schema";
+import type { UpdateUserValidationSchemaType } from "@/pages/user-profile/validation/update-user.validation-schema";
+import type { AuthResponse } from "@/types/auth-response.type";
+import type { SendOtpRequest } from "@/types/send-otp-request";
+import type { User } from "@/types/user.type";
+
 import type { LoginValidationSchemaType } from "../pages/login/validation/login.validation-schema";
 import { httpService } from "./http.service";
-import type { AuthResponse } from "@/types/auth-response.type";
-import type { EmailVerificationValidationSchemaType } from "@/pages/email-verification/validation/email-verfication.validation-schema";
-import type { User } from "@/types/user.type";
-import type { SendOtpRequest } from "@/types/send-otp-request";
 
 class AuthService {
   async login(data: LoginValidationSchemaType): Promise<AuthResponse> {
@@ -44,6 +46,17 @@ class AuthService {
   async logout(): Promise<void> {
     return await httpService.delete("/auth/logout");
   }
-};
+
+  async deleteAccount(): Promise<void> {
+    return await httpService.delete("/auth/user");
+  }
+
+  async updateUser(
+    id: string,
+    data: UpdateUserValidationSchemaType,
+  ): Promise<void> {
+    return await httpService.patch(`/auth/user/${id}`, data);
+  }
+}
 
 export const authService = new AuthService();

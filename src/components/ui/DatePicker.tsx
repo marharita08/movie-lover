@@ -1,15 +1,15 @@
 import { format, parse } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { Input } from "@/components/ui/Input";
 import { Calendar } from "@/components/ui/Calendar";
+import { Input } from "@/components/ui/Input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/Popover";
 import { cn } from "@/utils/cn";
-import { CalendarIcon } from "lucide-react";
 
 const DATE_FORMAT = "MMM d";
 
@@ -114,7 +114,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger
-        className={cn("flex items-center cursor-default", className)}
+        className={cn("flex cursor-default items-center", className)}
         onClick={(e) => e.preventDefault()}
       >
         <Input

@@ -117,24 +117,24 @@ const NumberInput: React.FC<NumberInputProps> = ({
         disabled={disabled}
       />
       {!hideButtons && (
-        <div className="absolute right-2 bottom-[3px] flex items-center justify-center flex-col text-muted-foreground">
+        <div className="text-muted-foreground absolute right-2 bottom-[3px] flex flex-col items-center justify-center">
           <Button
-            className="p-0 h-[18px]"
+            className="h-[18px] p-0"
             type="button"
             variant="ghost"
             onClick={handlePlus}
             disabled={disabled}
           >
-            <ChevronUp className="w-[18px] h-[18px]" />
+            <ChevronUp className="h-[18px] w-[18px]" />
           </Button>
           <Button
-            className="p-0 h-[18px]"
+            className="h-[18px] p-0"
             type="button"
             variant="ghost"
             onClick={handleMinus}
             disabled={disabled}
           >
-            <ChevronDown className="w-[18px] h-[18px]" />
+            <ChevronDown className="h-[18px] w-[18px]" />
           </Button>
         </div>
       )}

@@ -4,4 +4,6 @@ export const MutationKey = {
   VERIFY_EMAIL: "VERIFY_EMAIL",
   SEND_OTP: "SEND_OTP",
   LOGOUT: "LOGOUT",
+  DELETE_ACCOUNT: "DELETE_ACCOUNT",
+  UPDATE_USER: "UPDATE_USER",
 } as const;

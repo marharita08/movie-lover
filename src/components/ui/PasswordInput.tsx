@@ -27,22 +27,22 @@ const PasswordInput = ({ error, ...props }: PasswordInputProps) => {
           {...props}
           error={error}
           type={showPassword ? "text" : "password"}
-          startIcon={<LockIcon className="w-4 h-4" />}
+          startIcon={<LockIcon className="h-4 w-4" />}
         />
 
         <button
           type="button"
           onMouseDown={(e) => e.preventDefault()}
           onClick={handleShowPassword}
-          className="cursor-pointer absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-accent rounded-full transition-colors"
+          className="hover:bg-accent absolute top-1/2 right-3 -translate-y-1/2 transform cursor-pointer rounded-full p-1 transition-colors"
         >
           {showPassword ? (
             <EyeOff
-              className={cn("w-4 h-4 text-primary", error && "text-error")}
+              className={cn("text-primary h-4 w-4", error && "text-error")}
             />
           ) : (
             <Eye
-              className={cn("w-4 h-4 text-primary", error && "text-error")}
+              className={cn("text-primary h-4 w-4", error && "text-error")}
             />
           )}
         </button>
