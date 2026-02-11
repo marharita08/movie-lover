@@ -6,9 +6,16 @@ import { cn } from "@/utils/cn.ts";
 import { Input, type InputProps } from "./Input";
 import { Label } from "./Label";
 
-type PasswordInputProps = Omit<InputProps, "type" | "startIcon" | "label">;
+type PasswordInputProps = Omit<InputProps, "type" | "startIcon"> & {
+  labelClassName?: string;
+};
 
-const PasswordInput = ({ error, ...props }: PasswordInputProps) => {
+export const PasswordInput = ({
+  error,
+  label,
+  labelClassName,
+  ...props
+}: PasswordInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = useCallback(
@@ -20,8 +27,8 @@ const PasswordInput = ({ error, ...props }: PasswordInputProps) => {
   );
 
   return (
-    <div>
-      <Label>Password</Label>
+    <div className="flex flex-col gap-1">
+      <Label className={labelClassName}>{label || "Password"}</Label>
       <div className="relative">
         <Input
           {...props}
@@ -50,5 +57,3 @@ const PasswordInput = ({ error, ...props }: PasswordInputProps) => {
     </div>
   );
 };
-
-export default PasswordInput;

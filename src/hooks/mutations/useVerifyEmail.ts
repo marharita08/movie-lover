@@ -1,19 +1,20 @@
 import { useNavigate } from "react-router-dom";
 
-import { MutationKey, RouterKey } from "@/const";
+import { MutationKey, RouterKey, StorageKey } from "@/const";
 import { authService } from "@/services/auth.service";
 import { useAccessTokenStore } from "@/store/access-token.store";
 
-import { useAppMutation } from "./useAppMutation";
+import { useAppMutation } from "../useAppMutation";
 
-export const useLogin = () => {
+export const useVerifyEmail = () => {
   const { setAccessToken } = useAccessTokenStore();
   const navigate = useNavigate();
 
-  return useAppMutation([MutationKey.LOGIN], {
-    mutationFn: authService.login,
+  return useAppMutation([MutationKey.VERIFY_EMAIL], {
+    mutationFn: authService.verifyEmail,
     onSuccess: (data) => {
       setAccessToken(data.accessToken);
+      localStorage.removeItem(StorageKey.EMAIL);
       navigate(RouterKey.DASHBOARD);
     },
   });

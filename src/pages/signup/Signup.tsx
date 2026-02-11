@@ -3,18 +3,14 @@ import { MailIcon, UserIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import InputError from "@/components/ui/InputError";
-import PasswordInput from "@/components/ui/PasswordInput";
-import { Sphere } from "@/components/ui/Sphere";
+import { Button, Input, InputError, PasswordInput, Sphere } from "@/components";
 import { StorageKey } from "@/const";
-import { useSignUp } from "@/hooks/useSignUp";
+import { useSignUp } from "@/hooks";
 
 import {
   SignUpValidationSchema,
   type SignUpValidationSchemaType,
-} from "./validation/sign-up.validation-schema";
+} from "./validation";
 
 const Signup = () => {
   const form = useForm<SignUpValidationSchemaType>({

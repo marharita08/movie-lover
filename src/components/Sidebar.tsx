@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { RouterKey } from "@/const";
 
-import { Button } from "./ui/Button";
+import { Button } from "./ui";
 
 export const Sidebar = () => {
   const pathname = useLocation().pathname;

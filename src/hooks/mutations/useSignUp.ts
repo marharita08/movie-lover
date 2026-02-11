@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { MutationKey, RouterKey } from "@/const";
 import { authService } from "@/services/auth.service";
 
-import { useAppMutation } from "./useAppMutation";
-import { toast } from "./useToast";
+import { useAppMutation } from "../useAppMutation";
+import { toast } from "../useToast";
 
 export const useSignUp = () => {
   const navigate = useNavigate();

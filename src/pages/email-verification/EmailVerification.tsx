@@ -3,20 +3,14 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import InputError from "@/components/ui/InputError";
-import { Sphere } from "@/components/ui/Sphere";
-import { RouterKey, StorageKey } from "@/const";
-import { OtpPurpose } from "@/const/otp-purpose";
-import { useOtpCountdown } from "@/hooks/useOtpCountdown";
-import { useSendOtp } from "@/hooks/useSendOtp";
-import { useVerifyEmail } from "@/hooks/useVerifyEmail";
+import { Button, Input, InputError, Sphere } from "@/components";
+import { OtpPurpose, RouterKey, StorageKey } from "@/const";
+import { useOtpCountdown, useSendOtp, useVerifyEmail } from "@/hooks";
 
 import {
   EmailVerificationValidationSchema,
   type EmailVerificationValidationSchemaType,
-} from "./validation/email-verfication.validation-schema";
+} from "./validation";
 
 export const EmailVerification = () => {
   const email = localStorage.getItem(StorageKey.EMAIL) || "";

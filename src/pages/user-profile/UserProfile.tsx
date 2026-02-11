@@ -3,19 +3,20 @@ import { RotateCcwIcon, SaveIcon, UserIcon } from "lucide-react";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { AuthenticatedLayout } from "@/components/AuthenticatedLayout";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import InputError from "@/components/ui/InputError";
-import { Sphere } from "@/components/ui/Sphere";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { useUpdateUser } from "@/hooks/useUpdateUser";
+import {
+  AuthenticatedLayout,
+  Button,
+  Input,
+  InputError,
+  Sphere,
+} from "@/components";
+import { useCurrentUser, useUpdateUser } from "@/hooks";
 
-import { DeleteAccountDialog } from "./components/DeleteAccountDialog";
+import { DeleteAccountDialog } from "./components";
 import {
   UpdateUserValidationSchema,
   type UpdateUserValidationSchemaType,
-} from "./validation/update-user.validation-schema";
+} from "./validation";
 
 export const UserProfile = () => {
   const { data: user } = useCurrentUser();

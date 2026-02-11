@@ -1,12 +1,11 @@
 import { useQueryClient } from "@tanstack/react-query";
 
-import { MutationKey } from "@/const";
-import { QueryKey } from "@/const/query-key";
-import type { UpdateUserValidationSchemaType } from "@/pages/user-profile/validation/update-user.validation-schema";
+import { MutationKey, QueryKey } from "@/const";
+import type { UpdateUserValidationSchemaType } from "@/pages/user-profile";
 import { authService } from "@/services/auth.service";
 
-import { useAppMutation } from "./useAppMutation";
-import { toast } from "./useToast";
+import { useAppMutation } from "../useAppMutation";
+import { toast } from "../useToast";
 
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();

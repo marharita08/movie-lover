@@ -7,7 +7,7 @@ interface InputErrorProps {
   className?: string;
 }
 
-const InputError: React.FC<InputErrorProps> = ({ error, className }) => {
+export const InputError: React.FC<InputErrorProps> = ({ error, className }) => {
   if (!error) return null;
 
   return (
@@ -17,5 +17,3 @@ const InputError: React.FC<InputErrorProps> = ({ error, className }) => {
     </div>
   );
 };
-
-export default InputError;

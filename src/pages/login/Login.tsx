@@ -3,17 +3,14 @@ import { MailIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-import { Button } from "@/components/ui/Button";
-import { Sphere } from "@/components/ui/Sphere";
-import { useLogin } from "@/hooks/useLogin";
+import { Button, Input, InputError, PasswordInput, Sphere } from "@/components";
+import { RouterKey } from "@/const";
+import { useLogin } from "@/hooks";
 
-import { Input } from "../../components/ui/Input";
-import InputError from "../../components/ui/InputError";
-import PasswordInput from "../../components/ui/PasswordInput";
 import {
   LoginValidationSchema,
   type LoginValidationSchemaType,
-} from "./validation/login.validation-schema";
+} from "./validation";
 
 const Login = () => {
   const form = useForm<LoginValidationSchemaType>({
@@ -64,11 +61,23 @@ const Login = () => {
         <Button type="submit" className="mt-6 w-full">
           Login
         </Button>
-        <div className="mt-8 text-center">
-          Don't have an account?{" "}
-          <Button type="button" variant="link" asChild className="p-0">
-            <Link to="/signup">Sign up</Link>
-          </Button>
+        <div className="mt-8 flex flex-col">
+          <div className="text-center text-sm">
+            Don't have an account?{" "}
+            <Button
+              type="button"
+              variant="link"
+              asChild
+              className="p-0 text-sm"
+            >
+              <Link to="/signup">Sign up</Link>
+            </Button>
+          </div>
+          <div className="text-center">
+            <Button asChild variant={"link"} className="p-0 text-sm">
+              <Link to={RouterKey.RESET_PASSWORD}>Forgot password?</Link>
+            </Button>
+          </div>
         </div>
       </form>
     </div>

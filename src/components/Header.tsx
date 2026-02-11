@@ -3,15 +3,10 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { RouterKey } from "@/const";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { useLogout } from "@/hooks/useLogout";
+import { useCurrentUser, useLogout } from "@/hooks";
 
-import { Avatar, AvatarFallback } from "./ui/Avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "./ui/DropdownMenu";
+import { Avatar, AvatarFallback } from "./ui";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "./ui";
 
 export const Header = () => {
   const { data: user } = useCurrentUser();

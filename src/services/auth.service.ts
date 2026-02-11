@@ -1,11 +1,20 @@
-import type { EmailVerificationValidationSchemaType } from "@/pages/email-verification/validation/email-verfication.validation-schema";
-import type { SignUpValidationSchemaType } from "@/pages/signup/validation/sign-up.validation-schema";
-import type { UpdateUserValidationSchemaType } from "@/pages/user-profile/validation/update-user.validation-schema";
-import type { AuthResponse } from "@/types/auth-response.type";
-import type { SendOtpRequest } from "@/types/send-otp-request";
-import type { User } from "@/types/user.type";
+import type { EmailVerificationValidationSchemaType } from "@/pages/email-verification";
+import type { LoginValidationSchemaType } from "@/pages/login";
+import type {
+  EmailStepValidationSchemaType,
+  NewPasswordStepValidationSchemaType,
+  OtpStepValidationSchemaType,
+} from "@/pages/reset-password";
+import type { SignUpValidationSchemaType } from "@/pages/signup";
+import type { UpdateUserValidationSchemaType } from "@/pages/user-profile";
+import type {
+  AuthResponse,
+  MessageResponse,
+  ResetPasswordVerifyResponse,
+  SendOtpRequest,
+  User,
+} from "@/types";
 
-import type { LoginValidationSchemaType } from "../pages/login/validation/login.validation-schema";
 import { httpService } from "./http.service";
 
 class AuthService {
@@ -16,11 +25,11 @@ class AuthService {
     );
   }
 
-  async signup(data: SignUpValidationSchemaType): Promise<{ message: string }> {
-    return await httpService.post<
-      { message: string },
-      SignUpValidationSchemaType
-    >("/auth/signup", data);
+  async signup(data: SignUpValidationSchemaType): Promise<MessageResponse> {
+    return await httpService.post<MessageResponse, SignUpValidationSchemaType>(
+      "/auth/signup",
+      data,
+    );
   }
 
   async verifyEmail(
@@ -36,8 +45,8 @@ class AuthService {
     return await httpService.get<User>("/auth/user");
   }
 
-  async sendOtp(data: SendOtpRequest): Promise<{ message: string }> {
-    return await httpService.post<{ message: string }, SendOtpRequest>(
+  async sendOtp(data: SendOtpRequest): Promise<MessageResponse> {
+    return await httpService.post<MessageResponse, SendOtpRequest>(
       "/auth/send-otp",
       data,
     );
@@ -56,6 +65,33 @@ class AuthService {
     data: UpdateUserValidationSchemaType,
   ): Promise<void> {
     return await httpService.patch(`/auth/user/${id}`, data);
+  }
+
+  async forgotPassword(
+    data: EmailStepValidationSchemaType,
+  ): Promise<MessageResponse> {
+    return await httpService.post<
+      MessageResponse,
+      EmailStepValidationSchemaType
+    >("/auth/forgot-password", data);
+  }
+
+  async verifyResetPassword(
+    data: OtpStepValidationSchemaType,
+  ): Promise<ResetPasswordVerifyResponse> {
+    return await httpService.post<
+      ResetPasswordVerifyResponse,
+      OtpStepValidationSchemaType
+    >("/auth/verify-reset-password", data);
+  }
+
+  async resetPassword(
+    data: Omit<NewPasswordStepValidationSchemaType, "confirmPassword">,
+  ): Promise<void> {
+    return await httpService.post<
+      void,
+      Omit<NewPasswordStepValidationSchemaType, "confirmPassword">
+    >("/auth/reset-password", data);
   }
 }
 

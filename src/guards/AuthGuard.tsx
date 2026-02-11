@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
-import { LoadingOverlay } from "@/components/ui/Loading";
-import { RouterKey, StorageKey } from "@/const";
-import { OtpPurpose } from "@/const/otp-purpose";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { useSendOtp } from "@/hooks/useSendOtp";
+import { LoadingOverlay } from "@/components/ui";
+import { OtpPurpose, RouterKey, StorageKey } from "@/const";
+import { useCurrentUser, useSendOtp } from "@/hooks";
 
 type AuthGuardProps = {
   children: React.ReactNode;

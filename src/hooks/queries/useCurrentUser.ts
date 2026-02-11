@@ -1,7 +1,7 @@
-import { QueryKey } from "@/const/query-key";
+import { QueryKey } from "@/const";
 import { authService } from "@/services/auth.service";
 
-import { useAppQuery } from "./useAppQuery";
+import { useAppQuery } from "../useAppQuery";
 
 export const useCurrentUser = () => {
   return useAppQuery({

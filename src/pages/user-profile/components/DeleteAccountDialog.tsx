@@ -1,14 +1,14 @@
 import { TrashIcon } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/Button";
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/Dialog";
+} from "@/components";
 
 export const DeleteAccountDialog = () => {
   const [isOpen, setIsOpen] = useState(false);

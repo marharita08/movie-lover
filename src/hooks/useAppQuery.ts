@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-import { toast } from "@/hooks/useToast";
+import { toast } from "@/hooks";
 import { HttpException } from "@/types/exception.type";
 
 type AppQueryProps<

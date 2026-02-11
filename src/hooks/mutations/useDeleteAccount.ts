@@ -4,8 +4,8 @@ import { MutationKey, RouterKey } from "@/const";
 import { authService } from "@/services/auth.service";
 import { useAccessTokenStore } from "@/store/access-token.store";
 
-import { useAppMutation } from "./useAppMutation";
-import { toast } from "./useToast";
+import { useAppMutation } from "../useAppMutation";
+import { toast } from "../useToast";
 
 export const useDeleteAccount = () => {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import type { OtpPurpose } from "@/const/otp-purpose";
+import type { OtpPurpose } from "@/const";
 
 export type SendOtpRequest = {
   email: string;

@@ -3,14 +3,14 @@ import { ArrowRightIcon, CalendarIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { type DateRange } from "react-day-picker";
 
-import { Calendar } from "@/components/ui/Calendar";
-import { Input } from "@/components/ui/Input";
-import InputError from "@/components/ui/InputError";
 import {
+  Calendar,
+  Input,
+  InputError,
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/Popover";
+} from "@/components";
 
 const DATE_FORMAT = "MMM d";
 

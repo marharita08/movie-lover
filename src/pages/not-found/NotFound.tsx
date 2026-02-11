@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 
-import { Button } from "@/components/ui/Button";
-import { Sphere } from "@/components/ui/Sphere";
+import { Button, Sphere } from "@/components";
 import { RouterKey } from "@/const";
 
-import { descriptions } from "./const/descriptions";
+import { descriptions } from "./const";
 
 const getRandomDescription = () => {
   return descriptions[Math.floor(Math.random() * descriptions.length)];

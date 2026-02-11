@@ -1,3 +1,4 @@
+import { RouterKey } from "@/const";
 import { useAccessTokenStore } from "@/store/access-token.store";
 import { HttpException, type HttpExceptionBody } from "@/types/exception.type";
 
@@ -81,7 +82,7 @@ class HttpService {
       credentials: "include",
     });
 
-    if (response.status === 401 && !config.retry) {
+    if (response.status === 401 && !config.retry && !url.includes(RouterKey.LOGIN)) {
       return this.handle401<TResponse, TBody>(url, config);
     }
 
