@@ -17,6 +17,8 @@ export const useResetPasswordNewPassword = () => {
         variant: "success",
       });
       localStorage.removeItem(StorageKey.RESET_PASSWORD_TOKEN);
+      localStorage.removeItem(StorageKey.EMAIL);
+      localStorage.removeItem(StorageKey.RESET_PASSWORD_STEP);
       navigate(RouterKey.LOGIN);
     },
   });

@@ -9,7 +9,7 @@ type CheckboxProps = {
 } & CheckboxPrimitive.CheckboxProps;
 
 const Checkbox = React.forwardRef<
-  React.ElementRef<typeof CheckboxPrimitive.Root>,
+  React.ComponentRef<typeof CheckboxPrimitive.Root>,
   CheckboxProps
 >(({ className, error, ...props }, ref) => (
   <CheckboxPrimitive.Root

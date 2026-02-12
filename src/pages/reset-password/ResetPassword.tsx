@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
+import { Sphere } from "@/components";
 import { StorageKey } from "@/const";
 
 import { EmailStep, NewPasswordStep, OtpStep } from "./components";
 import { ResetPasswordStep } from "./const";
-import { Sphere } from "@/components";
 
 export const ResetPassword = () => {
   const initialStep =

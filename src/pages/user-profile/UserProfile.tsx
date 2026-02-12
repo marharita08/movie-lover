@@ -12,7 +12,7 @@ import {
 } from "@/components";
 import { useCurrentUser, useUpdateUser } from "@/hooks";
 
-import { DeleteAccountDialog } from "./components";
+import { ChangePasswordDialog, DeleteAccountDialog } from "./components";
 import {
   UpdateUserValidationSchema,
   type UpdateUserValidationSchemaType,
@@ -47,14 +47,14 @@ export const UserProfile = () => {
         <Sphere className="absolute top-28 right-30 h-13 w-13" />
         <Sphere className="absolute right-40 bottom-20 h-20 w-20" />
         <div className="bg-card absolute top-1/3 left-1/2 w-full max-w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-xl p-6 shadow-md">
-          <h1 className="text-xl font-bold">My Profile</h1>
+          <h1 className="text-center text-xl font-bold">My Profile</h1>
           <form
-            className="mt-4 flex flex-col gap-2"
+            className="mt-8 flex flex-col gap-2"
             onSubmit={form.handleSubmit(handleSubmit)}
           >
             <div className="flex gap-2">
               <div>Email:</div>
-              <div>{user?.email}</div>
+              <div className="font-medium">{user?.email}</div>
             </div>
             <div>
               <Input
@@ -66,20 +66,28 @@ export const UserProfile = () => {
               />
               <InputError error={form.formState.errors.name?.message} />
             </div>
-            <div className="mt-4 flex justify-between gap-2">
-              <DeleteAccountDialog />
-              <div className="flex gap-2">
-                <Button type="button" onClick={() => form.reset(defaultValues)}>
+            <div className="mt-4 flex justify-end gap-2">
+              <div className="flex gap-4">
+                <Button
+                  className="min-w-[120px]"
+                  type="button"
+                  variant={"outline"}
+                  onClick={() => form.reset(defaultValues)}
+                >
                   <RotateCcwIcon className="h-4 w-4" />
                   Reset
                 </Button>
-                <Button type="submit">
+                <Button className="min-w-[120px]" type="submit">
                   <SaveIcon className="h-4 w-4" />
                   Save
                 </Button>
               </div>
             </div>
           </form>
+          <div className="mt-8 flex justify-center gap-4">
+            <DeleteAccountDialog />
+            <ChangePasswordDialog />
+          </div>
         </div>
       </div>
     </AuthenticatedLayout>

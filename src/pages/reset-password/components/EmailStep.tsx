@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 
 import { Button, Input, InputError } from "@/components";
 import { RouterKey, StorageKey } from "@/const";
@@ -9,7 +10,6 @@ import {
   EmailStepValidationSchema,
   type EmailStepValidationSchemaType,
 } from "../validation/email-step.validation-schema";
-import { Link } from "react-router-dom";
 
 interface EmailStepProps {
   onSuccess: () => void;

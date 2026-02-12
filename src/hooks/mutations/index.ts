@@ -1,3 +1,4 @@
+export * from "./useChangePassword";
 export * from "./useDeleteAccount";
 export * from "./useLogin";
 export * from "./useLogout";

@@ -82,7 +82,11 @@ class HttpService {
       credentials: "include",
     });
 
-    if (response.status === 401 && !config.retry && !url.includes(RouterKey.LOGIN)) {
+    if (
+      response.status === 401 &&
+      !config.retry &&
+      !url.includes(RouterKey.LOGIN)
+    ) {
       return this.handle401<TResponse, TBody>(url, config);
     }
 

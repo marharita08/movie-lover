@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { PASSWORD_REGEX } from "@/const";
 
-export const NewPasswordStepValidationSchema = z
+export const ChangePasswordValidationSchema = z
   .object({
     password: z
       .string()
@@ -14,14 +14,12 @@ export const NewPasswordStepValidationSchema = z
     confirmPassword: z
       .string()
       .min(1, { message: "Confirm password is required" }),
-    email: z.string().min(1, { message: "Email is required" }),
-    token: z.string().min(1, { message: "Token is required" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
 
-export type NewPasswordStepValidationSchemaType = z.infer<
-  typeof NewPasswordStepValidationSchema
+export type ChangePasswordValidationSchemaType = z.infer<
+  typeof ChangePasswordValidationSchema
 >;

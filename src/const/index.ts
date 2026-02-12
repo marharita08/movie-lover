@@ -1,3 +1,4 @@
+export * from "./email-regex";
 export * from "./mutation-key";
 export * from "./otp-purpose";
 export * from "./password-regex";

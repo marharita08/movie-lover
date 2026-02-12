@@ -5,7 +5,7 @@ import * as React from "react";
 import { cn } from "@/utils/cn";
 
 const RadioGroup = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Root>,
+  React.ComponentRef<typeof RadioGroupPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
 >(({ className, ...props }, ref) => {
   return (
@@ -25,7 +25,7 @@ type RadioGroupItemProps = React.ComponentPropsWithoutRef<
 };
 
 const RadioGroupItem = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Item>,
+  React.ComponentRef<typeof RadioGroupPrimitive.Item>,
   RadioGroupItemProps
 >(({ className, error, ...props }, ref) => {
   return (

@@ -6,7 +6,10 @@ import type {
   OtpStepValidationSchemaType,
 } from "@/pages/reset-password";
 import type { SignUpValidationSchemaType } from "@/pages/signup";
-import type { UpdateUserValidationSchemaType } from "@/pages/user-profile";
+import type {
+  ChangePasswordValidationSchemaType,
+  UpdateUserValidationSchemaType,
+} from "@/pages/user-profile";
 import type {
   AuthResponse,
   MessageResponse,
@@ -92,6 +95,15 @@ class AuthService {
       void,
       Omit<NewPasswordStepValidationSchemaType, "confirmPassword">
     >("/auth/reset-password", data);
+  }
+
+  async changePassword(
+    data: Omit<ChangePasswordValidationSchemaType, "confirmPassword">,
+  ): Promise<void> {
+    return await httpService.post<
+      void,
+      Omit<ChangePasswordValidationSchemaType, "confirmPassword">
+    >("/auth/change-password", data);
   }
 }
 

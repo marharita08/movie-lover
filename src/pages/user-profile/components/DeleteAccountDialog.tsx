@@ -15,8 +15,12 @@ export const DeleteAccountDialog = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger>
-        <Button variant="destructive" type="button">
+      <DialogTrigger asChild>
+        <Button
+          variant="ghost"
+          type="button"
+          className="hover:text-error text-sm"
+        >
           <TrashIcon className="h-4 w-4" />
           Delete Account
         </Button>
@@ -36,7 +40,11 @@ export const DeleteAccountDialog = () => {
             </p>
           </div>
           <div className="flex justify-end gap-4">
-            <Button variant="outline" onClick={() => setIsOpen(false)}>
+            <Button
+              className="min-w-[120px]"
+              variant="outline"
+              onClick={() => setIsOpen(false)}
+            >
               Cancel
             </Button>
             <Button variant="destructive">
