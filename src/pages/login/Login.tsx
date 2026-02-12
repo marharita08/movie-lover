@@ -12,7 +12,7 @@ import {
   type LoginValidationSchemaType,
 } from "./validation";
 
-const Login = () => {
+export const Login = () => {
   const form = useForm<LoginValidationSchemaType>({
     resolver: zodResolver(LoginValidationSchema),
     defaultValues: {
@@ -83,5 +83,3 @@ const Login = () => {
     </div>
   );
 };
-
-export { Login };
