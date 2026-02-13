@@ -14,8 +14,14 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     <Link
       to={generatePath(RouterKey.MOVIE_DETAILS, { id: movie.id.toString() })}
     >
-      <div className="bg-card shrink-0 overflow-hidden rounded-md shadow-md">
-        <img src={`${imageBaseUrl}${movie.posterPath}`} alt={movie.title} />
+      <div className="bg-card shrink-0 overflow-hidden rounded-md shadow-md transition-transform hover:scale-105">
+        {movie.posterPath ? (
+          <img src={`${imageBaseUrl}${movie.posterPath}`} alt={movie.title} />
+        ) : (
+          <div className="bg-muted flex h-[300px] w-full items-center justify-center">
+            <span className="text-muted-foreground text-sm">No Image</span>
+          </div>
+        )}
         <div className="truncate p-2 text-sm font-medium">{movie.title}</div>
       </div>
     </Link>

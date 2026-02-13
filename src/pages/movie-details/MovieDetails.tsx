@@ -36,7 +36,9 @@ export const MovieDetails = () => {
         <div
           className="absolute inset-0 z-0 md:rounded-tl-md"
           style={{
-            backgroundImage: `url(${imageBaseUrl}${movie.backdropPath})`,
+            backgroundImage: movie.backdropPath
+              ? `url(${imageBaseUrl}${movie.backdropPath})`
+              : undefined,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -52,11 +54,17 @@ export const MovieDetails = () => {
           </Button>
           <div className="flex flex-col gap-8 lg:flex-row">
             <div className="flex shrink-0 justify-center">
-              <img
-                src={`${imageBaseUrl}${movie.posterPath}`}
-                alt={movie.title}
-                className="w-64 rounded-lg shadow-lg"
-              />
+              {movie.posterPath ? (
+                <img
+                  src={`${imageBaseUrl}${movie.posterPath}`}
+                  alt={movie.title}
+                  className="w-64 rounded-lg shadow-lg"
+                />
+              ) : (
+                <div className="bg-muted flex h-96 w-64 items-center justify-center rounded-lg shadow-lg">
+                  <span className="text-muted-foreground">No Image</span>
+                </div>
+              )}
             </div>
             <div className="flex flex-col gap-4">
               <h1 className="text-4xl font-bold">{movie.title}</h1>
@@ -66,29 +74,34 @@ export const MovieDetails = () => {
                 </p>
               )}
               <div className="flex flex-wrap gap-2">
-                {movie.genres.map((genre) => (
-                  <span
-                    key={genre.id}
-                    className="bg-background text-primary-600 border-primary-600 rounded-full border px-3 py-1 text-sm"
-                  >
-                    {genre.name}
-                  </span>
-                ))}
+                {Array.isArray(movie.genres) &&
+                  movie.genres.map((genre) => (
+                    <span
+                      key={genre.id}
+                      className="bg-background text-primary-600 border-primary-600 rounded-full border px-3 py-1 text-sm"
+                    >
+                      {genre.name}
+                    </span>
+                  ))}
               </div>
               <p className="text-lg">{movie.overview}</p>
               <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                <div>
-                  <span className="text-muted-foreground block text-sm font-medium">
-                    Release Date
-                  </span>
-                  <span>{formatDate(movie.releaseDate)}</span>
-                </div>
-                <div>
-                  <span className="text-muted-foreground block text-sm font-medium">
-                    Runtime
-                  </span>
-                  <span>{formatRuntime(movie.runtime)}</span>
-                </div>
+                {movie.releaseDate && (
+                  <div>
+                    <span className="text-muted-foreground block text-sm font-medium">
+                      Release Date
+                    </span>
+                    <span>{formatDate(movie.releaseDate)}</span>
+                  </div>
+                )}
+                {movie.runtime && (
+                  <div>
+                    <span className="text-muted-foreground block text-sm font-medium">
+                      Runtime
+                    </span>
+                    <span>{formatRuntime(movie.runtime)}</span>
+                  </div>
+                )}
                 <div>
                   <span className="text-muted-foreground block text-sm font-medium">
                     Vote Average
@@ -103,18 +116,19 @@ export const MovieDetails = () => {
                 </div>
               </div>
 
-              {movie.productionCountries.length > 0 && (
-                <div>
-                  <h2 className="text-base font-semibold">
-                    Production Countries
-                  </h2>
+              {movie.productionCountries &&
+                movie.productionCountries.length > 0 && (
                   <div>
-                    {movie.productionCountries
-                      .map((country) => country.name)
-                      .join(", ")}
+                    <h2 className="text-base font-semibold">
+                      Production Countries
+                    </h2>
+                    <div>
+                      {movie.productionCountries
+                        .map((country) => country.name)
+                        .join(", ")}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
           </div>
         </div>

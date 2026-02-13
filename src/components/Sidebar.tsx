@@ -9,7 +9,7 @@ export const Sidebar = () => {
   const pathname = useLocation().pathname;
 
   return (
-    <div className="fixed top-0 left-0 z-20 hidden h-screen w-10 items-center justify-center rounded-r-xl md:flex">
+    <aside className="fixed top-0 left-0 z-20 hidden h-screen w-10 items-center justify-center rounded-r-xl md:flex">
       <div className="text-primary-foreground relative flex h-92/100">
         <div className="bg-primary-900 text-primary-foreground h-full w-7"></div>
         <div
@@ -18,7 +18,7 @@ export const Sidebar = () => {
             clipPath: "polygon(0% 0%, 100% 4%, 100% 96%, 0% 100%)",
           }}
         ></div>
-        <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-1">
+        <nav className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-1">
           <Button
             variant="nav"
             size="nav"
@@ -39,8 +39,8 @@ export const Sidebar = () => {
               <ListIcon className="h-5 w-5" />
             </Link>
           </Button>
-        </div>
+        </nav>
       </div>
-    </div>
+    </aside>
   );
 };

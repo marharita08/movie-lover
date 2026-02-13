@@ -28,11 +28,11 @@ export interface MovieDetailsDto extends Omit<MovieDto, "genreIds"> {
   genres: Genre[];
   homepage: string | null;
   imdbId: string | null;
-  productionCompanies: ProductionCompany[];
-  productionCountries: ProductionCountry[];
+  productionCompanies: ProductionCompany[] | null;
+  productionCountries: ProductionCountry[] | null;
   revenue: number;
   runtime: number | null;
-  spokenLanguages: SpokenLanguage[];
+  spokenLanguages: SpokenLanguage[] | null;
   status: string;
   tagline: string | null;
 }

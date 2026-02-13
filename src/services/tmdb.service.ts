@@ -8,14 +8,11 @@ import { httpService } from "./http.service";
 
 class TMDBService {
   async getDiscoverMovies(query: DiscoverMoviesQuery) {
-    return await httpService.get<MoviesResponseDto>(
-      "/tmdb/discover/movie",
-      query,
-    );
+    return httpService.get<MoviesResponseDto>("/tmdb/discover/movie", query);
   }
 
   async getMovie(id: string) {
-    return await httpService.get<MovieDetailsDto>(`/tmdb/movie/${id}`);
+    return httpService.get<MovieDetailsDto>(`/tmdb/movie/${id}`);
   }
 }
 
