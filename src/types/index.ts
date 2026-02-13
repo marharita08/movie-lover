@@ -2,6 +2,7 @@ export * from "./auth-response.type";
 export * from "./discover-movies-query.type";
 export * from "./exception.type";
 export * from "./message-response.type";
+export * from "./movie-details.type";
 export * from "./movies-response.type";
 export * from "./reset-password-verify-response.type";
 export * from "./send-otp-request.type";

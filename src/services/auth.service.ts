@@ -22,14 +22,14 @@ import { httpService } from "./http.service";
 
 class AuthService {
   async login(data: LoginValidationSchemaType): Promise<AuthResponse> {
-    return await httpService.post<AuthResponse, LoginValidationSchemaType>(
+    return httpService.post<AuthResponse, LoginValidationSchemaType>(
       "/auth/login",
       data,
     );
   }
 
   async signup(data: SignUpValidationSchemaType): Promise<MessageResponse> {
-    return await httpService.post<MessageResponse, SignUpValidationSchemaType>(
+    return httpService.post<MessageResponse, SignUpValidationSchemaType>(
       "/auth/signup",
       data,
     );
@@ -38,51 +38,48 @@ class AuthService {
   async verifyEmail(
     data: EmailVerificationValidationSchemaType,
   ): Promise<AuthResponse> {
-    return await httpService.post<
+    return httpService.post<
       AuthResponse,
       EmailVerificationValidationSchemaType
     >("/auth/verify-email", data);
   }
 
   async getCurrentUser(): Promise<User> {
-    return await httpService.get<User>("/auth/user");
+    return httpService.get<User>("/auth/user");
   }
 
   async sendOtp(data: SendOtpRequest): Promise<MessageResponse> {
-    return await httpService.post<MessageResponse, SendOtpRequest>(
+    return httpService.post<MessageResponse, SendOtpRequest>(
       "/auth/send-otp",
       data,
     );
   }
 
   async logout(): Promise<void> {
-    return await httpService.delete("/auth/logout");
+    return httpService.delete("/auth/logout");
   }
 
   async deleteAccount(): Promise<void> {
-    return await httpService.delete("/auth/user");
+    return httpService.delete("/auth/user");
   }
 
-  async updateUser(
-    id: string,
-    data: UpdateUserValidationSchemaType,
-  ): Promise<void> {
-    return await httpService.patch(`/auth/user/${id}`, data);
+  async updateUser(data: UpdateUserValidationSchemaType): Promise<void> {
+    return httpService.patch("/auth/user", data);
   }
 
   async forgotPassword(
     data: EmailStepValidationSchemaType,
   ): Promise<MessageResponse> {
-    return await httpService.post<
-      MessageResponse,
-      EmailStepValidationSchemaType
-    >("/auth/forgot-password", data);
+    return httpService.post<MessageResponse, EmailStepValidationSchemaType>(
+      "/auth/forgot-password",
+      data,
+    );
   }
 
   async verifyResetPassword(
     data: OtpStepValidationSchemaType,
   ): Promise<ResetPasswordVerifyResponse> {
-    return await httpService.post<
+    return httpService.post<
       ResetPasswordVerifyResponse,
       OtpStepValidationSchemaType
     >("/auth/verify-reset-password", data);
@@ -91,7 +88,7 @@ class AuthService {
   async resetPassword(
     data: Omit<NewPasswordStepValidationSchemaType, "confirmPassword">,
   ): Promise<void> {
-    return await httpService.post<
+    return httpService.post<
       void,
       Omit<NewPasswordStepValidationSchemaType, "confirmPassword">
     >("/auth/reset-password", data);
@@ -100,7 +97,7 @@ class AuthService {
   async changePassword(
     data: Omit<ChangePasswordValidationSchemaType, "confirmPassword">,
   ): Promise<void> {
-    return await httpService.post<
+    return httpService.post<
       void,
       Omit<ChangePasswordValidationSchemaType, "confirmPassword">
     >("/auth/change-password", data);

@@ -8,6 +8,7 @@ import { Dashboard } from "./pages/dashboard";
 import { EmailVerification } from "./pages/email-verification";
 import { Lists } from "./pages/lists";
 import { Login } from "./pages/login";
+import { MovieDetails } from "./pages/movie-details";
 import { NotFound } from "./pages/not-found";
 import { ResetPassword } from "./pages/reset-password";
 import { Signup } from "./pages/signup";
@@ -35,6 +36,14 @@ function App() {
               element={
                 <AuthGuard>
                   <Lists />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path={RouterKey.MOVIE_DETAILS}
+              element={
+                <AuthGuard>
+                  <MovieDetails />
                 </AuthGuard>
               }
             />
