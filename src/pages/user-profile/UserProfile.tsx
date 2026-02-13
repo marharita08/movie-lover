@@ -36,7 +36,7 @@ export const UserProfile = () => {
   const updateUserMutation = useUpdateUser();
 
   const handleSubmit = (data: UpdateUserValidationSchemaType) => {
-    updateUserMutation.mutate({ id: user?.id || "", data });
+    updateUserMutation.mutate(data);
   };
 
   return (

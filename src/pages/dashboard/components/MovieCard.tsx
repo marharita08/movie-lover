@@ -14,7 +14,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     <Link
       to={generatePath(RouterKey.MOVIE_DETAILS, { id: movie.id.toString() })}
     >
-      <div className="bg-card shrink-0 overflow-hidden rounded-md shadow-md transition-transform hover:scale-105">
+      <div className="bg-card shrink-0 overflow-hidden rounded-md shadow-md">
         {movie.posterPath ? (
           <img src={`${imageBaseUrl}${movie.posterPath}`} alt={movie.title} />
         ) : (

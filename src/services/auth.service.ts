@@ -63,11 +63,8 @@ class AuthService {
     return httpService.delete("/auth/user");
   }
 
-  async updateUser(
-    id: string,
-    data: UpdateUserValidationSchemaType,
-  ): Promise<void> {
-    return httpService.patch(`/auth/user/${id}`, data);
+  async updateUser(data: UpdateUserValidationSchemaType): Promise<void> {
+    return httpService.patch("/auth/user", data);
   }
 
   async forgotPassword(

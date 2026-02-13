@@ -74,15 +74,14 @@ export const MovieDetails = () => {
                 </p>
               )}
               <div className="flex flex-wrap gap-2">
-                {Array.isArray(movie.genres) &&
-                  movie.genres.map((genre) => (
-                    <span
-                      key={genre.id}
-                      className="bg-background text-primary-600 border-primary-600 rounded-full border px-3 py-1 text-sm"
-                    >
-                      {genre.name}
-                    </span>
-                  ))}
+                {movie.genres.map((genre) => (
+                  <span
+                    key={genre.id}
+                    className="bg-background text-primary-600 border-primary-600 rounded-full border px-3 py-1 text-sm"
+                  >
+                    {genre.name}
+                  </span>
+                ))}
               </div>
               <p className="text-lg">{movie.overview}</p>
               <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -116,19 +115,18 @@ export const MovieDetails = () => {
                 </div>
               </div>
 
-              {movie.productionCountries &&
-                movie.productionCountries.length > 0 && (
+              {movie.productionCountries.length > 0 && (
+                <div>
+                  <h2 className="text-base font-semibold">
+                    Production Countries
+                  </h2>
                   <div>
-                    <h2 className="text-base font-semibold">
-                      Production Countries
-                    </h2>
-                    <div>
-                      {movie.productionCountries
-                        .map((country) => country.name)
-                        .join(", ")}
-                    </div>
+                    {movie.productionCountries
+                      .map((country) => country.name)
+                      .join(", ")}
                   </div>
-                )}
+                </div>
+              )}
             </div>
           </div>
         </div>
