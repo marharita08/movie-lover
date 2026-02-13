@@ -16,7 +16,7 @@ export const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
     <div>
       <Header />
       <Sidebar />
-      <div className={cn("pt-22 pl-14", className)}>{children}</div>
+      <div className={cn("pt-22 pl-0 md:pl-14", className)}>{children}</div>
     </div>
   );
 };

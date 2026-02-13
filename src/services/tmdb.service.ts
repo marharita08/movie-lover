@@ -1,4 +1,8 @@
-import type { DiscoverMoviesQuery, MoviesResponseDto } from "@/types";
+import type {
+  DiscoverMoviesQuery,
+  MovieDetailsDto,
+  MoviesResponseDto,
+} from "@/types";
 
 import { httpService } from "./http.service";
 
@@ -8,6 +12,10 @@ class TMDBService {
       "/tmdb/discover/movie",
       query,
     );
+  }
+
+  async getMovie(id: string) {
+    return await httpService.get<MovieDetailsDto>(`/tmdb/movie/${id}`);
   }
 }
 

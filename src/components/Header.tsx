@@ -39,7 +39,7 @@ export const Header = () => {
             <Avatar>
               <AvatarFallback>{userName}</AvatarFallback>
             </Avatar>
-            <span>{user?.email}</span>
+            <span className="hidden md:block">{user?.email}</span>
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent>

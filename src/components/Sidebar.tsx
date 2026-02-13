@@ -9,7 +9,7 @@ export const Sidebar = () => {
   const pathname = useLocation().pathname;
 
   return (
-    <div className="fixed top-0 left-0 z-20 flex h-screen w-10 items-center justify-center rounded-r-xl">
+    <div className="fixed top-0 left-0 z-20 hidden h-screen w-10 items-center justify-center rounded-r-xl md:flex">
       <div className="text-primary-foreground relative flex h-92/100">
         <div className="bg-primary-900 text-primary-foreground h-full w-7"></div>
         <div
