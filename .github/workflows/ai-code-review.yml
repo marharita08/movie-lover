@@ -2,7 +2,7 @@ name: AI Code Review
 
 on:
   pull_request:
-    types: [opened, edited, synchronize, reopened]
+    types: [opened, synchronize, reopened]
 
 permissions:
   pull-requests: write
@@ -13,14 +13,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Run AI review
-      uses: villesau/ai-codereviewer@v1
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-        model: gpt-4o
-        comment-heading: "AI Code Review Results"
-        max-diff-bytes: 100000
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install openai
+
+      - name: Run AI Review Script
+        run: node .github/scripts/run-ai-review.js
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
