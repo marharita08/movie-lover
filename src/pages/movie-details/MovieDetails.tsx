@@ -1,7 +1,12 @@
 import { ArrowLeft } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { AuthenticatedLayout, Button, LoadingOverlay } from "@/components";
+import {
+  AuthenticatedLayout,
+  Button,
+  ErrorState,
+  LoadingOverlay,
+} from "@/components";
 import { useMovie } from "@/hooks/queries/useMovie";
 import { formatDate, formatRuntime } from "@/utils";
 
@@ -10,7 +15,7 @@ const imageBaseUrl = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
 export const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { data: movie, isLoading, error } = useMovie(id);
+  const { data: movie, isLoading, error, refetch } = useMovie(id);
 
   if (isLoading) {
     return (
@@ -23,9 +28,12 @@ export const MovieDetails = () => {
   if (error || !movie) {
     return (
       <AuthenticatedLayout>
-        <div className="text-destructive flex h-full items-center justify-center">
-          Error loading movie details.
-        </div>
+        <ErrorState
+          title="Movie not found"
+          description="We couldn't load this movie's details. The reel might be missing or damaged."
+          onRetry={() => refetch()}
+          type="generic"
+        />
       </AuthenticatedLayout>
     );
   }
@@ -93,7 +101,7 @@ export const MovieDetails = () => {
                     <span>{formatDate(movie.releaseDate)}</span>
                   </div>
                 )}
-                {movie.runtime && (
+                {!!movie.runtime && (
                   <div>
                     <span className="text-muted-foreground block text-sm font-medium">
                       Runtime
@@ -101,12 +109,14 @@ export const MovieDetails = () => {
                     <span>{formatRuntime(movie.runtime)}</span>
                   </div>
                 )}
-                <div>
-                  <span className="text-muted-foreground block text-sm font-medium">
-                    Vote Average
-                  </span>
-                  <span>{movie.voteAverage.toFixed(1)}</span>
-                </div>
+                {!!movie.voteAverage && (
+                  <div>
+                    <span className="text-muted-foreground block text-sm font-medium">
+                      Vote Average
+                    </span>
+                    <span>{movie.voteAverage.toFixed(1)}</span>
+                  </div>
+                )}
                 <div>
                   <span className="text-muted-foreground block text-sm font-medium">
                     Status

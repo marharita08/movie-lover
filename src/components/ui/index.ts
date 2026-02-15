@@ -13,6 +13,8 @@ export * from "./DatePicker";
 export * from "./DatesPicker";
 export * from "./Dialog";
 export * from "./DropdownMenu";
+export * from "./EmptyState";
+export * from "./ErrorState";
 export * from "./Input";
 export * from "./InputError";
 export * from "./Label";

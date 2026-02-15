@@ -3,14 +3,28 @@ import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 
-import { AuthenticatedLayout, Button, Loading } from "@/components";
+import {
+  AuthenticatedLayout,
+  Button,
+  EmptyState,
+  ErrorState,
+  Loading,
+} from "@/components";
 import { RouterKey } from "@/const";
 import { useLists } from "@/hooks/queries/useLists";
+
 import { ListCard } from "./components";
 
 export const Lists = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useLists({});
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    refetch,
+  } = useLists({});
 
   const { ref, inView } = useInView();
 
@@ -22,7 +36,7 @@ export const Lists = () => {
 
   const lists = data?.pages.flatMap((page) => page.results) ?? [];
 
-  const isEmpty = lists.length === 0 && !isLoading;
+  const isEmpty = lists.length === 0 && !isLoading && !isError;
 
   return (
     <AuthenticatedLayout>
@@ -35,8 +49,16 @@ export const Lists = () => {
           </Link>
         </Button>
       </div>
-      <div>
-        {!isEmpty && !isLoading && (
+      <div className="h-full flex-1">
+        {isError && (
+          <ErrorState
+            title="Failed to load your lists"
+            description="We couldn't fetch your movie lists. Please try again."
+            onRetry={() => refetch()}
+            type="server"
+          />
+        )}
+        {!isEmpty && !isLoading && !isError && (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {lists.map((list) => (
               <ListCard key={list.id} list={list} />
@@ -45,11 +67,17 @@ export const Lists = () => {
           </div>
         )}
         {isEmpty && (
-          <div className="flex h-64 items-center justify-center">
-            <p className="text-muted-foreground">No lists found</p>
+          <EmptyState
+            title="Ready to analyze your cinema history?"
+            description="Upload your IMDB export file to create a list and unlock detailed analytics about your movie collection."
+            icon="film"
+          />
+        )}
+        {(isLoading || isFetchingNextPage) && (
+          <div className="flex justify-center pt-16">
+            <Loading />
           </div>
         )}
-        {(isLoading || isFetchingNextPage) && <Loading />}
       </div>
     </AuthenticatedLayout>
   );

@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { Loading } from "@/components";
+import { EmptyState, ErrorState, Loading } from "@/components";
 import { useDiscoverMovies } from "@/hooks/queries/useDiscoverMovies";
 import type { DiscoverMoviesQuery } from "@/types";
 
@@ -23,6 +23,7 @@ export const MovieList: React.FC<MovieListProps> = ({ query }) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    refetch,
   } = useDiscoverMovies(query);
   const movies = data?.pages.flatMap((page) => page.results) ?? [];
 
@@ -33,17 +34,22 @@ export const MovieList: React.FC<MovieListProps> = ({ query }) => {
 
   if (isEmpty) {
     return (
-      <div className="flex items-center justify-center">
-        <p className="text-error">No movies found</p>
-      </div>
+      <EmptyState
+        title="No movies found"
+        description="We couldn't find any movies matching your criteria. Try exploring different years or genres."
+        icon="film"
+      />
     );
   }
 
   if (isError) {
     return (
-      <div className="flex items-center justify-center">
-        <p className="text-error">Something went wrong</p>
-      </div>
+      <ErrorState
+        title="Failed to load movies"
+        description="We're having trouble fetching movies right now. Please try again."
+        onRetry={() => refetch()}
+        type="server"
+      />
     );
   }
 
