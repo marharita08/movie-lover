@@ -7,11 +7,11 @@ import { cn } from "@/utils/cn";
 import { Label } from "./Label";
 
 const inputVariants = cva(
-  "text-foreground shadow-md flex w-full peer rounded-xl bg-background px-3 py-2 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:ring-offset-0",
+  "text-foreground flex w-full peer rounded-lg bg-card px-3 py-2 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-600 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:ring-offset-0",
   {
     variants: {
       variant: {
-        default: "border border-neutral-500 focus-visible:border-primary",
+        default: "border border-primary-900 focus-visible:border-primary",
         success: "border border-success",
         error: "border border-error",
       },
@@ -110,7 +110,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {labelElement}
           <div
             className={cn(
-              "focus-within:text-primary relative flex w-full items-center text-neutral-600",
+              "focus-within:text-primary text-primary-900 relative flex w-full items-center",
               actualVariant === "error" && "text-error focus-within:text-error",
             )}
           >

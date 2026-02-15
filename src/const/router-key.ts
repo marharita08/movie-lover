@@ -7,4 +7,5 @@ export const RouterKey = {
   USER_PROFILE: "/user-profile",
   RESET_PASSWORD: "/reset-password",
   MOVIE_DETAILS: "/movie/:id",
+  CREATE_LIST: "/create-list",
 } as const;
