@@ -1,4 +1,5 @@
 import { FileCheckIcon, FileUpIcon, Trash2Icon, XIcon } from "lucide-react";
+import { useMemo } from "react";
 
 import { useFileData } from "@/hooks/queries/useFileData";
 import { formatFileSize } from "@/utils";
@@ -25,6 +26,18 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
 }) => {
   const { data: fileData } = useFileData(fileId);
 
+  const fileSize = useMemo(() => {
+    if (fileData?.size !== undefined) {
+      return formatFileSize(fileData.size);
+    }
+
+    if (file?.size !== undefined) {
+      return formatFileSize(file.size);
+    }
+
+    return null;
+  }, [fileData, file]);
+
   return (
     <div className="bg-card flex items-center justify-between rounded-md border border-neutral-300 p-4">
       <div className="flex flex-1 gap-2">
@@ -45,7 +58,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
                 <Progress value={uploadProgress} className="h-1" />
               </div>
             ) : (
-              <div>{fileData?.size ? formatFileSize(fileData.size) : null}</div>
+              <div>{fileSize}</div>
             )}
           </div>
         </div>

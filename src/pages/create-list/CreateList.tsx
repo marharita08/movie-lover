@@ -86,7 +86,11 @@ export const CreateList = () => {
                   <ArrowLeftIcon className="h-4 w-4" />
                   Back
                 </Button>
-                <Button className="min-w-[120px]" type="submit">
+                <Button
+                  className="min-w-[120px]"
+                  type="submit"
+                  disabled={createListMutation.isPending}
+                >
                   <SaveIcon className="h-4 w-4" />
                   Create
                 </Button>

@@ -25,7 +25,7 @@ export const FileInput: React.FC<FileInputProps> = ({
     } else {
       toast({
         variant: "destructive",
-        description: "Invalid file type",
+        title: "Invalid file type",
       });
     }
 

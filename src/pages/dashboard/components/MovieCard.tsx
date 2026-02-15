@@ -5,10 +5,6 @@ import type { MovieDto } from "@/types";
 
 const imageBaseUrl = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
 
-if (!imageBaseUrl) {
-  throw new Error("VITE_TMDB_IMAGE_BASE_URL is not defined");
-}
-
 interface MovieCardProps {
   movie: MovieDto;
 }
