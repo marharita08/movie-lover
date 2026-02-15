@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "./components";
 import { RouterKey } from "./const";
 import { AuthGuard } from "./guards";
+import { CreateList } from "./pages/create-list/CreateList";
 import { Dashboard } from "./pages/dashboard";
 import { EmailVerification } from "./pages/email-verification";
 import { Lists } from "./pages/lists";
@@ -52,6 +53,14 @@ function App() {
               element={
                 <AuthGuard>
                   <UserProfile />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path={RouterKey.CREATE_LIST}
+              element={
+                <AuthGuard>
+                  <CreateList />
                 </AuthGuard>
               }
             />

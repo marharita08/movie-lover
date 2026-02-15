@@ -4,7 +4,7 @@ import { HttpException, type HttpExceptionBody } from "@/types/exception.type";
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
-type QueryParams =
+export type QueryParams =
   | Record<string, string | number | boolean | null | undefined>
   | Record<string, Array<string | number | boolean>>;
 
@@ -173,6 +173,95 @@ class HttpService {
       method: "PATCH",
       body,
       params,
+    });
+  }
+
+  async upload<TResponse>(
+    url: string,
+    file: File,
+    fieldName: string = "file",
+    params?: QueryParams,
+    options?: {
+      onUploadProgress?: (progress: number) => void;
+      signal?: AbortSignal;
+    },
+  ): Promise<TResponse> {
+    const formData = new FormData();
+    formData.append(fieldName, file);
+
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      const query = this.buildQuery(params);
+
+      xhr.upload.addEventListener("progress", (event) => {
+        if (event.lengthComputable && options?.onUploadProgress) {
+          const progress = (event.loaded / event.total) * 100;
+          options.onUploadProgress(progress);
+        }
+      });
+
+      if (options?.signal) {
+        options.signal.addEventListener("abort", () => {
+          xhr.abort();
+          reject(new Error("Upload aborted"));
+        });
+      }
+
+      xhr.onload = async () => {
+        try {
+          const contentType = xhr.getResponseHeader("content-type") || "";
+          const body = contentType.includes("application/json")
+            ? JSON.parse(xhr.responseText)
+            : xhr.responseText;
+
+          if (xhr.status === 401 && !url.includes(RouterKey.LOGIN)) {
+            try {
+              const newAccessToken = await this.refreshToken();
+              this.accessToken = newAccessToken;
+
+              const retryResult = await this.upload<TResponse>(
+                url,
+                file,
+                fieldName,
+                params,
+                options,
+              );
+              resolve(retryResult);
+              return;
+            } catch {
+              this.accessToken = undefined;
+              reject(new Error("Unauthorized"));
+              return;
+            }
+          }
+
+          if (xhr.status >= 200 && xhr.status < 300) {
+            resolve(body as TResponse);
+          } else {
+            reject(
+              new HttpException(
+                { status: xhr.status } as Response,
+                body as HttpExceptionBody,
+              ),
+            );
+          }
+        } catch {
+          reject(new Error("Failed to parse response"));
+        }
+      };
+
+      xhr.onerror = () => {
+        reject(new Error("Network error"));
+      };
+
+      xhr.open("POST", `${this.baseUrl}${url}${query}`, true);
+      xhr.withCredentials = true;
+
+      if (this.accessToken) {
+        xhr.setRequestHeader("Authorization", `Bearer ${this.accessToken}`);
+      }
+
+      xhr.send(formData);
     });
   }
 }
