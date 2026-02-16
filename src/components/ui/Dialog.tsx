@@ -54,7 +54,7 @@ const DialogContent = React.forwardRef<
       <DialogPrimitive.Content
         ref={ref}
         className={cn(
-          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed inset-0 grid h-screen max-w-none border border-neutral-500 shadow-lg duration-200 sm:w-screen sm:rounded-none md:top-[50%] md:left-[50%] md:h-fit md:max-w-lg md:translate-x-[-50%] md:translate-y-[-50%] md:rounded-[18px]",
+          "bg-card data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed inset-0 flex h-screen max-w-none flex-col border border-neutral-300 shadow-lg duration-200 sm:w-screen sm:rounded-none md:top-[50%] md:left-[50%] md:h-fit md:max-w-lg md:translate-x-[-50%] md:translate-y-[-50%] md:rounded-[18px]",
           nested ? "z-50" : "z-50",
           className,
         )}

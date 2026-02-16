@@ -19,6 +19,10 @@ class ListService {
       query,
     );
   }
+
+  async delete(id: string): Promise<void> {
+    return await httpService.delete(`/list/${id}`);
+  }
 }
 
 export const listService = new ListService();

@@ -12,4 +12,5 @@ export const MutationKey = {
   CHANGE_PASSWORD: "CHANGE_PASSWORD",
   DELETE_FILE: "DELETE_FILE",
   CREATE_LIST: "CREATE_LIST",
+  DELETE_LIST: "DELETE_LIST",
 } as const;

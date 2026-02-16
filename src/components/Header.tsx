@@ -31,8 +31,8 @@ export const Header = () => {
   };
 
   return (
-    <header className="bg-background fixed top-0 right-0 z-20 flex w-full items-center justify-between py-6 pr-4 pl-14">
-      <h1 className="text-2xl font-bold">Movie Lover</h1>
+    <header className="bg-background fixed top-0 right-0 z-20 flex w-full items-center justify-end py-6 pr-4 pl-14 md:justify-between">
+      <h1 className="hidden text-2xl font-bold md:block">Movie Lover</h1>
       {isLoading && <Loading />}
       {!isLoading && user && (
         <DropdownMenu>

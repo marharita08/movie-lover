@@ -62,17 +62,17 @@ export const MovieList: React.FC<MovieListProps> = ({ query }) => {
   }
 
   return (
-    <div className="relative px-6">
+    <div className="relative sm:px-6">
       <button
         ref={prevRef}
-        className="hover:text-primary bg-card absolute top-1/2 left-0 z-10 flex -translate-y-1/2 cursor-pointer items-center justify-center rounded-full p-2 shadow-md"
+        className="hover:text-primary bg-card absolute top-1/2 left-0 z-10 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full p-2 shadow-md sm:flex"
       >
         <ChevronLeftIcon />
       </button>
 
       <button
         ref={nextRef}
-        className="hover:text-primary bg-card absolute top-1/2 right-0 z-10 flex -translate-y-1/2 cursor-pointer items-center justify-center rounded-full p-2 shadow-md"
+        className="hover:text-primary bg-card absolute top-1/2 right-0 z-10 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full p-2 shadow-md sm:flex"
       >
         <ChevronRightIcon />
       </button>
@@ -80,8 +80,24 @@ export const MovieList: React.FC<MovieListProps> = ({ query }) => {
       <Swiper
         modules={[Navigation]}
         spaceBetween={16}
-        slidesPerView={6}
-        slidesPerGroup={3}
+        breakpoints={{
+          320: {
+            slidesPerView: 2,
+            slidesPerGroup: 2,
+          },
+          480: {
+            slidesPerView: 3,
+            slidesPerGroup: 3,
+          },
+          768: {
+            slidesPerView: 4,
+            slidesPerGroup: 4,
+          },
+          1024: {
+            slidesPerView: 6,
+            slidesPerGroup: 3,
+          },
+        }}
         onBeforeInit={(swiper) => {
           if (typeof swiper.params.navigation !== "boolean") {
             swiper.params.navigation!.prevEl = prevRef.current;
