@@ -11,11 +11,12 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   description,
   icon = "film",
 }) => {
-  const IconComponent = {
-    film: Film,
-    popcorn: Popcorn,
-    video: Video,
-  }[icon];
+  const IconComponent =
+    {
+      film: Film,
+      popcorn: Popcorn,
+      video: Video,
+    }[icon] || Film;
 
   return (
     <div className="flex h-64 flex-col items-center justify-center gap-4 text-center">

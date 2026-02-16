@@ -16,7 +16,11 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     >
       <div className="bg-card flex shrink-0 flex-col overflow-hidden rounded-md shadow-md">
         {movie.posterPath ? (
-          <img src={`${imageBaseUrl}${movie.posterPath}`} alt={movie.title} />
+          <img
+            src={`${imageBaseUrl}${movie.posterPath}`}
+            alt={movie.title}
+            loading="lazy"
+          />
         ) : (
           <div className="bg-muted flex h-[300px] w-full items-center justify-center">
             <span className="text-muted-foreground text-sm">No Image</span>

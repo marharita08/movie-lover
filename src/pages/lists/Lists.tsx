@@ -74,7 +74,7 @@ export const Lists = () => {
               type="server"
             />
           )}
-          {!isEmpty && !isLoading && !isError && (
+          {!isEmpty && (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {lists.map((list) => (
                 <ListCard key={list.id} list={list} />

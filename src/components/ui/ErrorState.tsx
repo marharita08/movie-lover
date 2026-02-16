@@ -21,7 +21,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
   onRetry,
   type = "generic",
 }) => {
-  const IconComponent = icons[type];
+  const IconComponent = icons[type] || AlertCircle;
 
   return (
     <div className="flex h-64 flex-col items-center justify-center gap-4 text-center">

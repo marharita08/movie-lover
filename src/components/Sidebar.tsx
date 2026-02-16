@@ -6,6 +6,21 @@ import { cn } from "@/utils";
 
 import { Button, Sheet, SheetContent, SheetTrigger } from "./ui";
 
+const navItems = [
+  {
+    to: RouterKey.DASHBOARD,
+    icon: HomeIcon,
+    label: "Dashboard",
+    activePath: [RouterKey.DASHBOARD] as string[],
+  },
+  {
+    to: RouterKey.LISTS,
+    icon: ListIcon,
+    label: "My Lists",
+    activePath: [RouterKey.LISTS, RouterKey.CREATE_LIST] as string[],
+  },
+];
+
 export const Sidebar = () => {
   const pathname = useLocation().pathname;
 
@@ -21,32 +36,21 @@ export const Sidebar = () => {
             }}
           ></div>
           <nav className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-1">
-            <Button
-              variant="nav"
-              size="nav"
-              asChild
-              className={pathname === RouterKey.DASHBOARD ? "bg-primary" : ""}
-            >
-              <Link to={RouterKey.DASHBOARD}>
-                <HomeIcon className="h-5 w-5" />
-              </Link>
-            </Button>
-            <Button
-              variant="nav"
-              size="nav"
-              asChild
-              className={
-                ([RouterKey.LISTS, RouterKey.CREATE_LIST] as string[]).includes(
-                  pathname,
-                )
-                  ? "bg-primary"
-                  : ""
-              }
-            >
-              <Link to={RouterKey.LISTS}>
-                <ListIcon className="h-5 w-5" />
-              </Link>
-            </Button>
+            {navItems.map((item) => (
+              <Button
+                variant="nav"
+                size="nav"
+                asChild
+                className={
+                  item.activePath.includes(pathname) ? "bg-primary" : ""
+                }
+                key={item.label}
+              >
+                <Link to={item.to}>
+                  <item.icon className="h-5 w-5" />
+                </Link>
+              </Button>
+            ))}
           </nav>
         </div>
       </aside>
@@ -60,36 +64,22 @@ export const Sidebar = () => {
           <SheetContent side={"left"}>
             <h2 className="mb-8 text-center text-xl font-bold">Menu</h2>
             <nav className="flex flex-col gap-1">
-              <Button
-                variant="ghost"
-                asChild
-                className={cn(
-                  "justify-start",
-                  pathname === RouterKey.DASHBOARD ? "bg-accent" : "",
-                )}
-              >
-                <Link to={RouterKey.DASHBOARD}>
-                  <HomeIcon className="h-5 w-5" />
-                  Dashboard
-                </Link>
-              </Button>
-              <Button
-                variant="ghost"
-                asChild
-                className={cn(
-                  "justify-start",
-                  (
-                    [RouterKey.LISTS, RouterKey.CREATE_LIST] as string[]
-                  ).includes(pathname)
-                    ? "bg-accent"
-                    : "",
-                )}
-              >
-                <Link to={RouterKey.LISTS}>
-                  <ListIcon className="h-5 w-5" />
-                  My Lists
-                </Link>
-              </Button>
+              {navItems.map((item) => (
+                <Button
+                  variant="ghost"
+                  asChild
+                  className={cn(
+                    "justify-start",
+                    item.activePath.includes(pathname) ? "bg-accent" : "",
+                  )}
+                  key={item.label}
+                >
+                  <Link to={item.to}>
+                    <item.icon className="h-5 w-5" />
+                    {item.label}
+                  </Link>
+                </Button>
+              ))}
             </nav>
           </SheetContent>
         </Sheet>
