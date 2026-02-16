@@ -5,10 +5,9 @@ export const CreateListValidationSchema = z.object({
   fileId: z
     .string()
     .min(1, { message: "File is required" })
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
-      { message: "Invalid file id" },
-    ),
+    .regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i, {
+      message: "Invalid file id",
+    }),
 });
 
 export type CreateListValidationSchemaType = z.infer<

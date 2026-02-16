@@ -14,15 +14,21 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     <Link
       to={generatePath(RouterKey.MOVIE_DETAILS, { id: movie.id.toString() })}
     >
-      <div className="bg-card shrink-0 overflow-hidden rounded-md shadow-md">
+      <div className="bg-card flex shrink-0 flex-col overflow-hidden rounded-md shadow-md">
         {movie.posterPath ? (
-          <img src={`${imageBaseUrl}${movie.posterPath}`} alt={movie.title} />
+          <img
+            src={`${imageBaseUrl}${movie.posterPath}`}
+            alt={movie.title}
+            loading="lazy"
+          />
         ) : (
           <div className="bg-muted flex h-[300px] w-full items-center justify-center">
             <span className="text-muted-foreground text-sm">No Image</span>
           </div>
         )}
-        <div className="truncate p-2 text-sm font-medium">{movie.title}</div>
+        <div className="flex-1 truncate p-2 text-sm font-medium">
+          {movie.title}
+        </div>
       </div>
     </Link>
   );

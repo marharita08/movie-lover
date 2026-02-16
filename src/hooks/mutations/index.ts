@@ -2,6 +2,7 @@ export * from "./useChangePassword";
 export * from "./useCreateList";
 export * from "./useDeleteAccount";
 export * from "./useDeleteFile";
+export * from "./useDeleteList";
 export * from "./useLogin";
 export * from "./useLogout";
 export * from "./useResetPasswordEmail";

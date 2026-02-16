@@ -47,7 +47,7 @@ export const CreateList = () => {
         <Sphere className="absolute top-20 left-30 h-15 w-15" />
         <Sphere className="absolute top-28 right-30 h-13 w-13" />
         <Sphere className="absolute right-40 bottom-20 h-20 w-20" />
-        <div className="bg-card absolute top-2/5 left-1/2 w-full max-w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-xl p-6 shadow-md">
+        <div className="bg-card h-full w-full p-6 shadow-md md:absolute md:top-2/5 md:left-1/2 md:h-fit md:w-[500px] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-xl">
           <h1 className="text-center text-xl font-bold">Create List</h1>
           <form
             className="mt-8 flex flex-col gap-4"

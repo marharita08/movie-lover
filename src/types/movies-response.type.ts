@@ -5,6 +5,7 @@ export interface MovieDto {
   backdropPath: string | null;
   genreIds: number[];
   id: number;
+  imdbId: string | null;
   originalLanguage: string;
   originalTitle: string;
   overview: string;

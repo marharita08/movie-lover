@@ -34,7 +34,7 @@ export const Login = () => {
       <Sphere className="absolute top-28 left-[calc(50%+7.5rem)] h-13 w-13" />
       <Sphere className="absolute right-40 bottom-20 h-20 w-20" />
       <form
-        className="bg-card w-full max-w-[500px] rounded-xl p-8 shadow-md"
+        className="bg-card h-full w-full p-8 shadow-md sm:h-fit sm:w-[500px] sm:rounded-xl"
         onSubmit={form.handleSubmit(handleSubmit)}
       >
         <h1 className="mb-6 text-center text-2xl font-bold">Login</h1>

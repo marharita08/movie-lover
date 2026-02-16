@@ -1,4 +1,4 @@
-import { TrashIcon } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
 
 import {
@@ -9,14 +9,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components";
-import { useDeleteAccount } from "@/hooks";
+import { useDeleteList } from "@/hooks";
 
-export const DeleteAccountDialog = () => {
+interface DeleteListDialogProps {
+  listId: string;
+  listName: string;
+}
+
+export const DeleteListDialog: React.FC<DeleteListDialogProps> = ({
+  listId,
+  listName,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { mutate: deleteAccount, isPending: isDeleting } = useDeleteAccount();
+  const { mutate: deleteList, isPending: isDeleting } = useDeleteList();
 
   const handleConfirm = () => {
-    deleteAccount(undefined, {
+    deleteList(listId, {
       onSuccess: () => setIsOpen(false),
     });
   };
@@ -26,25 +34,25 @@ export const DeleteAccountDialog = () => {
       <DialogTrigger asChild>
         <Button
           variant="ghost"
-          type="button"
-          className="hover:text-error text-sm"
+          size="icon"
+          className="hover:text-error"
+          disabled={isDeleting}
         >
-          <TrashIcon className="h-4 w-4" />
-          Delete Account
+          <Trash2Icon className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Account</DialogTitle>
+          <DialogTitle>Delete List</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-4 p-4">
           <div>
             <p className="font-medium">
-              Are you sure you want to delete your account?
+              Are you sure you want to delete the list "{listName}"?
             </p>
-            <p>
-              This action is irreversible and will permanently delete your
-              account and all associated data.
+            <p className="text-muted-foreground text-sm">
+              This action cannot be undone. All data associated with this list
+              will be permanently removed.
             </p>
           </div>
           <div className="flex justify-end gap-4">
@@ -57,11 +65,12 @@ export const DeleteAccountDialog = () => {
             </Button>
             <Button
               variant="destructive"
+              className="min-w-[120px]"
               onClick={handleConfirm}
               disabled={isDeleting}
             >
-              <TrashIcon className="h-4 w-4" />
-              Delete Account
+              <Trash2Icon className="mr-2 h-4 w-4" />
+              Delete List
             </Button>
           </div>
         </div>
