@@ -11,6 +11,7 @@ import { useMovie } from "@/hooks/queries/useMovie";
 import { formatDate, formatRuntime } from "@/utils";
 
 const imageBaseUrl = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
+const imdbMovieBaseUrl = import.meta.env.VITE_IMDB_MOVIE_BASE_URL;
 
 export const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -137,6 +138,21 @@ export const MovieDetails = () => {
                   </div>
                 </div>
               )}
+              {
+                movie.imdbId && (
+                  <div>
+                    <h2 className="text-base font-semibold">IMDb</h2>
+                    <a
+                      href={`${imdbMovieBaseUrl}${movie.imdbId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline underline-offset-4"
+                    >
+                      {`${imdbMovieBaseUrl}${movie.imdbId}`}
+                    </a>
+                  </div>
+                )
+              }
             </div>
           </div>
         </div>
