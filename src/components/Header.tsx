@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { RouterKey } from "@/const";
 import { useCurrentUser, useLogout } from "@/hooks";
+import { getFallback } from "@/utils/get-fallback";
 
 import { Avatar, AvatarFallback, Loading } from "./ui";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "./ui";
@@ -13,14 +14,7 @@ export const Header = () => {
   const logoutMutation = useLogout();
   const navigate = useNavigate();
 
-  const userName = useMemo(
-    () =>
-      user?.name
-        .split(" ")
-        .map((name) => name.charAt(0).toUpperCase())
-        .join(""),
-    [user?.name],
-  );
+  const userName = useMemo(() => getFallback(user?.name), [user?.name]);
 
   const handleLogout = () => {
     logoutMutation.mutate();

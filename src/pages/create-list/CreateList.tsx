@@ -1,11 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeftIcon, ListIcon, SaveIcon } from "lucide-react";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import {
   AuthenticatedLayout,
   Button,
+  CreateListLoading,
   FileUploader,
   Input,
   InputError,
@@ -40,6 +42,15 @@ export const CreateList = () => {
     navigate(-1);
   };
 
+  const setFileId = useCallback((fileId: string | null) => {
+    form.setValue("fileId", fileId ?? "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (createListMutation.isPending) {
+    return <CreateListLoading />;
+  }
+
   return (
     <AuthenticatedLayout>
       <div className="relative h-[calc(100vh-88px)]">
@@ -71,7 +82,7 @@ export const CreateList = () => {
               <FileUploader
                 validTypes={["csv"]}
                 fileId={form.watch("fileId")}
-                setFileId={(fileId) => form.setValue("fileId", fileId ?? "")}
+                setFileId={setFileId}
               />
             </div>
 

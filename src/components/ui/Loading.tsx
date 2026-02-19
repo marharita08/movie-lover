@@ -90,6 +90,7 @@ const LoadingOverlay = React.forwardRef<HTMLDivElement, LoadingOverlayProps>(
         className={cn(loadingOverlayVariants({ background }), className)}
         role="dialog"
         aria-label={ariaLabel || "Loading"}
+        aria-modal="true"
         {...props}
       >
         <Loading size={size} variant={variant} />
@@ -98,7 +99,46 @@ const LoadingOverlay = React.forwardRef<HTMLDivElement, LoadingOverlayProps>(
   },
 );
 
+const CreateListLoading = React.forwardRef<HTMLDivElement, LoadingOverlayProps>(
+  (
+    {
+      className,
+      background,
+      size = "xl",
+      variant = "default",
+      "aria-label": ariaLabel,
+      ...props
+    },
+    ref,
+  ) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(loadingOverlayVariants({ background }), className)}
+        role="dialog"
+        aria-label={ariaLabel || "Loading"}
+        aria-modal="true"
+        {...props}
+      >
+        <div className="flex flex-col items-center justify-center gap-2">
+          <Loading size={size} variant={variant} />
+          <div
+            aria-live="polite"
+            className="flex flex-col items-center justify-center gap-2"
+          >
+            <p>Processing your list data...</p>
+            <p className="text-muted-foreground">
+              This may take a few seconds...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  },
+);
+
 Loading.displayName = "Loading";
 LoadingOverlay.displayName = "LoadingOverlay";
+CreateListLoading.displayName = "CreateListLoading";
 
-export { Loading, LoadingOverlay };
+export { CreateListLoading, Loading, LoadingOverlay };
