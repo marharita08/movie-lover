@@ -90,6 +90,7 @@ const LoadingOverlay = React.forwardRef<HTMLDivElement, LoadingOverlayProps>(
         className={cn(loadingOverlayVariants({ background }), className)}
         role="dialog"
         aria-label={ariaLabel || "Loading"}
+        aria-modal="true"
         {...props}
       >
         <Loading size={size} variant={variant} />
@@ -116,14 +117,20 @@ const CreateListLoading = React.forwardRef<HTMLDivElement, LoadingOverlayProps>(
         className={cn(loadingOverlayVariants({ background }), className)}
         role="dialog"
         aria-label={ariaLabel || "Loading"}
+        aria-modal="true"
         {...props}
       >
         <div className="flex flex-col items-center justify-center gap-2">
           <Loading size={size} variant={variant} />
-          <p>Processing your list data...</p>
-          <p className="text-muted-foreground">
-            This may take a few seconds...
-          </p>
+          <div
+            aria-live="polite"
+            className="flex flex-col items-center justify-center gap-2"
+          >
+            <p>Processing your list data...</p>
+            <p className="text-muted-foreground">
+              This may take a few seconds...
+            </p>
+          </div>
         </div>
       </div>
     );

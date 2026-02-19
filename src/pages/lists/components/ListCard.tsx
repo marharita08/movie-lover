@@ -20,7 +20,7 @@ export const ListCard: React.FC<ListCardProps> = ({ list }) => {
       </div>
       <FilePreview fileId={list.fileId} />
       <div>
-        <Button variant="ghost">
+        <Button variant="ghost" asChild>
           <Link to={generatePath(RouterKey.LIST, { id: list.id })}>
             View analitics
           </Link>

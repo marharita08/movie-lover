@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 
+import { EmptyState, ErrorState, Loading } from "@/components";
 import { useGenreStats } from "@/hooks";
 
 import { GenresBarChart } from "./GenresBarChart";
@@ -7,7 +8,7 @@ import { GenresBarChart } from "./GenresBarChart";
 export const GenresAnalitics = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data: analitics } = useGenreStats(id!);
+  const { data: analitics, isLoading, isError, refetch } = useGenreStats(id!);
 
   const genres = Object.entries(analitics || {}).map(([key, value]) => ({
     genre: key,
@@ -17,7 +18,27 @@ export const GenresAnalitics = () => {
   return (
     <div className="flex flex-col gap-4">
       <h3 className="px-2 text-lg font-bold">Genres</h3>
-      <GenresBarChart data={genres} />
+      {isLoading && (
+        <div className="flex items-center justify-center">
+          <Loading />
+        </div>
+      )}
+      {isError && (
+        <ErrorState
+          title="Failed to load genres analitics"
+          description="Please try again later"
+          onRetry={refetch}
+        />
+      )}
+      {!isLoading && !isError && genres.length > 0 && (
+        <GenresBarChart data={genres} />
+      )}
+      {!isLoading && !isError && genres.length === 0 && (
+        <EmptyState
+          title="No genres found"
+          description="No genres found in your list"
+        />
+      )}
     </div>
   );
 };

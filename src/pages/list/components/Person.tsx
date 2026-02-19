@@ -1,8 +1,9 @@
-import { useCallback } from "react";
+import { useMemo } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components";
 import { ImdbUrl } from "@/const/imdb-url";
 import type { PersonStatsItem } from "@/types/person-stats.type";
+import { getFallback } from "@/utils/get-fallback";
 
 interface PersonProps {
   person: PersonStatsItem;
@@ -11,21 +12,14 @@ interface PersonProps {
 const imageBaseUrl = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
 
 export const Person: React.FC<PersonProps> = ({ person }) => {
-  const getFallback = useCallback(
-    (name: string) =>
-      name
-        .split(" ")
-        .map((name) => name.charAt(0).toUpperCase())
-        .join(""),
-    [],
-  );
+  const fallback = useMemo(() => getFallback(person.name), [person.name]);
 
   return (
     <div key={person.id} className="flex items-center gap-2">
       {
         <Avatar className="h-15 w-15">
           <AvatarImage src={`${imageBaseUrl}${person.profilePath}`} />
-          <AvatarFallback>{getFallback(person.name)}</AvatarFallback>
+          <AvatarFallback>{fallback}</AvatarFallback>
         </Avatar>
       }
       <div>

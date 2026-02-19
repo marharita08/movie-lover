@@ -1,4 +1,3 @@
-export * from "./useAnalitics";
 export * from "./useCurrentUser";
 export * from "./useDiscoverMovies";
 export * from "./useFileData";

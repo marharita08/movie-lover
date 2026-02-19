@@ -5,7 +5,7 @@ export const PersonRole = {
 
 export type PersonRole = (typeof PersonRole)[keyof typeof PersonRole];
 
-export const personRoleMap = {
+export const personRoleMap: Record<PersonRole, string> = {
   [PersonRole.DIRECTOR]: "Directors",
   [PersonRole.ACTOR]: "Actors",
 };

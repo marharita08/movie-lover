@@ -32,7 +32,7 @@ const CustomTick: React.FC<CustomTickProps> = (props) => {
         fill="#666"
         className="text-xs md:text-base"
       >
-        {payload?.value}
+        {payload?.value ?? "Unknown"}
       </text>
     </g>
   );
@@ -42,7 +42,14 @@ export const GenresBarChart: React.FC<GenresBarChartProps> = ({ data }) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
+    let timeoutId: number;
+    const check = () => {
+      clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(
+        () => setIsMobile(window.innerWidth < 768),
+        100,
+      );
+    };
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
