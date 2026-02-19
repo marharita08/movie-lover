@@ -67,6 +67,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
         {isUploading
           ? onCancel && (
               <Button
+                type="button"
                 variant="ghost"
                 size="icon"
                 onClick={onCancel}
@@ -77,6 +78,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
             )
           : onDelete && (
               <Button
+                type="button"
                 variant="ghost"
                 size="icon"
                 onClick={onDelete}

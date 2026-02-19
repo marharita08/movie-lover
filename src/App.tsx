@@ -7,6 +7,7 @@ import { AuthGuard } from "./guards";
 import { CreateList } from "./pages/create-list/CreateList";
 import { Dashboard } from "./pages/dashboard";
 import { EmailVerification } from "./pages/email-verification";
+import { List } from "./pages/list";
 import { Lists } from "./pages/lists";
 import { Login } from "./pages/login";
 import { MovieDetails } from "./pages/movie-details";
@@ -61,6 +62,14 @@ function App() {
               element={
                 <AuthGuard>
                   <CreateList />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path={RouterKey.LIST}
+              element={
+                <AuthGuard>
+                  <List />
                 </AuthGuard>
               }
             />
