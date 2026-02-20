@@ -1,12 +1,13 @@
 import { QueryKey } from "@/const";
-import type { PersonRole } from "@/const/person-role";
 import { listService } from "@/services/list.service";
+import type { GetPersonStatsQuery } from "@/types/get-person-stats-query.type";
 
-import { useAppQuery } from "../useAppQuery";
+import { useAppInfiniteQuery } from "../useAppInfiniteQuery";
 
-export const usePersonStats = (listId: string, role: PersonRole) => {
-  return useAppQuery({
-    queryKey: [QueryKey.PERSON_STATS, listId, role],
-    queryFn: () => listService.getPersonStats(listId, role),
+export const usePersonStats = (listId: string, query: GetPersonStatsQuery) => {
+  return useAppInfiniteQuery({
+    queryKey: [QueryKey.PERSON_STATS, listId, query],
+    queryFn: ({ pageParam = 1 }) =>
+      listService.getPersonStats(listId, { ...query, page: pageParam }),
   });
 };

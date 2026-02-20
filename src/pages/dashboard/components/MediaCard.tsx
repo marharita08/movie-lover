@@ -1,24 +1,27 @@
 import { generatePath, Link } from "react-router-dom";
 
-import { RouterKey } from "@/const";
-import type { MovieDto } from "@/types";
+import { MediaType, RouterKey, TMDBImageUrl } from "@/const";
+import type { ShortMedia } from "@/types";
 
-const imageBaseUrl = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
-
-interface MovieCardProps {
-  movie: MovieDto;
+interface MediaCardProps {
+  media: ShortMedia;
 }
 
-export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
+export const MediaCard: React.FC<MediaCardProps> = ({ media }) => {
   return (
     <Link
-      to={generatePath(RouterKey.MOVIE_DETAILS, { id: movie.id.toString() })}
+      to={generatePath(
+        media.type === MediaType.MOVIE
+          ? RouterKey.MOVIE_DETAILS
+          : RouterKey.TV_SHOW_DETAILS,
+        { id: media.id.toString() },
+      )}
     >
       <div className="bg-card flex shrink-0 flex-col overflow-hidden rounded-md shadow-md">
-        {movie.posterPath ? (
+        {media.posterPath ? (
           <img
-            src={`${imageBaseUrl}${movie.posterPath}`}
-            alt={movie.title}
+            src={`${TMDBImageUrl.ORIGINAL}${media.posterPath}`}
+            alt={media.title}
             loading="lazy"
           />
         ) : (
@@ -27,7 +30,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
           </div>
         )}
         <div className="flex-1 truncate p-2 text-sm font-medium">
-          {movie.title}
+          {media.title}
         </div>
       </div>
     </Link>

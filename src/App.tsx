@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { Toaster } from "./components";
+import { AuthenticatedLayout, Toaster } from "./components";
 import { RouterKey } from "./const";
 import { AuthGuard } from "./guards";
 import { CreateList } from "./pages/create-list/CreateList";
@@ -12,11 +12,67 @@ import { Lists } from "./pages/lists";
 import { Login } from "./pages/login";
 import { MovieDetails } from "./pages/movie-details";
 import { NotFound } from "./pages/not-found";
+import { PersonsAnalitics } from "./pages/persons-analitics/PersonsAnalitics";
 import { ResetPassword } from "./pages/reset-password";
 import { Signup } from "./pages/signup";
+import { TVShowDetails } from "./pages/tv-show-details";
 import { UserProfile } from "./pages/user-profile";
 
 const queryClient = new QueryClient();
+
+const privateRoutes = [
+  {
+    path: RouterKey.DASHBOARD,
+    element: <Dashboard />,
+  },
+  {
+    path: RouterKey.LISTS,
+    element: <Lists />,
+  },
+  {
+    path: RouterKey.MOVIE_DETAILS,
+    element: <MovieDetails />,
+  },
+  {
+    path: RouterKey.USER_PROFILE,
+    element: <UserProfile />,
+  },
+  {
+    path: RouterKey.CREATE_LIST,
+    element: <CreateList />,
+  },
+  {
+    path: RouterKey.LIST,
+    element: <List />,
+  },
+  {
+    path: RouterKey.PERSONS_ANALYTICS,
+    element: <PersonsAnalitics />,
+  },
+  {
+    path: RouterKey.TV_SHOW_DETAILS,
+    element: <TVShowDetails />,
+  },
+];
+
+const publicRoutes = [
+  {
+    path: RouterKey.RESET_PASSWORD,
+    element: <ResetPassword />,
+  },
+  {
+    path: RouterKey.LOGIN,
+    element: <Login />,
+  },
+  {
+    path: RouterKey.SIGNUP,
+    element: <Signup />,
+  },
+  {
+    path: RouterKey.EMAIL_VERIFICATION,
+    element: <EmailVerification />,
+  },
+];
 
 function App() {
   return (
@@ -25,64 +81,24 @@ function App() {
         <Toaster />
         <BrowserRouter>
           <Routes>
-            <Route
-              path={RouterKey.DASHBOARD}
-              element={
-                <AuthGuard>
-                  <Dashboard />
-                </AuthGuard>
-              }
-            />
-            <Route
-              path={RouterKey.LISTS}
-              element={
-                <AuthGuard>
-                  <Lists />
-                </AuthGuard>
-              }
-            />
-            <Route
-              path={RouterKey.MOVIE_DETAILS}
-              element={
-                <AuthGuard>
-                  <MovieDetails />
-                </AuthGuard>
-              }
-            />
-            <Route
-              path={RouterKey.USER_PROFILE}
-              element={
-                <AuthGuard>
-                  <UserProfile />
-                </AuthGuard>
-              }
-            />
-            <Route
-              path={RouterKey.CREATE_LIST}
-              element={
-                <AuthGuard>
-                  <CreateList />
-                </AuthGuard>
-              }
-            />
-            <Route
-              path={RouterKey.LIST}
-              element={
-                <AuthGuard>
-                  <List />
-                </AuthGuard>
-              }
-            />
-            <Route
-              path={RouterKey.RESET_PASSWORD}
-              element={<ResetPassword />}
-            />
-            <Route path={RouterKey.LOGIN} element={<Login />} />
-            <Route path={RouterKey.SIGNUP} element={<Signup />} />
-            <Route
-              path={RouterKey.EMAIL_VERIFICATION}
-              element={<EmailVerification />}
-            />
+            {privateRoutes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={
+                  <AuthGuard>
+                    <AuthenticatedLayout>{route.element}</AuthenticatedLayout>
+                  </AuthGuard>
+                }
+              />
+            ))}
+            {publicRoutes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element}
+              />
+            ))}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
