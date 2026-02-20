@@ -7,11 +7,11 @@ import { usePersonStats } from "@/hooks";
 
 import { Person } from "./Person";
 
-interface PersonsAnaliticsProps {
+interface PersonsAnalyticsProps {
   role: PersonRole;
 }
 
-export const PersonsAnalitics: React.FC<PersonsAnaliticsProps> = ({ role }) => {
+export const PersonsAnalytics: React.FC<PersonsAnalyticsProps> = ({ role }) => {
   const { id } = useParams<{ id: string }>();
 
   const { data, isLoading, isError, error, refetch } = usePersonStats(id!, {
@@ -52,7 +52,7 @@ export const PersonsAnalitics: React.FC<PersonsAnaliticsProps> = ({ role }) => {
           <div>
             <Button asChild variant={"link"}>
               <Link
-                to={generatePath(RouterKey.PERSONS_ANALITICS, {
+                to={generatePath(RouterKey.PERSONS_ANALYTICS, {
                   id: id || null,
                   role,
                 })}

@@ -10,5 +10,5 @@ export const RouterKey = {
   TV_SHOW_DETAILS: "/tv/:id",
   CREATE_LIST: "/create-list",
   LIST: "/list/:id",
-  PERSONS_ANALITICS: "/list/:id/:role",
+  PERSONS_ANALYTICS: "/list/:id/:role",
 } as const;

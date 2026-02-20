@@ -5,7 +5,7 @@ import { useGenreStats } from "@/hooks";
 
 import { GenresBarChart } from "./GenresBarChart";
 
-export const GenresAnalitics = () => {
+export const GenresAnalytics = () => {
   const { id } = useParams<{ id: string }>();
 
   const {

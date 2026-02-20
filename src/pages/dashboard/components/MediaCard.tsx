@@ -8,7 +8,6 @@ interface MediaCardProps {
 }
 
 export const MediaCard: React.FC<MediaCardProps> = ({ media }) => {
-  console.log(media);
   return (
     <Link
       to={generatePath(

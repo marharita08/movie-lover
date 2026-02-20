@@ -6,7 +6,7 @@ import { useAppInfiniteQuery } from "../useAppInfiniteQuery";
 
 export const useLists = (query: GetListsQuery) => {
   return useAppInfiniteQuery({
-    queryKey: [QueryKey.LISTS, query],
+    queryKey: [QueryKey.LISTS, JSON.stringify(query)],
     queryFn: ({ pageParam = 1 }) =>
       listService.getAll({ ...query, page: pageParam }),
   });

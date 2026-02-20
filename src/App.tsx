@@ -46,7 +46,7 @@ const privateRoutes = [
     element: <List />,
   },
   {
-    path: RouterKey.PERSONS_ANALITICS,
+    path: RouterKey.PERSONS_ANALYTICS,
     element: <PersonsAnalitics />,
   },
   {

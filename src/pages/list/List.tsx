@@ -1,8 +1,8 @@
 import { PersonRole } from "@/const/person-role";
 
-import { GenresAnalitics } from "./components/GenresAnalitics";
+import { GenresAnalytics } from "./components/GenresAnalytics";
 import { MediasFromList } from "./components/MediasFromList";
-import { PersonsAnalitics } from "./components/PersonsAnalitics";
+import { PersonsAnalytics } from "./components/PersonsAnalytics";
 
 export const List = () => {
   return (
@@ -14,9 +14,9 @@ export const List = () => {
       <div>
         <h2 className="px-2 text-2xl font-bold md:px-0">Analitics</h2>
         <div className="flex flex-col gap-8 px-0 py-2">
-          <GenresAnalitics />
-          <PersonsAnalitics role={PersonRole.ACTOR} />
-          <PersonsAnalitics role={PersonRole.DIRECTOR} />
+          <GenresAnalytics />
+          <PersonsAnalytics role={PersonRole.ACTOR} />
+          <PersonsAnalytics role={PersonRole.DIRECTOR} />
         </div>
       </div>
     </div>

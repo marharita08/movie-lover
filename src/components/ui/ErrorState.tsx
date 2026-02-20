@@ -38,7 +38,9 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
       </div>
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">{title}</h3>
-        <p className="text-muted-foreground text-sm">{descriptionText}</p>
+        <p className="text-muted-foreground text-sm" role="alert">
+          {descriptionText}
+        </p>
       </div>
       {onRetry && (
         <Button onClick={onRetry} variant="outline" className="mt-2">
