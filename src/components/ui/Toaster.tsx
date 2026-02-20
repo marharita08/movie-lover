@@ -43,7 +43,8 @@ export function Toaster() {
         variant,
         ...props
       }) {
-        const { icon: Icon, className } = varianToDetails[variant || "default"] || varianToDetails["default"];
+        const { icon: Icon, className } =
+          varianToDetails[variant || "default"] || varianToDetails["default"];
 
         return (
           <Toast key={id} variant={variant} {...props}>

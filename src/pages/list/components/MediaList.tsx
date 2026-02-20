@@ -6,37 +6,41 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { EmptyState, ErrorState, Loading } from "@/components";
-import { useDiscoverMovies } from "@/hooks/queries/useDiscoverMovies";
-import type { DiscoverMoviesQuery } from "@/types";
+import type { ShortMedia } from "@/types";
 
-import { MovieCard } from "./MovieCard";
+import { MediaCard } from "../../dashboard/components/MediaCard";
 
-interface MovieListProps {
-  query: DiscoverMoviesQuery;
+interface MediaListProps {
+  medias: ShortMedia[];
+  isLoading: boolean;
+  isError: boolean;
+  error: Error | null;
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  refetch: () => void;
 }
 
-export const MovieList: React.FC<MovieListProps> = ({ query }) => {
-  const {
-    data,
-    isLoading,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    refetch,
-  } = useDiscoverMovies(query);
-  const movies = data?.pages.flatMap((page) => page.results) ?? [];
-
+export const MediaList: React.FC<MediaListProps> = ({
+  medias,
+  isLoading,
+  isError,
+  error,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  refetch,
+}) => {
   const prevRef = useRef<HTMLButtonElement | null>(null);
   const nextRef = useRef<HTMLButtonElement | null>(null);
 
-  const isEmpty = !isLoading && !isError && !movies?.length;
+  const isEmpty = !isLoading && !isError && !medias?.length;
 
   if (isEmpty) {
     return (
       <EmptyState
-        title="No movies found"
-        description="We couldn't find any movies matching your criteria. Try exploring different years or genres."
+        title="No medias found"
+        description="We couldn't find any medias matching your criteria. Try exploring different years or genres."
         icon="film"
       />
     );
@@ -45,8 +49,9 @@ export const MovieList: React.FC<MovieListProps> = ({ query }) => {
   if (isError) {
     return (
       <ErrorState
-        title="Failed to load movies"
-        description="We're having trouble fetching movies right now. Please try again."
+        title="Failed to load medias"
+        description="We're having trouble fetching medias right now. Please try again."
+        error={error}
         onRetry={() => refetch()}
         type="server"
       />
@@ -110,9 +115,9 @@ export const MovieList: React.FC<MovieListProps> = ({ query }) => {
           }
         }}
       >
-        {movies.map((movie) => (
-          <SwiperSlide key={movie.id}>
-            <MovieCard movie={movie} />
+        {medias.map((media) => (
+          <SwiperSlide key={media.id}>
+            <MediaCard media={media} />
           </SwiperSlide>
         ))}
 

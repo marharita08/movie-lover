@@ -7,4 +7,6 @@ export const QueryKey = {
   ANALYTICS: "ANALYTICS",
   GENRE_STATS: "GENRE_STATS",
   PERSON_STATS: "PERSON_STATS",
+  MEDIA_ITEMS: "MEDIA_ITEMS",
+  TV_SHOW: "TV_SHOW",
 } as const;

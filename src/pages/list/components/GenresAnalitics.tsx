@@ -8,7 +8,13 @@ import { GenresBarChart } from "./GenresBarChart";
 export const GenresAnalitics = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data: analitics, isLoading, isError, refetch } = useGenreStats(id!);
+  const {
+    data: analitics,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useGenreStats(id!);
 
   const genres = Object.entries(analitics || {}).map(([key, value]) => ({
     genre: key,
@@ -26,7 +32,7 @@ export const GenresAnalitics = () => {
       {isError && (
         <ErrorState
           title="Failed to load genres analitics"
-          description="Please try again later"
+          error={error}
           onRetry={refetch}
         />
       )}
