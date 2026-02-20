@@ -6,7 +6,7 @@ import { useAppInfiniteQuery } from "../useAppInfiniteQuery";
 
 export const useDiscoverMovies = (query: DiscoverMoviesQuery) => {
   return useAppInfiniteQuery({
-    queryKey: [QueryKey.DISCOVER_MOVIES, JSON.stringify(query)],
+    queryKey: [QueryKey.DISCOVER_MOVIES, query],
     queryFn: ({ pageParam = 1 }) =>
       tmdbService.getDiscoverMovies({ ...query, page: pageParam }),
   });

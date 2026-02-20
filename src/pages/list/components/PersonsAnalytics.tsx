@@ -53,7 +53,7 @@ export const PersonsAnalytics: React.FC<PersonsAnalyticsProps> = ({ role }) => {
             <Button asChild variant={"link"}>
               <Link
                 to={generatePath(RouterKey.PERSONS_ANALYTICS, {
-                  id: id || null,
+                  id: id!,
                   role,
                 })}
               >
