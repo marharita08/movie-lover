@@ -1,6 +1,6 @@
 import { RouterKey } from "@/const";
 import { useAccessTokenStore } from "@/store/access-token.store";
-import { HttpException, type HttpExceptionBody } from "@/types/exception.type";
+import { HttpException, type HttpExceptionBody } from "@/types";
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 

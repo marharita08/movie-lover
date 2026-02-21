@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 
 import { MutationKey, QueryKey } from "@/const";
-import { authService } from "@/services/auth.service";
+import { authService } from "@/services";
 
 import { useAppMutation } from "../useAppMutation";
 import { toast } from "../useToast";

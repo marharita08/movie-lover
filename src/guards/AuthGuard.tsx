@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
-import { LoadingOverlay } from "@/components/ui";
+import { LoadingOverlay } from "@/components";
 import { OtpPurpose, RouterKey, StorageKey } from "@/const";
 import { useCurrentUser, useSendOtp } from "@/hooks";
 

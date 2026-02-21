@@ -1,8 +1,8 @@
 import "swiper/css";
 
+import { MediaList } from "@/components";
 import { MediaType } from "@/const";
-import { useDiscoverMovies } from "@/hooks/queries/useDiscoverMovies";
-import { MediaList } from "@/pages/list/components/MediaList";
+import { useDiscoverMovies } from "@/hooks";
 import type { DiscoverMoviesQuery } from "@/types";
 
 interface DiscoverMoviesProps {

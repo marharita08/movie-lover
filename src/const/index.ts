@@ -4,6 +4,7 @@ export * from "./media-type";
 export * from "./mutation-key";
 export * from "./otp-purpose";
 export * from "./password-regex";
+export * from "./person-role";
 export * from "./query-key";
 export * from "./router-key";
 export * from "./storage-key";

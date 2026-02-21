@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Button, EmptyState, ErrorState, Input, Loading } from "@/components";
 import { RouterKey } from "@/const";
 import { useDebounce } from "@/hooks";
-import { useLists } from "@/hooks/queries/useLists";
+import { useLists } from "@/hooks";
 
 import { ListCard } from "./components";
 

@@ -9,7 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components";
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils";
 
 const DATE_FORMAT = "MMM d";
 

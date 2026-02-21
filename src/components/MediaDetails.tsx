@@ -130,7 +130,7 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
               {"firstAirDate" in media && media.firstAirDate && (
                 <div>
                   <span className="text-muted-foreground block text-sm font-medium">
-                    First Air Date
+                    First Episode Release Date
                   </span>
                   <span>{formatDate(media.firstAirDate)}</span>
                 </div>
@@ -138,7 +138,7 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
               {"lastAirDate" in media && media.lastAirDate && (
                 <div>
                   <span className="text-muted-foreground block text-sm font-medium">
-                    Last Air Date
+                    Last Episode Release Date
                   </span>
                   <span>{formatDate(media.lastAirDate)}</span>
                 </div>

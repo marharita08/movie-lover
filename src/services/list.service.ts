@@ -1,12 +1,17 @@
-import type { CreateListValidationSchemaType } from "@/pages/create-list/validation";
-import type { ShortMovie } from "@/types";
-import type { GenreStats } from "@/types/genre-stats.type";
-import type { GetListsQuery } from "@/types/get-lists-query.type";
-import type { GetMediaItemsQuery } from "@/types/get-media-items-query.type";
-import type { GetPersonStatsQuery } from "@/types/get-person-stats-query.type";
-import type { ListResponse } from "@/types/list-response.type";
-import type { PaginatedResponse } from "@/types/paginated-response.type";
-import type { PersonStatsItem } from "@/types/person-stats.type";
+import type { CreateListValidationSchemaType } from "@/pages";
+import type {
+  GenreStats,
+  GetAmountStatsResponse,
+  GetListsQuery,
+  GetMediaItemsQuery,
+  GetMediaTypeStatsResponse,
+  GetPersonStatsQuery,
+  GetRatingStatsQuery,
+  ListResponse,
+  PaginatedResponse,
+  PersonStatsItem,
+  ShortMedia,
+} from "@/types";
 
 import { httpService } from "./http.service";
 
@@ -44,9 +49,42 @@ class ListService {
   }
 
   async getMediaItems(listId: string, query: GetMediaItemsQuery) {
-    return await httpService.get<PaginatedResponse<ShortMovie>>(
+    return await httpService.get<PaginatedResponse<ShortMedia>>(
       `/list/${listId}/media`,
       query,
+    );
+  }
+
+  async getMediaTypeStats(listId: string) {
+    return await httpService.get<GetMediaTypeStatsResponse>(
+      `/list/${listId}/media-type/stats`,
+    );
+  }
+
+  async getGenres(listId: string) {
+    return await httpService.get<string[]>(`/list/${listId}/genres`);
+  }
+
+  async getYears(listId: string) {
+    return await httpService.get<number[]>(`/list/${listId}/years`);
+  }
+
+  async getRatingStats(listId: string, query: GetRatingStatsQuery) {
+    return await httpService.get<Record<string, number>>(
+      `/list/${listId}/rating/stats`,
+      query,
+    );
+  }
+
+  async getYearsStats(listId: string) {
+    return await httpService.get<Record<string, number>>(
+      `/list/${listId}/years/stats`,
+    );
+  }
+
+  async getAmountStats(listId: string) {
+    return await httpService.get<GetAmountStatsResponse>(
+      `/list/${listId}/amount/stats`,
     );
   }
 }

@@ -1,4 +1,4 @@
-import type { FileResponse } from "@/types/file-response.type";
+import type { FileResponse } from "@/types";
 
 import { httpService, type QueryParams } from "./http.service";
 

@@ -1,6 +1,6 @@
 import { QueryKey } from "@/const";
-import { listService } from "@/services/list.service";
-import type { GetListsQuery } from "@/types/get-lists-query.type";
+import { listService } from "@/services";
+import type { GetListsQuery } from "@/types";
 
 import { useAppInfiniteQuery } from "../useAppInfiniteQuery";
 

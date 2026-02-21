@@ -2,10 +2,10 @@ import { generatePath, Link, useParams } from "react-router-dom";
 
 import { Button, EmptyState, ErrorState, Loading } from "@/components";
 import { RouterKey } from "@/const";
-import { PersonRole, personRoleMap } from "@/const/person-role";
+import { PersonRole, personRoleMap } from "@/const";
 import { usePersonStats } from "@/hooks";
 
-import { Person } from "./Person";
+import { Person } from "../../../components/Person";
 
 interface PersonsAnalyticsProps {
   role: PersonRole;

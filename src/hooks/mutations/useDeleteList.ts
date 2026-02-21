@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 
 import { MutationKey, QueryKey } from "@/const";
-import { listService } from "@/services/list.service";
+import { listService } from "@/services";
 
 import { useAppMutation } from "../useAppMutation";
 

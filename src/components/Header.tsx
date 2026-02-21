@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { RouterKey } from "@/const";
 import { useCurrentUser, useLogout } from "@/hooks";
-import { getFallback } from "@/utils/get-fallback";
+import { getFallback } from "@/utils";
 
 import { Avatar, AvatarFallback, Loading } from "./ui";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "./ui";

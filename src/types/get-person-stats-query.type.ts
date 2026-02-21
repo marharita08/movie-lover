@@ -1,4 +1,4 @@
-import type { PersonRole } from "@/const/person-role";
+import type { PersonRole } from "@/const";
 
 export type GetPersonStatsQuery = {
   role: PersonRole;

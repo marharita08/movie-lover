@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import { MutationKey, RouterKey } from "@/const";
-import { listService } from "@/services/list.service";
+import { listService } from "@/services";
 
 import { useAppMutation } from "../useAppMutation";
 

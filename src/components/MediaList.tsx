@@ -8,7 +8,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EmptyState, ErrorState, Loading } from "@/components";
 import type { ShortMedia } from "@/types";
 
-import { MediaCard } from "../../dashboard/components/MediaCard";
+import { MediaCard } from "./MediaCard";
 
 interface MediaListProps {
   medias: ShortMedia[];

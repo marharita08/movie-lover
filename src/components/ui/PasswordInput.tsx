@@ -1,7 +1,7 @@
 import { Eye, EyeOff, LockIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 
-import { cn } from "@/utils/cn.ts";
+import { cn } from "@/utils";
 
 import { Input, type InputProps } from "./Input";
 import { Label } from "./Label";

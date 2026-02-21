@@ -1,7 +1,7 @@
 import { Check, ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils";
 
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";
 import { Label } from "./Label";
