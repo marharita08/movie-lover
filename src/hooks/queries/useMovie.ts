@@ -1,6 +1,6 @@
 import { QueryKey } from "@/const";
-import { useAppQuery } from "@/hooks/useAppQuery";
-import { tmdbService } from "@/services/tmdb.service";
+import { useAppQuery } from "@/hooks";
+import { tmdbService } from "@/services";
 import type { MovieDetailsDto } from "@/types";
 
 export const useMovie = (id?: string) => {

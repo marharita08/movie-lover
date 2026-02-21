@@ -7,9 +7,9 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@/components/ui";
+} from "@/components";
 import { useToast } from "@/hooks";
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils";
 
 const varianToDetails = {
   default: {

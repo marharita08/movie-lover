@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import { MutationKey, RouterKey } from "@/const";
-import { authService } from "@/services/auth.service";
+import { authService } from "@/services";
 import { useAccessTokenStore } from "@/store/access-token.store";
 
 import { useAppMutation } from "../useAppMutation";

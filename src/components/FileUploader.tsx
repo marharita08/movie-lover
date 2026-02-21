@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
 import { toast } from "@/hooks";
-import { useDeleteFile } from "@/hooks/mutations/useDeleteFile";
-import { useFileData } from "@/hooks/queries/useFileData";
-import { fileService } from "@/services/file.service";
+import { useDeleteFile } from "@/hooks";
+import { useFileData } from "@/hooks";
+import { fileService } from "@/services";
 
 import { FileInput } from "./ui/FileInput";
 import { FilePreview } from "./ui/FilePreview";

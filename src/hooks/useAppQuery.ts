@@ -6,7 +6,7 @@ import {
 import { useEffect } from "react";
 
 import { toast } from "@/hooks";
-import { HttpException } from "@/types/exception.type";
+import { HttpException } from "@/types";
 
 type AppQueryProps<
   TQueryFnData = unknown,

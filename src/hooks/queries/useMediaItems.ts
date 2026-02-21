@@ -1,5 +1,5 @@
 import { QueryKey } from "@/const";
-import { listService } from "@/services/list.service";
+import { listService } from "@/services";
 
 import { useAppInfiniteQuery } from "../useAppInfiniteQuery";
 

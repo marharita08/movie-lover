@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils";
 
 const loadingVariants = cva(
   "animate-spin rounded-full border-2 border-solid border-current border-r-transparent",

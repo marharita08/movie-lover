@@ -1,5 +1,5 @@
 import { MutationKey } from "@/const";
-import { fileService } from "@/services/file.service";
+import { fileService } from "@/services";
 
 import { useAppMutation } from "../useAppMutation";
 

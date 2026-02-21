@@ -1,7 +1,7 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils";
 
 import { Button } from "../ui/Button";
 import { Input } from "./Input";

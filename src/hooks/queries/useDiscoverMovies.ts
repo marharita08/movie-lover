@@ -1,5 +1,5 @@
 import { QueryKey } from "@/const";
-import { tmdbService } from "@/services/tmdb.service";
+import { tmdbService } from "@/services";
 import type { DiscoverMoviesQuery } from "@/types";
 
 import { useAppInfiniteQuery } from "../useAppInfiniteQuery";

@@ -1,9 +1,8 @@
 import { useParams } from "react-router-dom";
 
+import { MediaDetails } from "@/components";
 import { MediaType } from "@/const";
-import { useTVShow } from "@/hooks/queries/useTVShow";
-
-import { MediaDetails } from "../movie-details/components/MediaDetails";
+import { useTVShow } from "@/hooks";
 
 export const TVShowDetails = () => {
   const { id } = useParams<{ id: string }>();

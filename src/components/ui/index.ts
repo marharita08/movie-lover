@@ -15,6 +15,8 @@ export * from "./Dialog";
 export * from "./DropdownMenu";
 export * from "./EmptyState";
 export * from "./ErrorState";
+export * from "./FileInput";
+export * from "./FilePreview";
 export * from "./Input";
 export * from "./InputError";
 export * from "./Label";

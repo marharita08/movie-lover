@@ -1,15 +1,13 @@
-import type { EmailVerificationValidationSchemaType } from "@/pages/email-verification";
-import type { LoginValidationSchemaType } from "@/pages/login";
-import type {
-  EmailStepValidationSchemaType,
-  NewPasswordStepValidationSchemaType,
-  OtpStepValidationSchemaType,
-} from "@/pages/reset-password";
-import type { SignUpValidationSchemaType } from "@/pages/signup";
 import type {
   ChangePasswordValidationSchemaType,
+  EmailStepValidationSchemaType,
+  EmailVerificationValidationSchemaType,
+  LoginValidationSchemaType,
+  NewPasswordStepValidationSchemaType,
+  OtpStepValidationSchemaType,
+  SignUpValidationSchemaType,
   UpdateUserValidationSchemaType,
-} from "@/pages/user-profile";
+} from "@/pages";
 import type {
   AuthResponse,
   MessageResponse,

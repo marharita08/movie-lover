@@ -1,4 +1,4 @@
-import { DiscoverMovies } from "./components/DiscoverMovies";
+import { DiscoverMovies } from "./components";
 
 export const Dashboard = () => {
   const currentYear = new Date().getFullYear();

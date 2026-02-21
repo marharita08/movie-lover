@@ -3,11 +3,9 @@ import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Button, EmptyState, ErrorState, Loading } from "@/components";
-import { PersonRole, personRoleMap } from "@/const/person-role";
+import { Button, EmptyState, ErrorState, Loading, Person } from "@/components";
+import { PersonRole, personRoleMap } from "@/const";
 import { usePersonStats } from "@/hooks";
-
-import { Person } from "../list/components/Person";
 
 export const PersonsAnalitics = () => {
   const { id, role } = useParams<{ id: string; role: PersonRole }>();

@@ -1,7 +1,7 @@
 import { FileCheckIcon, FileUpIcon, Trash2Icon, XIcon } from "lucide-react";
 import { useMemo } from "react";
 
-import { useFileData } from "@/hooks/queries/useFileData";
+import { useFileData } from "@/hooks";
 import { formatFileSize } from "@/utils";
 
 import { Button } from "./Button";

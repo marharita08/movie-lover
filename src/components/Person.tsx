@@ -2,8 +2,8 @@ import { useMemo } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components";
 import { ImdbUrl, TMDBImageUrl } from "@/const";
-import type { PersonStatsItem } from "@/types/person-stats.type";
-import { getFallback } from "@/utils/get-fallback";
+import type { PersonStatsItem } from "@/types";
+import { getFallback } from "@/utils";
 
 interface PersonProps {
   person: PersonStatsItem;
@@ -13,7 +13,7 @@ export const Person: React.FC<PersonProps> = ({ person }) => {
   const fallback = useMemo(() => getFallback(person.name), [person.name]);
 
   return (
-    <div key={person.id} className="flex items-center gap-2">
+    <div className="flex items-center gap-2">
       {
         <Avatar className="h-15 w-15">
           <AvatarImage src={`${TMDBImageUrl.W92}${person.profilePath}`} />

@@ -1,5 +1,5 @@
 import { QueryKey } from "@/const";
-import { authService } from "@/services/auth.service";
+import { authService } from "@/services";
 
 import { useAppQuery } from "../useAppQuery";
 

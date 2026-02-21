@@ -6,6 +6,15 @@ import { cn } from "@/utils";
 
 import { Button, Sheet, SheetContent, SheetTrigger } from "./ui";
 
+const isActive = (item: (typeof navItems)[number], pathname: string) => {
+  return item.activePath.some((path) => {
+    if (path.includes(":")) {
+      return pathname.startsWith(path.split(":")[0]);
+    }
+    return path === pathname;
+  });
+};
+
 const navItems = [
   {
     to: RouterKey.DASHBOARD,
@@ -17,7 +26,12 @@ const navItems = [
     to: RouterKey.LISTS,
     icon: ListIcon,
     label: "My Lists",
-    activePath: [RouterKey.LISTS, RouterKey.CREATE_LIST] as string[],
+    activePath: [
+      RouterKey.LISTS,
+      RouterKey.CREATE_LIST,
+      RouterKey.LIST,
+      RouterKey.PERSONS_ANALYTICS,
+    ] as string[],
   },
 ];
 
@@ -41,9 +55,7 @@ export const Sidebar = () => {
                 variant="nav"
                 size="nav"
                 asChild
-                className={
-                  item.activePath.includes(pathname) ? "bg-primary" : ""
-                }
+                className={isActive(item, pathname) ? "bg-primary" : ""}
                 key={item.label}
               >
                 <Link to={item.to}>
@@ -70,7 +82,7 @@ export const Sidebar = () => {
                   asChild
                   className={cn(
                     "justify-start",
-                    item.activePath.includes(pathname) ? "bg-accent" : "",
+                    isActive(item, pathname) ? "bg-accent" : "",
                   )}
                   key={item.label}
                 >

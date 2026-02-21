@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -9,6 +8,8 @@ import {
   YAxis,
 } from "recharts";
 import type { TickItem } from "recharts/types/util/types";
+
+import { useIsMobile } from "@/hooks";
 
 interface GenresBarChartProps {
   data: { genre: string; amount: number }[];
@@ -39,26 +40,11 @@ const CustomTick: React.FC<CustomTickProps> = (props) => {
 };
 
 export const GenresBarChart: React.FC<GenresBarChartProps> = ({ data }) => {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    let timeoutId: number;
-    const check = () => {
-      clearTimeout(timeoutId);
-      timeoutId = window.setTimeout(
-        () => setIsMobile(window.innerWidth < 768),
-        100,
-      );
-    };
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
+  const isMobile = useIsMobile();
 
   return (
-    <div className="w-full pl-1 md:w-[700px] md:pl-0">
-      <h3 className="text-center font-semibold">Amount of movies by genre</h3>
-      <ResponsiveContainer width="100%" height={350}>
+    <div className="w-full pl-1 md:w-[700px] md:pl-0 xl:w-full">
+      <ResponsiveContainer width="100%" height={400}>
         <BarChart
           data={data}
           margin={{
@@ -91,7 +77,7 @@ export const GenresBarChart: React.FC<GenresBarChartProps> = ({ data }) => {
               isMobile
                 ? undefined
                 : {
-                    value: "Movies amount",
+                    value: "Amount",
                     position: "insideLeft",
                     style: { textAnchor: "middle" },
                     angle: -90,
@@ -101,7 +87,7 @@ export const GenresBarChart: React.FC<GenresBarChartProps> = ({ data }) => {
             }
           />
           <Tooltip />
-          <Bar dataKey="amount" fill="#8884d8" />
+          <Bar dataKey="amount" fill="#8884d8" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

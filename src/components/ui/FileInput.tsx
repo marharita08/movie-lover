@@ -1,8 +1,8 @@
 import { PaperclipIcon } from "lucide-react";
 import { useRef, useState } from "react";
 
-import { toast } from "@/hooks/useToast";
-import { cn } from "@/utils/cn";
+import { toast } from "@/hooks";
+import { cn } from "@/utils";
 
 interface FileInputProps {
   onChange: (file: File) => void;

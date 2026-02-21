@@ -1,6 +1,6 @@
 import { CircleXIcon } from "lucide-react";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils";
 
 interface InputErrorProps {
   error?: string;
