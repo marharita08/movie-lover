@@ -13,9 +13,9 @@ import type {
   ShortMedia,
 } from "@/types";
 
-import { httpService } from "./http.service";
+import { httpService } from "../http/http.service";
 
-class ListService {
+export class ListService {
   async create(data: CreateListValidationSchemaType): Promise<ListResponse> {
     return await httpService.post<ListResponse, CreateListValidationSchemaType>(
       "/list",

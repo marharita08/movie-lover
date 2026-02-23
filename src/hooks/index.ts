@@ -3,7 +3,7 @@ export * from "./queries";
 export * from "./useAppInfiniteQuery";
 export * from "./useAppMutation";
 export * from "./useAppQuery";
-export * from "./useDebounce";
+export * from "./use-debounce/useDebounce";
 export * from "./useIsMobile";
 export * from "./useOtpCountdown";
 export * from "./useToast";

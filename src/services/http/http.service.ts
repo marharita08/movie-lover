@@ -20,7 +20,7 @@ interface RefreshResponse {
   accessToken: string;
 }
 
-class HttpService {
+export class HttpService {
   private readonly baseUrl: string;
 
   constructor(baseUrl: string) {

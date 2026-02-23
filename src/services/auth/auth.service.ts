@@ -16,9 +16,9 @@ import type {
   User,
 } from "@/types";
 
-import { httpService } from "./http.service";
+import { httpService } from "../http/http.service";
 
-class AuthService {
+export class AuthService {
   async login(data: LoginValidationSchemaType): Promise<AuthResponse> {
     return httpService.post<AuthResponse, LoginValidationSchemaType>(
       "/auth/login",

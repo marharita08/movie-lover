@@ -1,8 +1,8 @@
 import type { FileResponse } from "@/types";
 
-import { httpService, type QueryParams } from "./http.service";
+import { httpService, type QueryParams } from "../http/http.service";
 
-class FileService {
+export class FileService {
   async upload(
     file: File,
     params?: QueryParams,

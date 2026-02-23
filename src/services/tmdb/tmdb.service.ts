@@ -5,9 +5,9 @@ import type {
   TVShowResponse,
 } from "@/types";
 
-import { httpService } from "./http.service";
+import { httpService } from "../http/http.service";
 
-class TMDBService {
+export class TMDBService {
   async getDiscoverMovies(query: DiscoverMoviesQuery) {
     return httpService.get<MoviesResponseDto>("/tmdb/discover/movie", query);
   }
