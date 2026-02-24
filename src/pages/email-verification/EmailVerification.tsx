@@ -1,11 +1,15 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { Button, Input, InputError, Sphere } from "@/components";
 import { OtpPurpose, RouterKey, StorageKey } from "@/const";
-import { useOtpCountdown, useSendOtp, useVerifyEmail } from "@/hooks";
+import {
+  useAppForm,
+  useOtpCountdown,
+  useSendOtp,
+  useVerifyEmail,
+} from "@/hooks";
 
 import {
   EmailVerificationValidationSchema,
@@ -18,8 +22,8 @@ export const EmailVerification = () => {
 
   const { secondsLeft, isFinished, reset } = useOtpCountdown();
 
-  const form = useForm<EmailVerificationValidationSchemaType>({
-    resolver: zodResolver(EmailVerificationValidationSchema),
+  const form = useAppForm<EmailVerificationValidationSchemaType>({
+    schema: EmailVerificationValidationSchema,
     defaultValues: {
       email,
       code: "",
@@ -53,7 +57,10 @@ export const EmailVerification = () => {
     );
   };
 
-  const codeWatch = form.watch("code");
+  const codeWatch = useWatch({
+    control: form.control,
+    name: "code",
+  });
 
   return (
     <div className="bg-primary-900 relative flex h-screen items-center justify-center overflow-hidden">
@@ -64,6 +71,7 @@ export const EmailVerification = () => {
       <form
         className="bg-card w-full max-w-[500px] rounded-xl p-8 shadow-md"
         onSubmit={form.handleSubmit(handleSubmit)}
+        aria-label="email-verification-form"
       >
         <h1 className="mb-6 text-center text-2xl font-bold">
           Email Verification

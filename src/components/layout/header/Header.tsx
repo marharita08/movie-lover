@@ -1,0 +1,55 @@
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { RouterKey } from "@/const";
+import { useCurrentUser, useLogout } from "@/hooks";
+import { getFallback } from "@/utils";
+
+import {
+  Avatar,
+  AvatarFallback,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  Loading,
+} from "../../ui";
+
+export const Header = () => {
+  const { data: user, isLoading } = useCurrentUser();
+  const logoutMutation = useLogout();
+  const navigate = useNavigate();
+
+  const userName = useMemo(() => getFallback(user?.name), [user?.name]);
+
+  const handleLogout = () => {
+    logoutMutation.mutate();
+  };
+
+  const handleProfile = () => {
+    navigate(RouterKey.USER_PROFILE);
+  };
+
+  return (
+    <header className="bg-background fixed top-0 right-0 z-20 flex w-full items-center justify-end py-6 pr-4 pl-14 md:justify-between">
+      <h1 className="hidden text-2xl font-bold md:block">Movie Lover</h1>
+      {isLoading && <Loading data-testid="loading" />}
+      {!isLoading && user && (
+        <DropdownMenu>
+          <DropdownMenuTrigger className="cursor-pointer">
+            <div className="flex items-center gap-2">
+              <Avatar>
+                <AvatarFallback>{userName}</AvatarFallback>
+              </Avatar>
+              <span className="hidden md:block">{user.email}</span>
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onClick={handleProfile}>Profile</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+    </header>
+  );
+};

@@ -1,5 +1,3 @@
-import "swiper/css";
-
 import { MediaList } from "@/components";
 import { MediaType } from "@/const";
 import { useDiscoverMovies } from "@/hooks";

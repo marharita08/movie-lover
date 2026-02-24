@@ -1,7 +1,5 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeftIcon, ListIcon, SaveIcon } from "lucide-react";
 import { useCallback } from "react";
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -13,7 +11,7 @@ import {
   Label,
   Sphere,
 } from "@/components";
-import { useCreateList } from "@/hooks";
+import { useAppForm, useCreateList } from "@/hooks";
 
 import {
   CreateListValidationSchema,
@@ -23,8 +21,8 @@ import {
 export const CreateList = () => {
   const navigate = useNavigate();
 
-  const form = useForm<CreateListValidationSchemaType>({
-    resolver: zodResolver(CreateListValidationSchema),
+  const form = useAppForm<CreateListValidationSchemaType>({
+    schema: CreateListValidationSchema,
     defaultValues: {
       name: "",
       fileId: "",
@@ -60,6 +58,7 @@ export const CreateList = () => {
         <h1 className="text-center text-xl font-bold">Create List</h1>
         <form
           className="mt-8 flex flex-col gap-4"
+          aria-label="create-list-form"
           onSubmit={form.handleSubmit(handleSubmit)}
         >
           <div>
