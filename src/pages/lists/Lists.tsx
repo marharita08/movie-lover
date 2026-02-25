@@ -49,14 +49,14 @@ export const Lists = () => {
         </Button>
       </div>
 
-      <div className="mt-4 mb-6 max-w-md">
+      <search className="mt-4 mb-6 max-w-md">
         <Input
           placeholder="Search lists by name..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           startIcon={<SearchIcon className="h-4 w-4" />}
         />
-      </div>
+      </search>
 
       <div className="h-full flex-1">
         {isError && (

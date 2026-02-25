@@ -1,10 +1,8 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { RotateCcwIcon, SaveIcon, UserIcon } from "lucide-react";
 import { useMemo } from "react";
-import { useForm } from "react-hook-form";
 
 import { Button, Input, InputError, Sphere } from "@/components";
-import { useCurrentUser, useUpdateUser } from "@/hooks";
+import { useAppForm, useCurrentUser, useUpdateUser } from "@/hooks";
 
 import { ChangePasswordDialog, DeleteAccountDialog } from "./components";
 import {
@@ -22,8 +20,8 @@ export const UserProfile = () => {
     [user],
   );
 
-  const form = useForm<UpdateUserValidationSchemaType>({
-    resolver: zodResolver(UpdateUserValidationSchema),
+  const form = useAppForm<UpdateUserValidationSchemaType>({
+    schema: UpdateUserValidationSchema,
     defaultValues,
   });
 

@@ -33,10 +33,10 @@ export const ResetPassword = () => {
       <Sphere className="absolute top-20 left-30 h-15 w-15" />
       <Sphere className="absolute top-18 left-[calc(50%+7.5rem)] h-13 w-13" />
       <Sphere className="absolute right-40 bottom-20 h-20 w-20" />
-      <div className="bg-card flex h-full w-full flex-col gap-4 p-8 shadow-md sm:h-fit sm:w-[500px] sm:rounded-xl">
+      <main className="bg-card flex h-full w-full flex-col gap-4 p-8 shadow-md sm:h-fit sm:w-[500px] sm:rounded-xl">
         <h1 className="text-center text-2xl font-bold">Reset Password</h1>
         <div>{StepToComponent[step]}</div>
-      </div>
+      </main>
     </div>
   );
 };

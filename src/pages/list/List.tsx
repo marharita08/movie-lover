@@ -14,12 +14,12 @@ import {
 export const List = () => {
   return (
     <div className="flex flex-col gap-15">
-      <div className="flex flex-col gap-4">
+      <section className="flex flex-col gap-4">
         <h2 className="px-2 text-2xl font-bold md:px-0">List</h2>
         <MediasFromList />
-      </div>
+      </section>
       <Separator />
-      <div>
+      <section>
         <h2 className="px-2 text-2xl font-bold md:px-0">Analitics</h2>
         <div className="flex flex-col gap-12 px-0 py-2">
           <AmountStats />
@@ -38,7 +38,7 @@ export const List = () => {
           <Separator />
           <PersonsAnalytics role={PersonRole.DIRECTOR} />
         </div>
-      </div>
+      </section>
     </div>
   );
 };

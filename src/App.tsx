@@ -12,7 +12,7 @@ import { Lists } from "./pages/lists";
 import { Login } from "./pages/login";
 import { MovieDetails } from "./pages/movie-details";
 import { NotFound } from "./pages/not-found";
-import { PersonsAnalitics } from "./pages/persons-analitics/PersonsAnalitics";
+import { PersonsAnalytics } from "./pages/persons-analytics";
 import { ResetPassword } from "./pages/reset-password";
 import { Signup } from "./pages/signup";
 import { TVShowDetails } from "./pages/tv-show-details";
@@ -47,7 +47,7 @@ const privateRoutes = [
   },
   {
     path: RouterKey.PERSONS_ANALYTICS,
-    element: <PersonsAnalitics />,
+    element: <PersonsAnalytics />,
   },
   {
     path: RouterKey.TV_SHOW_DETAILS,

@@ -6,7 +6,7 @@ export * from "./lists";
 export * from "./login";
 export * from "./movie-details";
 export * from "./not-found";
-export * from "./persons-analitics";
+export * from "./persons-analytics";
 export * from "./reset-password";
 export * from "./signup";
 export * from "./tv-show-details";
