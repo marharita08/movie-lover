@@ -128,7 +128,7 @@ const CreateListLoading = React.forwardRef<HTMLDivElement, LoadingOverlayProps>(
           >
             <p>Processing your list data...</p>
             <p className="text-muted-foreground">
-              This may take a few seconds...
+              This may take a few minutes...
             </p>
           </div>
         </div>

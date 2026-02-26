@@ -11,4 +11,5 @@ export const RouterKey = {
   CREATE_LIST: "/create-list",
   LIST: "/list/:id",
   PERSONS_ANALYTICS: "/list/:id/:role",
+  PERSON: "/person/:id",
 } as const;

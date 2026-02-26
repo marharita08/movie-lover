@@ -21,7 +21,7 @@ interface CustomTickProps {
   payload?: TickItem;
 }
 
-const CustomTick: React.FC<CustomTickProps> = (props) => {
+export const CustomTick: React.FC<CustomTickProps> = (props) => {
   const { x, y, payload } = props;
 
   return (
@@ -57,7 +57,7 @@ export const GenresBarChart: React.FC<GenresBarChartProps> = ({ data }) => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="genre"
-            interval={0}
+            interval={data.length > 25 ? 1 : 0}
             height={isMobile ? 60 : 100}
             tick={<CustomTick />}
             label={

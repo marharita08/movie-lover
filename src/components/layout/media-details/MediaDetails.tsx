@@ -143,6 +143,16 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
                   <span>{formatDate(media.lastAirDate)}</span>
                 </div>
               )}
+              {"nextEpisodeToAir" in media &&
+                media.nextEpisodeToAir &&
+                media.nextEpisodeToAir.airDate && (
+                  <div>
+                    <span className="text-muted-foreground block text-sm font-medium">
+                      Next Episode Release Date
+                    </span>
+                    <span>{formatDate(media.nextEpisodeToAir.airDate)}</span>
+                  </div>
+                )}
               {!!media.voteAverage && (
                 <div>
                   <span className="text-muted-foreground block text-sm font-medium">
@@ -171,18 +181,28 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
                 </div>
               </div>
             )}
-            {media.imdbId && (
+            {media.productionCompanies.length > 0 && (
               <div>
-                <h2 className="text-base font-semibold">IMDb</h2>
+                <h2 className="text-base font-semibold">
+                  Production Companies
+                </h2>
+                <div>
+                  {media.productionCompanies
+                    .map((company) => company.name)
+                    .join(", ")}
+                </div>
+              </div>
+            )}
+            {media.imdbId && (
+              <Button asChild variant="link" className="p-0">
                 <a
                   href={`${ImdbUrl.MEDIA}${media.imdbId}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary underline-offset-4 hover:underline"
                 >
-                  {`${ImdbUrl.MEDIA}${media.imdbId}`}
+                  Open in IMDB
                 </a>
-              </div>
+              </Button>
             )}
           </div>
         </div>

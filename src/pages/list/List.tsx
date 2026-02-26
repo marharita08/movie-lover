@@ -10,6 +10,7 @@ import {
   RatingAnalytics,
   YearsAnalytics,
 } from "./components";
+import { UpcomingTVShows } from "./components/upconming-tv-shows/UpcomingTVShows";
 
 export const List = () => {
   return (
@@ -18,6 +19,8 @@ export const List = () => {
         <h2 className="px-2 text-2xl font-bold md:px-0">List</h2>
         <MediasFromList />
       </section>
+      <Separator />
+      <UpcomingTVShows />
       <Separator />
       <section>
         <h2 className="px-2 text-2xl font-bold md:px-0">Analitics</h2>

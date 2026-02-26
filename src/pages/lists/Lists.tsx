@@ -58,7 +58,7 @@ export const Lists = () => {
         />
       </search>
 
-      <div className="h-full flex-1">
+      <div className="h-full flex-1 pr-4">
         {isError && (
           <ErrorState
             title="Failed to load your lists"

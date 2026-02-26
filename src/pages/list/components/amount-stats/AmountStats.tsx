@@ -1,6 +1,7 @@
+import { CircleQuestionMarkIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
 
-import { Loading } from "@/components";
+import { Loading, Tooltip, TooltipContent, TooltipTrigger } from "@/components";
 import { useAmountStats } from "@/hooks";
 import { formatRuntime } from "@/utils";
 
@@ -38,8 +39,19 @@ export const AmountStats = () => {
         <div className="text-2xl font-bold">
           {formatRuntime(data?.totalTVShowsRuntime)}
         </div>
-        <div className="text-muted-foreground font-medium">
-          Total TV shows runtime
+        <div className="flex items-center gap-1">
+          <div className="text-muted-foreground font-medium">
+            Total TV shows runtime
+          </div>
+          <Tooltip>
+            <TooltipTrigger>
+              <CircleQuestionMarkIcon className="text-muted-foreground h-4 w-4" />
+            </TooltipTrigger>
+            <TooltipContent className="max-w-[200px]">
+              Approximate runtime based on average episode length and episode
+              count
+            </TooltipContent>
+          </Tooltip>
         </div>
       </div>
       <div className="flex flex-col items-center gap-1">

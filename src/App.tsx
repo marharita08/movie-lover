@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { AuthenticatedLayout, Toaster } from "./components";
+import { AuthenticatedLayout, Toaster, TooltipProvider } from "./components";
 import { RouterKey } from "./const";
 import { AuthGuard } from "./guards";
 import { CreateList } from "./pages/create-list/CreateList";
@@ -12,6 +12,7 @@ import { Lists } from "./pages/lists";
 import { Login } from "./pages/login";
 import { MovieDetails } from "./pages/movie-details";
 import { NotFound } from "./pages/not-found";
+import { Person } from "./pages/person";
 import { PersonsAnalytics } from "./pages/persons-analytics";
 import { ResetPassword } from "./pages/reset-password";
 import { Signup } from "./pages/signup";
@@ -53,6 +54,10 @@ const privateRoutes = [
     path: RouterKey.TV_SHOW_DETAILS,
     element: <TVShowDetails />,
   },
+  {
+    path: RouterKey.PERSON,
+    element: <Person />,
+  },
 ];
 
 const publicRoutes = [
@@ -77,32 +82,34 @@ const publicRoutes = [
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="bg-background text-foreground min-h-screen">
-        <Toaster />
-        <BrowserRouter>
-          <Routes>
-            {privateRoutes.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={
-                  <AuthGuard>
-                    <AuthenticatedLayout>{route.element}</AuthenticatedLayout>
-                  </AuthGuard>
-                }
-              />
-            ))}
-            {publicRoutes.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
+      <TooltipProvider>
+        <div className="bg-background text-foreground min-h-screen">
+          <Toaster />
+          <BrowserRouter>
+            <Routes>
+              {privateRoutes.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={
+                    <AuthGuard>
+                      <AuthenticatedLayout>{route.element}</AuthenticatedLayout>
+                    </AuthGuard>
+                  }
+                />
+              ))}
+              {publicRoutes.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={route.element}
+                />
+              ))}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 }

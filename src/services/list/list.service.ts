@@ -87,6 +87,13 @@ export class ListService {
       `/list/${listId}/amount/stats`,
     );
   }
+
+  async getUpcomingTVShows(listId: string, query: GetMediaItemsQuery) {
+    return await httpService.get<PaginatedResponse<ShortMedia>>(
+      `/list/${listId}/tv/upcoming`,
+      query,
+    );
+  }
 }
 
 export const listService = new ListService();

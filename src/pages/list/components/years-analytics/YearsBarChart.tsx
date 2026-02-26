@@ -10,6 +10,8 @@ import {
 
 import { useIsMobile } from "@/hooks";
 
+import { CustomTick } from "../genres-analytics/GenresBarChart";
+
 interface YearsBarChartProps {
   data: { year: string; amount: number }[];
 }
@@ -32,6 +34,9 @@ export const YearsBarChart: React.FC<YearsBarChartProps> = ({ data }) => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="year"
+            tick={<CustomTick />}
+            interval={data.length > 25 ? 1 : 0}
+            height={isMobile ? 30 : 50}
             label={
               isMobile
                 ? undefined
