@@ -1,4 +1,6 @@
 export * from "./use-amount-stats/useAmountStats";
+export * from "./use-company-stats/useCompanyStats";
+export * from "./use-country-stats/useCountryStats";
 export * from "./use-current-user/useCurrentUser";
 export * from "./use-discover-movies/useDiscoverMovies";
 export * from "./use-file-data/useFileData";

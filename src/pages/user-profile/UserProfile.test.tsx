@@ -13,6 +13,7 @@ const mutateMock = vi.fn<(data: { name: string }) => void>();
 
 vi.mock("@/hooks", async () => {
   const { useForm } = await import("react-hook-form");
+  const { zodResolver } = await import("@hookform/resolvers/zod");
 
   return {
     useCurrentUser: () => ({
@@ -26,9 +27,16 @@ vi.mock("@/hooks", async () => {
       mutate: mutateMock,
     }),
 
-    useAppForm: (config: { defaultValues: { name: string } }) =>
-      useForm<{ name: string }>({
-        defaultValues: config.defaultValues,
+    useAppForm: ({
+      schema,
+      defaultValues,
+    }: {
+      schema: unknown;
+      defaultValues: unknown;
+    }) =>
+      useForm({
+        resolver: zodResolver(schema as never),
+        defaultValues: defaultValues as never,
       }),
   };
 });

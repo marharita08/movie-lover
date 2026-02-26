@@ -22,7 +22,7 @@ export const AmountStats = () => {
   }
 
   return (
-    <section className="flex justify-center gap-8">
+    <section className="grid grid-cols-1 justify-center gap-8 sm:grid-cols-2 md:grid-cols-4">
       <div className="flex flex-col items-center gap-1">
         <div className="text-2xl font-bold">{data?.total}</div>
         <div className="text-muted-foreground font-medium">Total items</div>

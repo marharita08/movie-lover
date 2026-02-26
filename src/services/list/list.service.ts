@@ -94,6 +94,18 @@ export class ListService {
       query,
     );
   }
+
+  async getCountryStats(listId: string) {
+    return await httpService.get<Record<string, number>>(
+      `/list/${listId}/country/stats`,
+    );
+  }
+
+  async getCompanyStats(listId: string) {
+    return await httpService.get<Record<string, number>>(
+      `/list/${listId}/company/stats`,
+    );
+  }
 }
 
 export const listService = new ListService();
