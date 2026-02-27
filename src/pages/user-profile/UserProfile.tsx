@@ -1,5 +1,5 @@
 import { RotateCcwIcon, SaveIcon, UserIcon } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect } from "react";
 
 import { Button, Input, InputError, Sphere } from "@/components";
 import { useAppForm, useCurrentUser, useUpdateUser } from "@/hooks";
@@ -13,22 +13,30 @@ import {
 export const UserProfile = () => {
   const { data: user } = useCurrentUser();
 
-  const defaultValues = useMemo(
-    () => ({
-      name: user?.name || "",
-    }),
-    [user],
-  );
-
   const form = useAppForm<UpdateUserValidationSchemaType>({
     schema: UpdateUserValidationSchema,
-    defaultValues,
+    defaultValues: {
+      name: user?.name || "",
+    },
   });
+
+  useEffect(() => {
+    if (user) {
+      form.reset({
+        name: user.name,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const updateUserMutation = useUpdateUser();
 
   const handleSubmit = (data: UpdateUserValidationSchemaType) => {
     updateUserMutation.mutate(data);
+  };
+
+  const handleReset = () => {
+    form.reset({ name: user?.name || "" });
   };
 
   return (
@@ -63,7 +71,7 @@ export const UserProfile = () => {
                 className="min-w-[120px]"
                 type="button"
                 variant={"outline"}
-                onClick={() => form.reset(defaultValues)}
+                onClick={handleReset}
               >
                 <RotateCcwIcon className="h-4 w-4" />
                 Reset

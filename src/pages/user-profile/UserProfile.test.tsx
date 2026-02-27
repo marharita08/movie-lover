@@ -2,14 +2,19 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type {
   ButtonHTMLAttributes,
-  InputHTMLAttributes,
   ReactNode,
 } from "react";
+import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { UserProfile } from "./UserProfile";
 
 const mutateMock = vi.fn<(data: { name: string }) => void>();
+
+const mockUser = {
+  email: "test@example.com",
+  name: "John Doe",
+};
 
 vi.mock("@/hooks", async () => {
   const { useForm } = await import("react-hook-form");
@@ -17,10 +22,7 @@ vi.mock("@/hooks", async () => {
 
   return {
     useCurrentUser: () => ({
-      data: {
-        email: "test@example.com",
-        name: "John Doe",
-      },
+      data: mockUser,
     }),
 
     useUpdateUser: () => ({
@@ -50,19 +52,19 @@ vi.mock("@/components", () => {
       <button {...props}>{children}</button>
     ),
 
-    Input: ({
-      label,
-      ...props
-    }: InputHTMLAttributes<HTMLInputElement> & {
-      label: string;
-      error?: boolean;
-      startIcon?: ReactNode;
-    }) => (
+    Input: React.forwardRef<
+      HTMLInputElement,
+      React.InputHTMLAttributes<HTMLInputElement> & {
+        label?: string;
+        error?: boolean;
+        startIcon?: React.ReactNode;
+      }
+    >(({ label, error: _error, startIcon: _startIcon, ...props }, ref) => (
       <div>
-        <label>{label}</label>
-        <input {...props} />
+        {label && <label htmlFor={props.name}>{label}</label>}
+        <input id={props.name} ref={ref} {...props} />
       </div>
-    ),
+    )),
 
     InputError: ({ error }: { error?: string }) =>
       error ? <div data-testid="input-error">{error}</div> : null,
@@ -108,7 +110,7 @@ describe("UserProfile", () => {
     const user = userEvent.setup();
     render(<UserProfile />);
 
-    const input = screen.getByDisplayValue("John Doe");
+    const input = await screen.findByDisplayValue("John Doe");
 
     await user.clear(input);
     await user.type(input, "Another Name");
@@ -116,6 +118,6 @@ describe("UserProfile", () => {
     const resetButton = screen.getByRole("button", { name: /reset/i });
     await user.click(resetButton);
 
-    expect(screen.getByDisplayValue("John Doe")).toBeInTheDocument();
+    expect(await screen.findByDisplayValue("John Doe")).toBeInTheDocument();
   });
 });
