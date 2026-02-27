@@ -1,6 +1,7 @@
 import { Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 import { type MediaType, mediaTypeToLabel } from "@/const";
+import { useIsMobile } from "@/hooks";
 
 interface MediaTypePieChartProps {
   data: {
@@ -14,6 +15,7 @@ export const MediaTypePieChart: React.FC<MediaTypePieChartProps> = ({
 }) => {
   const COLORS = ["#0088FE", "#00C49F"];
   const total = data.reduce((sum, d) => sum + d.value, 0);
+  const isMobile = useIsMobile();
 
   const enrichedData = data.map((d, index) => ({
     ...d,
@@ -30,9 +32,11 @@ export const MediaTypePieChart: React.FC<MediaTypePieChartProps> = ({
             outerRadius={140}
             dataKey="value"
             label={({ name, percent }) =>
-              `${mediaTypeToLabel[name as MediaType]} ${percent ? (percent * 100).toFixed(0) : 0}%`
+              isMobile
+                ? undefined
+                : `${mediaTypeToLabel[name as MediaType]} ${percent ? (percent * 100).toFixed(0) : 0}%`
             }
-            labelLine={true}
+            labelLine={!isMobile}
           />
           <Tooltip
             content={({ active, payload }) => {

@@ -39,6 +39,7 @@ const movieMedia = {
   posterPath: "/poster.jpg",
   backdropPath: "/backdrop.jpg",
   productionCountries: [{ name: "USA" }],
+  productionCompanies: [{ name: "Paramount Pictures" }],
   imdbId: "tt1375666",
 };
 
@@ -56,6 +57,7 @@ const tvMedia = {
   posterPath: null,
   backdropPath: null,
   productionCountries: [],
+  productionCompanies: [],
   imdbId: null,
 };
 

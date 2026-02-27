@@ -160,4 +160,24 @@ describe("ListService", () => {
       expect(httpService.get).toHaveBeenCalledWith("/list/123/amount/stats");
     });
   });
+
+  describe("getCompanyStats", () => {
+    it("calls httpService.get with correct url", async () => {
+      vi.mocked(httpService.get).mockResolvedValue({ genres: [] });
+
+      await listService.getCompanyStats("123");
+
+      expect(httpService.get).toHaveBeenCalledWith("/list/123/company/stats");
+    });
+  });
+
+  describe("getCountryStats", () => {
+    it("calls httpService.get with correct url", async () => {
+      vi.mocked(httpService.get).mockResolvedValue({ genres: [] });
+
+      await listService.getCountryStats("123");
+
+      expect(httpService.get).toHaveBeenCalledWith("/list/123/country/stats");
+    });
+  });
 });

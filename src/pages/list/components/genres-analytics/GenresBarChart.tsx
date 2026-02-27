@@ -7,37 +7,14 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import type { TickItem } from "recharts/types/util/types";
 
 import { useIsMobile } from "@/hooks";
+
+import { CustomTick } from "../custom-tick/CustomTick";
 
 interface GenresBarChartProps {
   data: { genre: string; amount: number }[];
 }
-
-interface CustomTickProps {
-  x?: number;
-  y?: number;
-  payload?: TickItem;
-}
-
-const CustomTick: React.FC<CustomTickProps> = (props) => {
-  const { x, y, payload } = props;
-
-  return (
-    <g transform={`translate(${x},${y})`}>
-      <text
-        transform="rotate(-45)"
-        textAnchor="end"
-        dy={10}
-        fill="#666"
-        className="text-xs md:text-base"
-      >
-        {payload?.value ?? "Unknown"}
-      </text>
-    </g>
-  );
-};
 
 export const GenresBarChart: React.FC<GenresBarChartProps> = ({ data }) => {
   const isMobile = useIsMobile();
@@ -57,7 +34,7 @@ export const GenresBarChart: React.FC<GenresBarChartProps> = ({ data }) => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="genre"
-            interval={0}
+            interval={data.length > 25 ? 1 : 0}
             height={isMobile ? 60 : 100}
             tick={<CustomTick />}
             label={

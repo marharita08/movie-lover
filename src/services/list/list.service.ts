@@ -87,6 +87,25 @@ export class ListService {
       `/list/${listId}/amount/stats`,
     );
   }
+
+  async getUpcomingTVShows(listId: string, query: GetMediaItemsQuery) {
+    return await httpService.get<PaginatedResponse<ShortMedia>>(
+      `/list/${listId}/tv/upcoming`,
+      query,
+    );
+  }
+
+  async getCountryStats(listId: string) {
+    return await httpService.get<Record<string, number>>(
+      `/list/${listId}/country/stats`,
+    );
+  }
+
+  async getCompanyStats(listId: string) {
+    return await httpService.get<Record<string, number>>(
+      `/list/${listId}/company/stats`,
+    );
+  }
 }
 
 export const listService = new ListService();

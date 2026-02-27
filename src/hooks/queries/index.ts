@@ -1,4 +1,6 @@
 export * from "./use-amount-stats/useAmountStats";
+export * from "./use-company-stats/useCompanyStats";
+export * from "./use-country-stats/useCountryStats";
 export * from "./use-current-user/useCurrentUser";
 export * from "./use-discover-movies/useDiscoverMovies";
 export * from "./use-file-data/useFileData";
@@ -9,6 +11,7 @@ export * from "./use-lists/useLists";
 export * from "./use-media-items/useMediaItems";
 export * from "./use-media-type-stats/useMediaTypeStats";
 export * from "./use-movie/useMovie";
+export * from "./use-person/usePerson";
 export * from "./use-person-stats/usePersonStats";
 export * from "./use-rating-stats/useRatingStats";
 export * from "./use-tv-show/useTVShow";
