@@ -43,6 +43,7 @@ export const List = () => {
             <CompaniesAnalytics />
             <CountriesAnalytics />
           </div>
+          <Separator />
           <PersonsAnalytics role={PersonRole.ACTOR} />
           <Separator />
           <PersonsAnalytics role={PersonRole.DIRECTOR} />

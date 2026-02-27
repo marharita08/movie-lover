@@ -1,9 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type {
-  ButtonHTMLAttributes,
-  ReactNode,
-} from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

@@ -28,7 +28,7 @@ export const MediaCard: React.FC<MediaCardProps> = ({ media }) => {
         </div>
       </div>
     );
-  }, [media]);
+  }, [media.title, media.posterPath]);
 
   return media.id ? (
     <Link

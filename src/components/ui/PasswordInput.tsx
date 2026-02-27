@@ -36,6 +36,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
 
           <button
             type="button"
+            aria-label={showPassword ? "Hide password" : "Show password"}
             onMouseDown={(e) => e.preventDefault()}
             onClick={handleShowPassword}
             className="hover:bg-accent absolute top-1/2 right-3 -translate-y-1/2 transform cursor-pointer rounded-full p-1 transition-colors"
