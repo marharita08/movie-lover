@@ -1,12 +1,13 @@
 import "swiper/css";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { EmptyState, ErrorState, Loading } from "@/components";
 import type { ShortMedia } from "@/types";
+import { cn } from "@/utils";
 
 import { MediaCard } from "../media-card/MediaCard";
 
@@ -33,6 +34,7 @@ export const MediaList: React.FC<MediaListProps> = ({
 }) => {
   const prevRef = useRef<HTMLButtonElement | null>(null);
   const nextRef = useRef<HTMLButtonElement | null>(null);
+  const [isLocked, setIsLocked] = useState(false);
 
   const isEmpty = !isLoading && !isError && !medias?.length;
 
@@ -70,14 +72,20 @@ export const MediaList: React.FC<MediaListProps> = ({
     <div className="relative sm:px-6">
       <button
         ref={prevRef}
-        className="hover:text-primary bg-card absolute top-1/2 left-0 z-10 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full p-2 shadow-md sm:flex"
+        className={cn(
+          "hover:text-primary bg-card absolute top-1/2 left-0 z-10 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full p-2 shadow-md sm:flex",
+          isLocked && "sm:hidden",
+        )}
       >
         <ChevronLeftIcon />
       </button>
 
       <button
         ref={nextRef}
-        className="hover:text-primary bg-card absolute top-1/2 right-0 z-10 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full p-2 shadow-md sm:flex"
+        className={cn(
+          "hover:text-primary bg-card absolute top-1/2 right-0 z-10 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full p-2 shadow-md sm:flex",
+          isLocked && "sm:hidden",
+        )}
       >
         <ChevronRightIcon />
       </button>
@@ -114,6 +122,9 @@ export const MediaList: React.FC<MediaListProps> = ({
             fetchNextPage();
           }
         }}
+        watchOverflow
+        onLock={() => setIsLocked(true)}
+        onUnlock={() => setIsLocked(false)}
       >
         {medias.map((media) => (
           <SwiperSlide key={media.id}>
