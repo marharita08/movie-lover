@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PersonRole, personRoleMap } from "@/const";
-import { usePersonStats } from "@/hooks";
+import { useDebounce, usePersonStats } from "@/hooks";
 
 import { PersonsAnalytics } from "./PersonsAnalytics";
 
@@ -15,6 +15,7 @@ vi.mock("react-router-dom", () => ({
 
 vi.mock("@/hooks", () => ({
   usePersonStats: vi.fn(),
+  useDebounce: vi.fn((value) => value),
 }));
 
 vi.mock("react-intersection-observer", () => ({
@@ -41,6 +42,22 @@ vi.mock("@/components", () => ({
   Person: ({ person }: { person: { id: string; name: string } }) => (
     <div data-testid="person">{person.name}</div>
   ),
+  Input: ({
+    placeholder,
+    value,
+    onChange,
+  }: {
+    placeholder: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  }) => (
+    <input
+      data-testid="search-input"
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+    />
+  ),
 }));
 
 const defaultQueryResult = {
@@ -58,6 +75,7 @@ describe("PersonsAnalitics", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(usePersonStats).mockReturnValue(defaultQueryResult as never);
+    vi.mocked(useDebounce).mockImplementation((value) => value);
   });
 
   it("calls usePersonStats with correct params", () => {
@@ -65,6 +83,7 @@ describe("PersonsAnalitics", () => {
     expect(usePersonStats).toHaveBeenCalledWith("list-123", {
       role: PersonRole.DIRECTOR,
       limit: 20,
+      search: "",
     });
   });
 
@@ -73,6 +92,39 @@ describe("PersonsAnalitics", () => {
     expect(
       screen.getByText(personRoleMap[PersonRole.DIRECTOR]),
     ).toBeInTheDocument();
+  });
+
+  it("renders search input", () => {
+    render(<PersonsAnalytics />);
+    expect(screen.getByTestId("search-input")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Search...")).toBeInTheDocument();
+  });
+
+  it("updates search value on input change", () => {
+    render(<PersonsAnalytics />);
+    const searchInput = screen.getByTestId("search-input");
+    fireEvent.change(searchInput, { target: { value: "Nolan" } });
+    expect(searchInput).toHaveValue("Nolan");
+  });
+
+  it("calls usePersonStats with debounced search value", () => {
+    vi.mocked(useDebounce).mockReturnValue("Nolan");
+    render(<PersonsAnalytics />);
+
+    expect(usePersonStats).toHaveBeenCalledWith("list-123", {
+      role: PersonRole.DIRECTOR,
+      limit: 20,
+      search: "Nolan",
+    });
+  });
+
+  it("passes search parameter through useDebounce", () => {
+    render(<PersonsAnalytics />);
+    const searchInput = screen.getByTestId("search-input");
+
+    fireEvent.change(searchInput, { target: { value: "Spielberg" } });
+
+    expect(useDebounce).toHaveBeenCalledWith("Spielberg");
   });
 
   it("shows Loading when isLoading is true", () => {
@@ -114,6 +166,18 @@ describe("PersonsAnalitics", () => {
     } as never);
     render(<PersonsAnalytics />);
     expect(screen.getByTestId("empty-state")).toBeInTheDocument();
+  });
+
+  it("shows EmptyState with search context when no results found", () => {
+    vi.mocked(useDebounce).mockReturnValue("NonExistent");
+    vi.mocked(usePersonStats).mockReturnValue({
+      ...defaultQueryResult,
+      data: { pages: [{ results: [] }] },
+    } as never);
+    render(<PersonsAnalytics />);
+
+    const emptyState = screen.getByTestId("empty-state");
+    expect(emptyState).toBeInTheDocument();
   });
 
   it("renders persons when data is present", () => {
@@ -187,5 +251,16 @@ describe("PersonsAnalitics", () => {
     render(<PersonsAnalytics />);
     fireEvent.click(screen.getByText("Back"));
     expect(mockNavigate).toHaveBeenCalledWith(-1);
+  });
+
+  it("clears search results when search is cleared", () => {
+    render(<PersonsAnalytics />);
+    const searchInput = screen.getByTestId("search-input");
+
+    fireEvent.change(searchInput, { target: { value: "Nolan" } });
+    expect(searchInput).toHaveValue("Nolan");
+
+    fireEvent.change(searchInput, { target: { value: "" } });
+    expect(searchInput).toHaveValue("");
   });
 });

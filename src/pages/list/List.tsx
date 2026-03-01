@@ -17,10 +17,7 @@ import {
 export const List = () => {
   return (
     <div className="flex flex-col gap-15">
-      <section className="flex flex-col gap-4">
-        <h2 className="mb-4 px-2 text-2xl font-bold md:px-0">List</h2>
-        <MediasFromList />
-      </section>
+      <MediasFromList />
       <Separator />
       <UpcomingTVShows />
       <Separator />

@@ -42,7 +42,7 @@ export const MediaList: React.FC<MediaListProps> = ({
     return (
       <EmptyState
         title="No medias found"
-        description="We couldn't find any medias matching your criteria. Try exploring different years or genres."
+        description="We couldn't find any medias matching your criteria."
         icon="film"
       />
     );
