@@ -1,14 +1,23 @@
-import { ArrowLeft } from "lucide-react";
-import { useEffect } from "react";
+import { ArrowLeft, SearchIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Button, EmptyState, ErrorState, Loading, Person } from "@/components";
+import {
+  Button,
+  EmptyState,
+  ErrorState,
+  Input,
+  Loading,
+  Person,
+} from "@/components";
 import { PersonRole, personRoleMap } from "@/const";
-import { usePersonStats } from "@/hooks";
+import { useDebounce, usePersonStats } from "@/hooks";
 
 export const PersonsAnalytics = () => {
   const { id, role } = useParams<{ id: string; role: PersonRole }>();
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search);
 
   const roleParsed = role as PersonRole;
   const navigate = useNavigate();
@@ -25,6 +34,7 @@ export const PersonsAnalytics = () => {
   } = usePersonStats(id!, {
     role: roleParsed,
     limit: 20,
+    search: debouncedSearch,
   });
 
   const analitics = data?.pages.flatMap((page) => page.results) || [];
@@ -45,6 +55,14 @@ export const PersonsAnalytics = () => {
           Back
         </Button>
         <h1 className="text-2xl font-bold">{personRoleMap[roleParsed]}</h1>
+        <search className="ml-6">
+          <Input
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            startIcon={<SearchIcon className="h-4 w-4" />}
+          />
+        </search>
       </div>
       <div className="pt-15">
         {isLoading && (
