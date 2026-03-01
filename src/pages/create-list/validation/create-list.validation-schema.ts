@@ -1,7 +1,9 @@
 import { z } from "zod";
 
 export const CreateListValidationSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
+  name: z.string().min(1, { message: "Name is required" }).max(255, {
+    message: "Name must be at most 255 characters",
+  }),
   fileId: z
     .string()
     .min(1, { message: "File is required" })
