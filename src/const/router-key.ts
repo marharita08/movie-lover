@@ -12,4 +12,5 @@ export const RouterKey = {
   LIST: "/list/:id",
   PERSONS_ANALYTICS: "/list/:id/:role",
   PERSON: "/person/:id",
+  SEARCH: "/search",
 } as const;

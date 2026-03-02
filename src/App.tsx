@@ -15,6 +15,7 @@ import { NotFound } from "./pages/not-found";
 import { Person } from "./pages/person";
 import { PersonsAnalytics } from "./pages/persons-analytics";
 import { ResetPassword } from "./pages/reset-password";
+import { Search } from "./pages/search";
 import { Signup } from "./pages/signup";
 import { TVShowDetails } from "./pages/tv-show-details";
 import { UserProfile } from "./pages/user-profile";
@@ -57,6 +58,10 @@ const privateRoutes = [
   {
     path: RouterKey.PERSON,
     element: <Person />,
+  },
+  {
+    path: RouterKey.SEARCH,
+    element: <Search />,
   },
 ];
 

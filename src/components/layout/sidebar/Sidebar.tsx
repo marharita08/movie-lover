@@ -1,4 +1,4 @@
-import { HomeIcon, ListIcon, MenuIcon } from "lucide-react";
+import { HomeIcon, ListIcon, MenuIcon, SearchIcon } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import { RouterKey } from "@/const";
@@ -32,6 +32,12 @@ const navItems = [
       RouterKey.LIST,
       RouterKey.PERSONS_ANALYTICS,
     ] as string[],
+  },
+  {
+    to: RouterKey.SEARCH,
+    icon: SearchIcon,
+    label: "Search",
+    activePath: [RouterKey.SEARCH] as string[],
   },
 ];
 
