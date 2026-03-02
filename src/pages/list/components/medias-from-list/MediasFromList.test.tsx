@@ -80,7 +80,7 @@ describe("MediasFromList", () => {
   it("calls useMediaItems with debounced search value", () => {
     vi.mocked(useDebounce).mockReturnValue("Inception");
     render(<MediasFromList />);
-    
+
     expect(useMediaItems).toHaveBeenCalledWith("list-123", {
       search: "Inception",
     });
@@ -89,9 +89,9 @@ describe("MediasFromList", () => {
   it("passes search parameter through useDebounce", () => {
     render(<MediasFromList />);
     const searchInput = screen.getByTestId("search-input");
-    
+
     fireEvent.change(searchInput, { target: { value: "Matrix" } });
-    
+
     expect(useDebounce).toHaveBeenCalledWith("Matrix");
   });
 
@@ -141,10 +141,10 @@ describe("MediasFromList", () => {
   it("clears search when input is cleared", () => {
     render(<MediasFromList />);
     const searchInput = screen.getByTestId("search-input");
-    
+
     fireEvent.change(searchInput, { target: { value: "Interstellar" } });
     expect(searchInput).toHaveValue("Interstellar");
-    
+
     fireEvent.change(searchInput, { target: { value: "" } });
     expect(searchInput).toHaveValue("");
   });
@@ -159,7 +159,7 @@ describe("MediasFromList", () => {
     } as never);
 
     render(<MediasFromList />);
-    
+
     expect(useMediaItems).toHaveBeenCalledWith("list-123", {
       search: "Nolan",
     });

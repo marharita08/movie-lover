@@ -2,6 +2,9 @@ import type {
   DiscoverMoviesQuery,
   MovieDetailsDto,
   MoviesResponseDto,
+  MultiSearchQuery,
+  MultiSearchResponseItem,
+  PaginatedResponse,
   TVShowResponse,
 } from "@/types";
 import type { PersonResponseDto } from "@/types/person-response.type";
@@ -23,6 +26,13 @@ export class TMDBService {
 
   async getPerson(id: string) {
     return httpService.get<PersonResponseDto>(`/tmdb/person/${id}`);
+  }
+
+  async multiSearch(query: MultiSearchQuery) {
+    return httpService.get<PaginatedResponse<MultiSearchResponseItem>>(
+      "/tmdb/search/multi",
+      query,
+    );
   }
 }
 

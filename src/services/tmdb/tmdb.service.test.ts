@@ -59,4 +59,73 @@ describe("TMDBService", () => {
       expect(httpService.get).toHaveBeenCalledWith("/tmdb/tv/456");
     });
   });
+
+  describe("getPerson", () => {
+    it("calls httpService.get with correct url", async () => {
+      vi.mocked(httpService.get).mockResolvedValue({
+        id: "789",
+        name: "Leonardo DiCaprio",
+        knownForDepartment: "Acting",
+      });
+
+      await tmdbService.getPerson("789");
+
+      expect(httpService.get).toHaveBeenCalledWith("/tmdb/person/789");
+    });
+  });
+
+  describe("multiSearch", () => {
+    it("calls httpService.get with correct url and query", async () => {
+      const query = { query: "inception", page: 1 };
+      vi.mocked(httpService.get).mockResolvedValue({
+        results: [
+          {
+            id: 1,
+            mediaType: "movie",
+            title: "Inception",
+          },
+        ],
+        page: 1,
+        totalPages: 1,
+        totalResults: 1,
+      });
+
+      await tmdbService.multiSearch(query);
+
+      expect(httpService.get).toHaveBeenCalledWith("/tmdb/search/multi", query);
+    });
+
+    it("returns paginated response with mixed media types", async () => {
+      const query = { query: "avatar", page: 1 };
+      const mockResponse = {
+        results: [
+          {
+            id: 1,
+            mediaType: "movie",
+            title: "Avatar",
+          },
+          {
+            id: 2,
+            mediaType: "tv",
+            name: "Avatar: The Last Airbender",
+          },
+          {
+            id: 3,
+            mediaType: "person",
+            name: "Sam Worthington",
+          },
+        ],
+        page: 1,
+        totalPages: 5,
+        totalResults: 50,
+      };
+
+      vi.mocked(httpService.get).mockResolvedValue(mockResponse);
+
+      const result = await tmdbService.multiSearch(query);
+
+      expect(result).toEqual(mockResponse);
+      expect(result.results).toHaveLength(3);
+    });
+  });
 });
