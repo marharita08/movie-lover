@@ -1,16 +1,18 @@
 import { renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { MutationKey, RouterKey } from "@/const";
+import { MutationKey, QueryKey } from "@/const";
 import { useAccessTokenStore } from "@/store/access-token.store";
 
 import { useAppMutation } from "../../use-app-mutation/useAppMutation";
 import { useLogout } from "./useLogout";
 
-const mockNavigate = vi.fn();
+const mockInvalidateQueries = vi.fn();
 
-vi.mock("react-router-dom", () => ({
-  useNavigate: () => mockNavigate,
+vi.mock("@tanstack/react-query", () => ({
+  useQueryClient: () => ({
+    invalidateQueries: mockInvalidateQueries,
+  }),
 }));
 
 vi.mock("../../use-app-mutation/useAppMutation", () => ({
@@ -38,7 +40,7 @@ describe("useLogout", () => {
     );
   });
 
-  it("onSuccess calls removeAccessToken and navigates to login", () => {
+  it("onSuccess calls removeAccessToken and invalidates current user query", () => {
     vi.mocked(useAppMutation).mockImplementation((_key, options) => {
       options.onSuccess?.(
         undefined as never,
@@ -52,6 +54,8 @@ describe("useLogout", () => {
     renderHook(() => useLogout());
 
     expect(removeAccessToken).toHaveBeenCalled();
-    expect(mockNavigate).toHaveBeenCalledWith(RouterKey.LOGIN);
+    expect(mockInvalidateQueries).toHaveBeenCalledWith({
+      queryKey: [QueryKey.CURRENT_USER],
+    });
   });
 });

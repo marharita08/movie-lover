@@ -1,20 +1,20 @@
-import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
-import { MutationKey, RouterKey } from "@/const";
+import { MutationKey, QueryKey } from "@/const";
 import { authService } from "@/services";
 import { useAccessTokenStore } from "@/store/access-token.store";
 
 import { useAppMutation } from "../../use-app-mutation/useAppMutation";
 
 export const useLogout = () => {
-  const navigate = useNavigate();
   const { removeAccessToken } = useAccessTokenStore();
+  const queryClient = useQueryClient();
 
   return useAppMutation([MutationKey.LOGOUT], {
     mutationFn: authService.logout,
     onSuccess: () => {
       removeAccessToken();
-      navigate(RouterKey.LOGIN);
+      queryClient.invalidateQueries({ queryKey: [QueryKey.CURRENT_USER] });
     },
   });
 };

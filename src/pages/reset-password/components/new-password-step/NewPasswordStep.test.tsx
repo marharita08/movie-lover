@@ -2,16 +2,10 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { RouterKey, StorageKey } from "@/const";
+import { StorageKey } from "@/const";
 import { useResetPasswordNewPassword } from "@/hooks";
 
 import { NewPasswordStep } from "./NewPasswordStep";
-
-vi.mock("react-router-dom", () => ({
-  Link: ({ children, to }: { children: React.ReactNode; to: string }) => (
-    <a href={to}>{children}</a>
-  ),
-}));
 
 vi.mock("@/hooks", async () => {
   const { useForm } = await import("react-hook-form");
@@ -150,14 +144,6 @@ describe("NewPasswordStep", () => {
           token: "reset-token",
         }),
       ),
-    );
-  });
-
-  it("has link back to login", () => {
-    render(<NewPasswordStep />);
-    expect(screen.getByText("Back to login").closest("a")).toHaveAttribute(
-      "href",
-      RouterKey.LOGIN,
     );
   });
 });

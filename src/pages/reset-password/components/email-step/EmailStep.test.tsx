@@ -3,16 +3,10 @@ import userEvent from "@testing-library/user-event";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { RouterKey, StorageKey } from "@/const";
+import { StorageKey } from "@/const";
 import { useResetPasswordEmail } from "@/hooks";
 
 import { EmailStep } from "./EmailStep";
-
-vi.mock("react-router-dom", () => ({
-  Link: ({ children, to }: { children: React.ReactNode; to: string }) => (
-    <a href={to}>{children}</a>
-  ),
-}));
 
 vi.mock("@/hooks", async () => {
   const { useForm } = await import("react-hook-form");
@@ -122,13 +116,5 @@ describe("EmailStep", () => {
       expect(setItem).toHaveBeenCalledWith(StorageKey.EMAIL, "test@test.com");
       expect(onSuccess).toHaveBeenCalled();
     });
-  });
-
-  it("has link back to login", () => {
-    render(<EmailStep onSuccess={onSuccess} />);
-    expect(screen.getByText("Back to login").closest("a")).toHaveAttribute(
-      "href",
-      RouterKey.LOGIN,
-    );
   });
 });

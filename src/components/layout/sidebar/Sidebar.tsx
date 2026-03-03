@@ -2,6 +2,7 @@ import { HomeIcon, ListIcon, MenuIcon, SearchIcon } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import { RouterKey } from "@/const";
+import { useCurrentUser } from "@/hooks";
 import { cn } from "@/utils";
 
 import { Button, Sheet, SheetContent, SheetTrigger } from "../../ui";
@@ -21,6 +22,7 @@ const navItems = [
     icon: HomeIcon,
     label: "Dashboard",
     activePath: [RouterKey.DASHBOARD] as string[],
+    private: false,
   },
   {
     to: RouterKey.LISTS,
@@ -32,17 +34,20 @@ const navItems = [
       RouterKey.LIST,
       RouterKey.PERSONS_ANALYTICS,
     ] as string[],
+    private: true,
   },
   {
     to: RouterKey.SEARCH,
     icon: SearchIcon,
     label: "Search",
     activePath: [RouterKey.SEARCH] as string[],
+    private: false,
   },
 ];
 
 export const Sidebar = () => {
   const pathname = useLocation().pathname;
+  const { data: user } = useCurrentUser();
 
   return (
     <>
@@ -56,19 +61,21 @@ export const Sidebar = () => {
             }}
           ></div>
           <nav className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-1">
-            {navItems.map((item) => (
-              <Button
-                variant="nav"
-                size="nav"
-                asChild
-                className={isActive(item, pathname) ? "bg-primary" : ""}
-                key={item.label}
-              >
-                <Link to={item.to}>
-                  <item.icon className="h-5 w-5" />
-                </Link>
-              </Button>
-            ))}
+            {navItems.map((item) =>
+              item.private && !user ? null : (
+                <Button
+                  variant="nav"
+                  size="nav"
+                  asChild
+                  className={isActive(item, pathname) ? "bg-primary" : ""}
+                  key={item.label}
+                >
+                  <Link to={item.to}>
+                    <item.icon className="h-5 w-5" />
+                  </Link>
+                </Button>
+              ),
+            )}
           </nav>
         </div>
       </aside>
@@ -82,22 +89,24 @@ export const Sidebar = () => {
           <SheetContent side={"left"}>
             <h2 className="mb-8 text-center text-xl font-bold">Menu</h2>
             <nav className="flex flex-col gap-1">
-              {navItems.map((item) => (
-                <Button
-                  variant="ghost"
-                  asChild
-                  className={cn(
-                    "justify-start",
-                    isActive(item, pathname) ? "bg-accent" : "",
-                  )}
-                  key={item.label}
-                >
-                  <Link to={item.to}>
-                    <item.icon className="h-5 w-5" />
-                    {item.label}
-                  </Link>
-                </Button>
-              ))}
+              {navItems.map((item) =>
+                item.private && !user ? null : (
+                  <Button
+                    variant="ghost"
+                    asChild
+                    className={cn(
+                      "justify-start",
+                      isActive(item, pathname) ? "bg-accent" : "",
+                    )}
+                    key={item.label}
+                  >
+                    <Link to={item.to}>
+                      <item.icon className="h-5 w-5" />
+                      {item.label}
+                    </Link>
+                  </Button>
+                ),
+              )}
             </nav>
           </SheetContent>
         </Sheet>

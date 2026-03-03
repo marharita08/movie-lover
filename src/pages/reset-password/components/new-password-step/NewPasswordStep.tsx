@@ -1,7 +1,5 @@
-import { Link } from "react-router-dom";
-
 import { Button, InputError, PasswordInput } from "@/components";
-import { RouterKey, StorageKey } from "@/const";
+import { StorageKey } from "@/const";
 import { useAppForm, useResetPasswordNewPassword } from "@/hooks";
 
 import {
@@ -52,9 +50,6 @@ export const NewPasswordStep = () => {
         <InputError error={form.formState.errors.confirmPassword?.message} />
       </div>
       <div className="mt-4 flex items-center justify-end gap-4">
-        <Button asChild variant={"link"}>
-          <Link to={RouterKey.LOGIN}>Back to login</Link>
-        </Button>
         <Button type="submit" className="min-w-[150px]">
           Save
         </Button>

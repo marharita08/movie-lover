@@ -3,15 +3,12 @@ import { cn } from "@/utils";
 import { Header } from "../header/Header";
 import { Sidebar } from "../sidebar/Sidebar";
 
-type AuthenticatedLayoutProps = {
+type WrapperProps = {
   children: React.ReactNode;
   className?: string;
 };
 
-export const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
-  children,
-  className,
-}) => {
+export const Wrapper: React.FC<WrapperProps> = ({ children, className }) => {
   return (
     <div>
       <Header />

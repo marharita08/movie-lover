@@ -1,4 +1,4 @@
-export * from "./authenticated-layout/AuthenticatedLayout";
+export * from "./wrapper/Wrapper";
 export * from "./file-uploader/FileUploader";
 export * from "./header/Header";
 export * from "./media-card/MediaCard";

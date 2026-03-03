@@ -1,5 +1,5 @@
-import { MailIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowLeft, MailIcon } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Button, Input, InputError, PasswordInput, Sphere } from "@/components";
 import { RouterKey } from "@/const";
@@ -25,6 +25,8 @@ export const Login = () => {
     loginMutation.mutate(data);
   };
 
+  const navigate = useNavigate();
+
   return (
     <div className="bg-primary-900 relative flex h-screen items-center justify-center overflow-hidden bg-cover bg-center">
       <Sphere className="absolute bottom-40 left-50 h-10 w-10" />
@@ -36,7 +38,21 @@ export const Login = () => {
           onSubmit={form.handleSubmit(handleSubmit)}
           aria-label="login-form"
         >
-          <h1 className="mb-6 text-center text-2xl font-bold">Login</h1>
+          <div className="mb-6 grid grid-cols-3 items-center">
+            <Button
+              variant="ghost"
+              className="justify-self-start p-0"
+              onClick={() => navigate(-1)}
+              type="button"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </Button>
+
+            <h1 className="text-center text-2xl font-bold">Login</h1>
+
+            <div />
+          </div>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
               <Input
