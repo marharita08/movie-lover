@@ -50,7 +50,11 @@ export const NewPasswordStep = () => {
         <InputError error={form.formState.errors.confirmPassword?.message} />
       </div>
       <div className="mt-4 flex items-center justify-end gap-4">
-        <Button type="submit" className="min-w-[150px]">
+        <Button
+          type="submit"
+          className="min-w-[150px]"
+          disabled={resetPasswordNewPasswordMutation.isPending}
+        >
           Save
         </Button>
       </div>

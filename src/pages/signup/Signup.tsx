@@ -88,7 +88,11 @@ export const Signup = () => {
               <InputError error={form.formState.errors.password?.message} />
             </div>
           </div>
-          <Button type="submit" className="mt-6 w-full">
+          <Button
+            type="submit"
+            className="mt-6 w-full"
+            disabled={signupMutation.isPending}
+          >
             Sign up
           </Button>
           <div className="mt-8 text-center">

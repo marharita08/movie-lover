@@ -41,7 +41,7 @@ describe("Header", () => {
       data: undefined,
       isLoading: true,
     } as never);
-    
+
     renderWithRouter(<Header />);
     expect(screen.getByTestId("loading")).toBeInTheDocument();
   });
@@ -63,7 +63,7 @@ describe("Header", () => {
     } as never);
 
     renderWithRouter(<Header />);
-    
+
     expect(screen.getByText("Login")).toBeInTheDocument();
     expect(screen.getByText("Sign Up")).toBeInTheDocument();
   });
@@ -85,7 +85,7 @@ describe("Header", () => {
     } as never);
 
     renderWithRouter(<Header />);
-    
+
     expect(screen.queryByText("Login")).not.toBeInTheDocument();
     expect(screen.queryByText("Sign Up")).not.toBeInTheDocument();
   });
@@ -97,7 +97,7 @@ describe("Header", () => {
     } as never);
 
     renderWithRouter(<Header />);
-    
+
     expect(screen.queryByTestId("header-menu")).not.toBeInTheDocument();
   });
 });

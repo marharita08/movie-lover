@@ -49,7 +49,9 @@ export const EmailStep: React.FC<EmailStepProps> = ({ onSuccess }) => {
         <InputError error={form.formState.errors.email?.message} />
       </div>
       <div className="mt-4 flex justify-end gap-4">
-        <Button type="submit">Reset Password</Button>
+        <Button type="submit" disabled={resetPasswordEmailMutation.isPending}>
+          Reset Password
+        </Button>
       </div>
     </form>
   );

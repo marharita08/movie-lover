@@ -53,7 +53,11 @@ export const OtpStep: React.FC<OtpStepProps> = ({ onSuccess }) => {
         <InputError error={form.formState.errors.code?.message} />
       </div>
       <div className="mt-4 flex justify-end gap-4">
-        <Button type="submit" className="min-w-[150px]">
+        <Button
+          type="submit"
+          className="min-w-[150px]"
+          disabled={resetPasswordVerifyMutation.isPending}
+        >
           Verify
         </Button>
       </div>
