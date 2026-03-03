@@ -72,6 +72,7 @@ export const UserProfile = () => {
                 type="button"
                 variant={"outline"}
                 onClick={handleReset}
+                disabled={updateUserMutation.isPending}
               >
                 <RotateCcwIcon className="h-4 w-4" />
                 Reset
