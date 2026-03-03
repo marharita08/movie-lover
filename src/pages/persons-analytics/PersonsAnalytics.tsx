@@ -1,5 +1,5 @@
 import { ArrowLeft, SearchIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -12,12 +12,11 @@ import {
   Person,
 } from "@/components";
 import { PersonRole, personRoleMap } from "@/const";
-import { useDebounce, usePersonStats } from "@/hooks";
+import { usePersonStats, useSearch } from "@/hooks";
 
 export const PersonsAnalytics = () => {
   const { id, role } = useParams<{ id: string; role: PersonRole }>();
-  const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounce(search);
+  const { search, setSearch, debouncedSearch } = useSearch();
 
   const roleParsed = role as PersonRole;
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MediaList } from "@/components";
-import { useDebounce, useMediaItems } from "@/hooks";
+import { useMediaItems, useSearch } from "@/hooks";
 
 import { MediasFromList } from "./MediasFromList";
 
@@ -12,7 +12,7 @@ vi.mock("react-router-dom", () => ({
 
 vi.mock("@/hooks", () => ({
   useMediaItems: vi.fn(),
-  useDebounce: vi.fn((value) => value),
+  useSearch: vi.fn(),
 }));
 
 vi.mock("@/components", () => ({
@@ -53,10 +53,16 @@ const defaultQueryResult = {
 };
 
 describe("MediasFromList", () => {
+  const setSearchMock = vi.fn();
+
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useMediaItems).mockReturnValue(defaultQueryResult as never);
-    vi.mocked(useDebounce).mockImplementation((value) => value);
+    vi.mocked(useSearch).mockReturnValue({
+      search: "",
+      setSearch: setSearchMock,
+      debouncedSearch: "",
+    });
   });
 
   it("calls useMediaItems with correct id and empty search", () => {
@@ -74,11 +80,15 @@ describe("MediasFromList", () => {
     render(<MediasFromList />);
     const searchInput = screen.getByTestId("search-input");
     fireEvent.change(searchInput, { target: { value: "Inception" } });
-    expect(searchInput).toHaveValue("Inception");
+    expect(setSearchMock).toHaveBeenCalledWith("Inception");
   });
 
   it("calls useMediaItems with debounced search value", () => {
-    vi.mocked(useDebounce).mockReturnValue("Inception");
+    vi.mocked(useSearch).mockReturnValue({
+      search: "Inception",
+      setSearch: setSearchMock,
+      debouncedSearch: "Inception",
+    });
     render(<MediasFromList />);
 
     expect(useMediaItems).toHaveBeenCalledWith("list-123", {
@@ -86,13 +96,13 @@ describe("MediasFromList", () => {
     });
   });
 
-  it("passes search parameter through useDebounce", () => {
+  it("passes search parameter through useSearch", () => {
     render(<MediasFromList />);
     const searchInput = screen.getByTestId("search-input");
 
     fireEvent.change(searchInput, { target: { value: "Matrix" } });
 
-    expect(useDebounce).toHaveBeenCalledWith("Matrix");
+    expect(setSearchMock).toHaveBeenCalledWith("Matrix");
   });
 
   it("passes empty array to MediaList when data is undefined", () => {
@@ -138,19 +148,12 @@ describe("MediasFromList", () => {
     );
   });
 
-  it("clears search when input is cleared", () => {
-    render(<MediasFromList />);
-    const searchInput = screen.getByTestId("search-input");
-
-    fireEvent.change(searchInput, { target: { value: "Interstellar" } });
-    expect(searchInput).toHaveValue("Interstellar");
-
-    fireEvent.change(searchInput, { target: { value: "" } });
-    expect(searchInput).toHaveValue("");
-  });
-
   it("filters results based on search query", () => {
-    vi.mocked(useDebounce).mockReturnValue("Nolan");
+    vi.mocked(useSearch).mockReturnValue({
+      search: "Nolan",
+      setSearch: setSearchMock,
+      debouncedSearch: "Nolan",
+    });
     vi.mocked(useMediaItems).mockReturnValue({
       ...defaultQueryResult,
       data: {

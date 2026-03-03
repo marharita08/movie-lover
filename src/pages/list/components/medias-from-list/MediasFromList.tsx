@@ -1,14 +1,12 @@
 import { SearchIcon } from "lucide-react";
-import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { Input, MediaList } from "@/components";
-import { useDebounce, useMediaItems } from "@/hooks";
+import { useMediaItems, useSearch } from "@/hooks";
 
 export const MediasFromList = () => {
   const { id } = useParams<{ id: string }>();
-  const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounce(search);
+  const { search, setSearch, debouncedSearch } = useSearch();
 
   const {
     data,

@@ -7,4 +7,5 @@ export * from "./use-app-query/useAppQuery";
 export * from "./use-debounce/useDebounce";
 export * from "./use-is-mobile/useIsMobile";
 export * from "./use-otp-countdown/useOtpCountdown";
+export * from "./use-search/useSearch";
 export * from "./use-toast/useToast";

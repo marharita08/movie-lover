@@ -1,13 +1,13 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { useDebounce, useMultiSearch } from "@/hooks";
+import { useMultiSearch, useSearch } from "@/hooks";
 
 import { Search } from "./Search";
 
 vi.mock("@/hooks", () => ({
   useMultiSearch: vi.fn(),
-  useDebounce: vi.fn((value) => value),
+  useSearch: vi.fn(),
 }));
 
 vi.mock("react-intersection-observer", () => ({
@@ -67,10 +67,22 @@ const defaultQueryResult = {
   refetch: vi.fn(),
 };
 
+const defaultSearchResult = {
+  search: "",
+  setSearch: vi.fn(),
+  debouncedSearch: "",
+};
+
 describe("Search", () => {
+  const setSearchMock = vi.fn();
+
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useMultiSearch).mockReturnValue(defaultQueryResult as never);
+    vi.mocked(useSearch).mockReturnValue({
+      ...defaultSearchResult,
+      setSearch: setSearchMock,
+    });
   });
 
   it("renders search input and heading", () => {
@@ -152,7 +164,11 @@ describe("Search", () => {
   });
 
   it("shows EmptyState with search text when query is active", () => {
-    vi.mocked(useDebounce).mockReturnValue("inception");
+    vi.mocked(useSearch).mockReturnValue({
+      search: "inception",
+      setSearch: setSearchMock,
+      debouncedSearch: "inception",
+    });
     vi.mocked(useMultiSearch).mockReturnValue({
       ...defaultQueryResult,
       data: { pages: [{ results: [] }] },
@@ -253,7 +269,7 @@ describe("Search", () => {
     const input = screen.getByPlaceholderText("Search...");
     fireEvent.change(input, { target: { value: "inception" } });
 
-    expect(input).toHaveValue("inception");
+    expect(setSearchMock).toHaveBeenCalledWith("inception");
   });
 
   it("respects maxLength on input", () => {
@@ -264,7 +280,11 @@ describe("Search", () => {
   });
 
   it("passes debounced search to useMultiSearch", () => {
-    vi.mocked(useDebounce).mockReturnValue("batman");
+    vi.mocked(useSearch).mockReturnValue({
+      search: "batman",
+      setSearch: setSearchMock,
+      debouncedSearch: "batman",
+    });
 
     render(<Search />);
 

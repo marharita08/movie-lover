@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PersonRole, personRoleMap } from "@/const";
-import { useDebounce, usePersonStats } from "@/hooks";
+import { usePersonStats, useSearch } from "@/hooks";
 
 import { PersonsAnalytics } from "./PersonsAnalytics";
 
@@ -15,7 +15,7 @@ vi.mock("react-router-dom", () => ({
 
 vi.mock("@/hooks", () => ({
   usePersonStats: vi.fn(),
-  useDebounce: vi.fn((value) => value),
+  useSearch: vi.fn(),
 }));
 
 vi.mock("react-intersection-observer", () => ({
@@ -71,11 +71,22 @@ const defaultQueryResult = {
   fetchNextPage: vi.fn(),
 };
 
+const defaultSearchResult = {
+  search: "",
+  setSearch: vi.fn(),
+  debouncedSearch: "",
+};
+
 describe("PersonsAnalitics", () => {
+  const setSearchMock = vi.fn();
+
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(usePersonStats).mockReturnValue(defaultQueryResult as never);
-    vi.mocked(useDebounce).mockImplementation((value) => value);
+    vi.mocked(useSearch).mockReturnValue({
+      ...defaultSearchResult,
+      setSearch: setSearchMock,
+    });
   });
 
   it("calls usePersonStats with correct params", () => {
@@ -104,11 +115,15 @@ describe("PersonsAnalitics", () => {
     render(<PersonsAnalytics />);
     const searchInput = screen.getByTestId("search-input");
     fireEvent.change(searchInput, { target: { value: "Nolan" } });
-    expect(searchInput).toHaveValue("Nolan");
+    expect(setSearchMock).toHaveBeenCalledWith("Nolan");
   });
 
   it("calls usePersonStats with debounced search value", () => {
-    vi.mocked(useDebounce).mockReturnValue("Nolan");
+    vi.mocked(useSearch).mockReturnValue({
+      search: "Nolan",
+      setSearch: setSearchMock,
+      debouncedSearch: "Nolan",
+    });
     render(<PersonsAnalytics />);
 
     expect(usePersonStats).toHaveBeenCalledWith("list-123", {
@@ -118,13 +133,13 @@ describe("PersonsAnalitics", () => {
     });
   });
 
-  it("passes search parameter through useDebounce", () => {
+  it("passes search parameter through useSearch", () => {
     render(<PersonsAnalytics />);
     const searchInput = screen.getByTestId("search-input");
 
     fireEvent.change(searchInput, { target: { value: "Spielberg" } });
 
-    expect(useDebounce).toHaveBeenCalledWith("Spielberg");
+    expect(setSearchMock).toHaveBeenCalledWith("Spielberg");
   });
 
   it("shows Loading when isLoading is true", () => {
@@ -169,7 +184,11 @@ describe("PersonsAnalitics", () => {
   });
 
   it("shows EmptyState with search context when no results found", () => {
-    vi.mocked(useDebounce).mockReturnValue("NonExistent");
+    vi.mocked(useSearch).mockReturnValue({
+      search: "NonExistent",
+      setSearch: setSearchMock,
+      debouncedSearch: "NonExistent",
+    });
     vi.mocked(usePersonStats).mockReturnValue({
       ...defaultQueryResult,
       data: { pages: [{ results: [] }] },
@@ -251,16 +270,5 @@ describe("PersonsAnalitics", () => {
     render(<PersonsAnalytics />);
     fireEvent.click(screen.getByText("Back"));
     expect(mockNavigate).toHaveBeenCalledWith(-1);
-  });
-
-  it("clears search results when search is cleared", () => {
-    render(<PersonsAnalytics />);
-    const searchInput = screen.getByTestId("search-input");
-
-    fireEvent.change(searchInput, { target: { value: "Nolan" } });
-    expect(searchInput).toHaveValue("Nolan");
-
-    fireEvent.change(searchInput, { target: { value: "" } });
-    expect(searchInput).toHaveValue("");
   });
 });
