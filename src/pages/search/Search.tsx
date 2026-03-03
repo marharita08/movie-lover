@@ -1,15 +1,14 @@
 import { SearchIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
 import { EmptyState, ErrorState, Input, Loading } from "@/components";
-import { useDebounce, useMultiSearch } from "@/hooks";
+import { useMultiSearch, useSearch } from "@/hooks";
 
 import { SearchResultCard } from "./components/SearchResultCard";
 
 export const Search = () => {
-  const [query, setQuery] = useState("");
-  const debouncedSearch = useDebounce(query);
+  const { search, setSearch, debouncedSearch } = useSearch();
 
   const {
     data,
@@ -40,8 +39,8 @@ export const Search = () => {
       <div className="mt-4 max-w-md">
         <Input
           placeholder="Search..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           startIcon={<SearchIcon className="h-4 w-4" />}
           maxLength={255}
         />

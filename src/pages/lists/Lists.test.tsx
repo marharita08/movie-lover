@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { RouterKey } from "@/const";
-import { useDebounce, useLists } from "@/hooks";
+import { useLists, useSearch } from "@/hooks";
 
 import { Lists } from "./Lists";
 
@@ -15,7 +15,7 @@ vi.mock("react-router-dom", () => ({
 
 vi.mock("@/hooks", () => ({
   useLists: vi.fn(),
-  useDebounce: vi.fn((value) => value),
+  useSearch: vi.fn(),
 }));
 
 vi.mock("react-intersection-observer", () => ({
@@ -78,10 +78,17 @@ const defaultQueryResult = {
   refetch: vi.fn(),
 };
 
+const defaultSearchResult = {
+  search: "",
+  setSearch: vi.fn(),
+  debouncedSearch: "",
+};
+
 describe("Lists", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useLists).mockReturnValue(defaultQueryResult as never);
+    vi.mocked(useSearch).mockReturnValue(defaultSearchResult);
   });
 
   it("shows Loading when isLoading is true", () => {
@@ -138,7 +145,11 @@ describe("Lists", () => {
   });
 
   it("shows EmptyState with search text when search is active", () => {
-    vi.mocked(useDebounce).mockReturnValue("batman");
+    vi.mocked(useSearch).mockReturnValue({
+      search: "batman",
+      setSearch: vi.fn(),
+      debouncedSearch: "batman",
+    });
     vi.mocked(useLists).mockReturnValue({
       ...defaultQueryResult,
       data: { pages: [{ results: [] }] },
@@ -224,7 +235,11 @@ describe("Lists", () => {
   });
 
   it("passes debounced search to useLists", () => {
-    vi.mocked(useDebounce).mockReturnValue("batman");
+    vi.mocked(useSearch).mockReturnValue({
+      search: "batman",
+      setSearch: vi.fn(),
+      debouncedSearch: "batman",
+    });
     render(<Lists />);
     expect(useLists).toHaveBeenCalledWith({ name: "batman" });
   });

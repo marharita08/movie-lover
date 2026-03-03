@@ -1,18 +1,17 @@
 import { PlusIcon, SearchIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 
 import { Button, EmptyState, ErrorState, Input, Loading } from "@/components";
 import { RouterKey } from "@/const";
-import { useDebounce } from "@/hooks";
+import { useSearch } from "@/hooks";
 import { useLists } from "@/hooks";
 
 import { ListCard } from "./components";
 
 export const Lists = () => {
-  const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounce(search);
+  const { search, setSearch, debouncedSearch } = useSearch();
 
   const {
     data,
