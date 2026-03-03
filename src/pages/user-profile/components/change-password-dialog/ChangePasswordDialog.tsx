@@ -90,7 +90,11 @@ export const ChangePasswordDialog = () => {
             >
               Cancel
             </Button>
-            <Button type="submit" className="min-w-[120px]">
+            <Button
+              type="submit"
+              className="min-w-[120px]"
+              disabled={changePasswordMutation.isPending}
+            >
               Save
             </Button>
           </div>

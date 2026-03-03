@@ -27,7 +27,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
             navigate(RouterKey.EMAIL_VERIFICATION);
           },
           onError: () => {
-            navigate(RouterKey.LOGIN);
+            navigate(RouterKey.DASHBOARD);
           },
         },
       );
@@ -39,7 +39,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   }
 
   if (!user) {
-    return <Navigate to={RouterKey.LOGIN} />;
+    return <Navigate to={RouterKey.DASHBOARD} />;
   }
 
   return children;

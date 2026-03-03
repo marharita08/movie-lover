@@ -48,7 +48,7 @@ describe("AuthGuard", () => {
     expect(screen.getByTestId("loading-overlay")).toBeInTheDocument();
   });
 
-  it("redirects to login when user is not authenticated", () => {
+  it("redirects to dashboard when user is not authenticated", () => {
     vi.mocked(useCurrentUser).mockReturnValue({
       data: null,
       isLoading: false,
@@ -59,7 +59,7 @@ describe("AuthGuard", () => {
       </AuthGuard>,
     );
     const navigate = screen.getByTestId("navigate");
-    expect(navigate).toHaveAttribute("data-to", RouterKey.LOGIN);
+    expect(navigate).toHaveAttribute("data-to", RouterKey.DASHBOARD);
   });
 
   it("renders children when user is authenticated and email is verified", () => {
@@ -125,7 +125,7 @@ describe("AuthGuard", () => {
     });
   });
 
-  it("navigates to login on sendOtp error", async () => {
+  it("navigates to dashboard on sendOtp error", async () => {
     vi.mocked(useCurrentUser).mockReturnValue({
       data: unverifiedUser,
       isLoading: false,
@@ -144,7 +144,7 @@ describe("AuthGuard", () => {
     );
 
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith(RouterKey.LOGIN);
+      expect(mockNavigate).toHaveBeenCalledWith(RouterKey.DASHBOARD);
     });
   });
 });

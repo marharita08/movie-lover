@@ -6,8 +6,30 @@ import { StorageKey } from "@/const";
 import { ResetPasswordStep } from "./const";
 import { ResetPassword } from "./ResetPassword";
 
+vi.mock("react-router-dom", () => ({
+  useNavigate: () => vi.fn(),
+}));
+
 vi.mock("@/components", () => ({
   Sphere: () => null,
+  Button: ({
+    children,
+    onClick,
+    type,
+    asChild,
+  }: {
+    children: React.ReactNode;
+    onClick?: () => void;
+    type?: "button" | "submit" | "reset";
+    asChild?: boolean;
+  }) =>
+    asChild ? (
+      <>{children}</>
+    ) : (
+      <button onClick={onClick} type={type}>
+        {children}
+      </button>
+    ),
 }));
 
 vi.mock("./components", () => ({

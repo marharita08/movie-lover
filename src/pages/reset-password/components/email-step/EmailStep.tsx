@@ -1,7 +1,5 @@
-import { Link } from "react-router-dom";
-
 import { Button, Input, InputError } from "@/components";
-import { RouterKey, StorageKey } from "@/const";
+import { StorageKey } from "@/const";
 import { useAppForm, useResetPasswordEmail } from "@/hooks";
 
 import {
@@ -51,10 +49,9 @@ export const EmailStep: React.FC<EmailStepProps> = ({ onSuccess }) => {
         <InputError error={form.formState.errors.email?.message} />
       </div>
       <div className="mt-4 flex justify-end gap-4">
-        <Button asChild variant={"link"}>
-          <Link to={RouterKey.LOGIN}>Back to login</Link>
+        <Button type="submit" disabled={resetPasswordEmailMutation.isPending}>
+          Reset Password
         </Button>
-        <Button type="submit">Reset Password</Button>
       </div>
     </form>
   );

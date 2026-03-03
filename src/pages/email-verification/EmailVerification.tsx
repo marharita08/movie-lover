@@ -94,7 +94,11 @@ export const EmailVerification = () => {
             />
             <InputError error={form.formState.errors.code?.message} />
           </div>
-          <Button type="submit" className="mt-6 w-full">
+          <Button
+            type="submit"
+            className="mt-6 w-full"
+            disabled={verifyEmailMutation.isPending}
+          >
             Verify
           </Button>
         </div>

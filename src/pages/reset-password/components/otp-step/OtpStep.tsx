@@ -1,7 +1,5 @@
-import { Link } from "react-router-dom";
-
 import { Button, Input, InputError } from "@/components";
-import { RouterKey, StorageKey } from "@/const";
+import { StorageKey } from "@/const";
 import { useAppForm, useResetPasswordVerify } from "@/hooks";
 
 import {
@@ -55,10 +53,11 @@ export const OtpStep: React.FC<OtpStepProps> = ({ onSuccess }) => {
         <InputError error={form.formState.errors.code?.message} />
       </div>
       <div className="mt-4 flex justify-end gap-4">
-        <Button asChild variant={"link"}>
-          <Link to={RouterKey.LOGIN}>Back to login</Link>
-        </Button>
-        <Button type="submit" className="min-w-[150px]">
+        <Button
+          type="submit"
+          className="min-w-[150px]"
+          disabled={resetPasswordVerifyMutation.isPending}
+        >
           Verify
         </Button>
       </div>
