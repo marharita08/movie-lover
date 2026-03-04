@@ -2,7 +2,8 @@ import "swiper/css";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useRef, useState } from "react";
-import { Navigation } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+import { Navigation, Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { EmptyState, ErrorState, Loading } from "@/components";
@@ -68,6 +69,20 @@ export const MediaList: React.FC<MediaListProps> = ({
     );
   }
 
+  const handleSlideChange = (swiper: SwiperType) => {
+    const slidesPerView = typeof swiper.params.slidesPerView === 'number' 
+      ? swiper.params.slidesPerView 
+      : 1;
+    
+    const slidesPerGroup = swiper.params.slidesPerGroup || 1;
+    const threshold = slidesPerGroup * 2;
+    const remainingSlides = medias.length - (swiper.activeIndex + slidesPerView);
+    
+    if (remainingSlides <= threshold && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
+
   return (
     <div className="relative sm:px-6">
       <button
@@ -76,6 +91,7 @@ export const MediaList: React.FC<MediaListProps> = ({
           "hover:text-primary bg-card absolute top-1/2 left-0 z-10 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full p-2 shadow-md sm:flex",
           isLocked && "sm:hidden",
         )}
+        aria-label="Previous"
       >
         <ChevronLeftIcon />
       </button>
@@ -86,13 +102,17 @@ export const MediaList: React.FC<MediaListProps> = ({
           "hover:text-primary bg-card absolute top-1/2 right-0 z-10 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full p-2 shadow-md sm:flex",
           isLocked && "sm:hidden",
         )}
+        aria-label="Next"
       >
         <ChevronRightIcon />
       </button>
 
       <Swiper
-        modules={[Navigation]}
+        modules={[Navigation, Virtual]}
         spaceBetween={16}
+        virtual={{
+          enabled: true,
+        }}
         breakpoints={{
           320: {
             slidesPerView: 2,
@@ -117,26 +137,16 @@ export const MediaList: React.FC<MediaListProps> = ({
             swiper.params.navigation!.nextEl = nextRef.current;
           }
         }}
-        onReachEnd={() => {
-          if (hasNextPage && !isFetchingNextPage) {
-            fetchNextPage();
-          }
-        }}
+        onSlideChange={handleSlideChange}
         watchOverflow
         onLock={() => setIsLocked(true)}
         onUnlock={() => setIsLocked(false)}
       >
-        {medias.map((media) => (
-          <SwiperSlide key={media.id}>
+        {medias.map((media, index) => (
+          <SwiperSlide key={media.id} virtualIndex={index}>
             <MediaCard media={media} />
           </SwiperSlide>
         ))}
-
-        {isFetchingNextPage && (
-          <SwiperSlide>
-            <Loading />
-          </SwiperSlide>
-        )}
       </Swiper>
     </div>
   );

@@ -1,25 +1,60 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import type { Swiper as SwiperType } from "swiper";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MediaList } from "./MediaList";
 
 vi.mock("swiper/css", () => ({}));
 
+interface MockSwiperParams {
+  slidesPerView: number;
+  slidesPerGroup: number;
+}
+
+interface MockSwiper {
+  params: MockSwiperParams;
+  activeIndex: number;
+}
+
 vi.mock("swiper/react", () => ({
   Swiper: ({
     children,
-    onReachEnd,
+    onSlideChange,
   }: {
     children: React.ReactNode;
-    onReachEnd: () => void;
-  }) => (
-    <div data-testid="swiper">
-      {children}
-      <button data-testid="reach-end" onClick={onReachEnd}>
-        Reach End
-      </button>
-    </div>
-  ),
+    onSlideChange: (swiper: SwiperType) => void;
+  }) => {
+    const mockSwiper: MockSwiper = {
+      params: {
+        slidesPerView: 6,
+        slidesPerGroup: 3,
+      },
+      activeIndex: 0,
+    };
+
+    return (
+      <div data-testid="swiper">
+        {children}
+        <button
+          data-testid="slide-change"
+          onClick={() => onSlideChange(mockSwiper as SwiperType)}
+        >
+          Slide Change
+        </button>
+        <button
+          data-testid="slide-near-end"
+          onClick={() =>
+            onSlideChange({
+              ...mockSwiper,
+              activeIndex: 10,
+            } as SwiperType)
+          }
+        >
+          Slide Near End
+        </button>
+      </div>
+    );
+  },
   SwiperSlide: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
@@ -27,6 +62,7 @@ vi.mock("swiper/react", () => ({
 
 vi.mock("swiper/modules", () => ({
   Navigation: {},
+  Virtual: {},
 }));
 
 vi.mock("@/components", () => ({
@@ -106,7 +142,7 @@ describe("MediaList", () => {
     expect(screen.getAllByTestId("media-card")).toHaveLength(3);
   });
 
-  it("shows loading spinner when isFetchingNextPage is true", () => {
+  it("does not show loading spinner when isFetchingNextPage is true (removed from UI)", () => {
     const medias = [makeMedia("1")];
     render(
       <MediaList
@@ -115,12 +151,12 @@ describe("MediaList", () => {
         isFetchingNextPage={true}
       />,
     );
-    expect(screen.getByTestId("loading")).toBeInTheDocument();
+    expect(screen.queryByTestId("loading")).not.toBeInTheDocument();
   });
 
-  it("calls fetchNextPage when reaching end and hasNextPage is true", () => {
+  it("does not call fetchNextPage when user is at the beginning", () => {
     const fetchNextPage = vi.fn();
-    const medias = [makeMedia("1")];
+    const medias = Array.from({ length: 20 }, (_, i) => makeMedia(String(i)));
     render(
       <MediaList
         {...defaultProps}
@@ -129,13 +165,28 @@ describe("MediaList", () => {
         fetchNextPage={fetchNextPage}
       />,
     );
-    fireEvent.click(screen.getByTestId("reach-end"));
+    fireEvent.click(screen.getByTestId("slide-change"));
+    expect(fetchNextPage).not.toHaveBeenCalled();
+  });
+
+  it("calls fetchNextPage when user slides near the end and hasNextPage is true", () => {
+    const fetchNextPage = vi.fn();
+    const medias = Array.from({ length: 15 }, (_, i) => makeMedia(String(i)));
+    render(
+      <MediaList
+        {...defaultProps}
+        medias={medias as never}
+        hasNextPage={true}
+        fetchNextPage={fetchNextPage}
+      />,
+    );
+    fireEvent.click(screen.getByTestId("slide-near-end"));
     expect(fetchNextPage).toHaveBeenCalled();
   });
 
   it("does not call fetchNextPage when isFetchingNextPage is true", () => {
     const fetchNextPage = vi.fn();
-    const medias = [makeMedia("1")];
+    const medias = Array.from({ length: 15 }, (_, i) => makeMedia(String(i)));
     render(
       <MediaList
         {...defaultProps}
@@ -145,13 +196,13 @@ describe("MediaList", () => {
         fetchNextPage={fetchNextPage}
       />,
     );
-    fireEvent.click(screen.getByTestId("reach-end"));
+    fireEvent.click(screen.getByTestId("slide-near-end"));
     expect(fetchNextPage).not.toHaveBeenCalled();
   });
 
   it("does not call fetchNextPage when hasNextPage is false", () => {
     const fetchNextPage = vi.fn();
-    const medias = [makeMedia("1")];
+    const medias = Array.from({ length: 15 }, (_, i) => makeMedia(String(i)));
     render(
       <MediaList
         {...defaultProps}
@@ -160,7 +211,7 @@ describe("MediaList", () => {
         fetchNextPage={fetchNextPage}
       />,
     );
-    fireEvent.click(screen.getByTestId("reach-end"));
+    fireEvent.click(screen.getByTestId("slide-near-end"));
     expect(fetchNextPage).not.toHaveBeenCalled();
   });
 });
