@@ -1,17 +1,20 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { useMultiSearch, useSearch } from "@/hooks";
+import { useIsMobile, useMultiSearch, useSearch } from "@/hooks";
 
 import { Search } from "./Search";
+
+const mockUseVirtualizer = vi.fn();
 
 vi.mock("@/hooks", () => ({
   useMultiSearch: vi.fn(),
   useSearch: vi.fn(),
+  useIsMobile: vi.fn(),
 }));
 
-vi.mock("react-intersection-observer", () => ({
-  useInView: vi.fn(() => ({ ref: vi.fn(), inView: false })),
+vi.mock("@tanstack/react-virtual", () => ({
+  useVirtualizer: () => mockUseVirtualizer(),
 }));
 
 vi.mock("@/components", async () => {
@@ -78,11 +81,18 @@ describe("Search", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+
+    mockUseVirtualizer.mockReturnValue({
+      getVirtualItems: () => [],
+      getTotalSize: () => 0,
+    });
+
     vi.mocked(useMultiSearch).mockReturnValue(defaultQueryResult as never);
     vi.mocked(useSearch).mockReturnValue({
       ...defaultSearchResult,
       setSearch: setSearchMock,
     });
+    vi.mocked(useIsMobile).mockReturnValue(false);
   });
 
   it("renders search input and heading", () => {
@@ -104,6 +114,11 @@ describe("Search", () => {
   });
 
   it("shows Loading when isFetchingNextPage is true", () => {
+    mockUseVirtualizer.mockReturnValue({
+      getVirtualItems: () => [{ index: 0, key: "0", start: 0, size: 137 }],
+      getTotalSize: () => 137,
+    });
+
     vi.mocked(useMultiSearch).mockReturnValue({
       ...defaultQueryResult,
       data: {
@@ -181,6 +196,11 @@ describe("Search", () => {
   });
 
   it("renders search result cards", () => {
+    mockUseVirtualizer.mockReturnValue({
+      getVirtualItems: () => [{ index: 0, key: "0", start: 0, size: 137 }],
+      getTotalSize: () => 137,
+    });
+
     vi.mocked(useMultiSearch).mockReturnValue({
       ...defaultQueryResult,
       data: {
@@ -203,6 +223,11 @@ describe("Search", () => {
   });
 
   it("flattens pages into single list", () => {
+    mockUseVirtualizer.mockReturnValue({
+      getVirtualItems: () => [{ index: 0, key: "0", start: 0, size: 137 }],
+      getTotalSize: () => 137,
+    });
+
     vi.mocked(useMultiSearch).mockReturnValue({
       ...defaultQueryResult,
       data: {
@@ -218,17 +243,26 @@ describe("Search", () => {
     expect(screen.getAllByTestId("search-result-card")).toHaveLength(2);
   });
 
-  it("calls fetchNextPage when inView and hasNextPage", async () => {
+  it("calls fetchNextPage when near end of virtual list", () => {
     const fetchNextPage = vi.fn();
-    const { useInView } = await import("react-intersection-observer");
-    vi.mocked(useInView).mockReturnValue({
-      ref: vi.fn(),
-      inView: true,
-    } as never);
+
+    // Створюємо 40 результатів для 20 рядків (по 2 на desktop)
+    const results = Array.from({ length: 40 }, (_, i) => ({
+      id: i,
+      title: `Movie ${i}`,
+      mediaType: "movie" as const,
+    }));
+
+    // Симулюємо скрол до рядка 17 (близько до кінця)
+    mockUseVirtualizer.mockReturnValue({
+      getVirtualItems: () => [{ index: 17, key: "17", start: 2329, size: 137 }],
+      getTotalSize: () => 2740,
+    });
+
     vi.mocked(useMultiSearch).mockReturnValue({
       ...defaultQueryResult,
       data: {
-        pages: [{ results: [{ id: 1, title: "Movie 1", mediaType: "movie" }] }],
+        pages: [{ results }],
       },
       hasNextPage: true,
       fetchNextPage,
@@ -236,22 +270,27 @@ describe("Search", () => {
 
     render(<Search />);
 
-    await waitFor(() => {
-      expect(fetchNextPage).toHaveBeenCalled();
-    });
+    expect(fetchNextPage).toHaveBeenCalled();
   });
 
-  it("does not call fetchNextPage when isFetchingNextPage is true", async () => {
+  it("does not call fetchNextPage when isFetchingNextPage is true", () => {
     const fetchNextPage = vi.fn();
-    const { useInView } = await import("react-intersection-observer");
-    vi.mocked(useInView).mockReturnValue({
-      ref: vi.fn(),
-      inView: true,
-    } as never);
+
+    const results = Array.from({ length: 40 }, (_, i) => ({
+      id: i,
+      title: `Movie ${i}`,
+      mediaType: "movie" as const,
+    }));
+
+    mockUseVirtualizer.mockReturnValue({
+      getVirtualItems: () => [{ index: 17, key: "17", start: 2329, size: 137 }],
+      getTotalSize: () => 2740,
+    });
+
     vi.mocked(useMultiSearch).mockReturnValue({
       ...defaultQueryResult,
       data: {
-        pages: [{ results: [{ id: 1, title: "Movie 1", mediaType: "movie" }] }],
+        pages: [{ results }],
       },
       hasNextPage: true,
       isFetchingNextPage: true,
@@ -289,5 +328,11 @@ describe("Search", () => {
     render(<Search />);
 
     expect(useMultiSearch).toHaveBeenCalledWith({ query: "batman" });
+  });
+
+  it("uses mobile layout when isMobile is true", () => {
+    vi.mocked(useIsMobile).mockReturnValue(true);
+    render(<Search />);
+    expect(useIsMobile).toHaveBeenCalled();
   });
 });

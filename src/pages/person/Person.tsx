@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ImageOffIcon } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Button, ErrorState, LoadingOverlay } from "@/components";
@@ -49,7 +49,7 @@ export const Person = () => {
               />
             ) : (
               <div className="bg-muted flex h-96 w-64 items-center justify-center rounded-lg shadow-lg">
-                <span className="text-muted-foreground">No Image</span>
+                <ImageOffIcon className="text-muted-foreground h-12 w-12" />
               </div>
             )}
           </div>

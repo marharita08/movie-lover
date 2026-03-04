@@ -51,7 +51,7 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({
           <img
             src={`${TMDBImageUrl.ORIGINAL}${details.imagePath}`}
             alt={details.title}
-            className="w-20"
+            className="aspect-2/3 w-20"
             loading="lazy"
           />
         ) : (
