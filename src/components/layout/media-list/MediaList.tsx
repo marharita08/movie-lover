@@ -70,14 +70,16 @@ export const MediaList: React.FC<MediaListProps> = ({
   }
 
   const handleSlideChange = (swiper: SwiperType) => {
-    const slidesPerView = typeof swiper.params.slidesPerView === 'number' 
-      ? swiper.params.slidesPerView 
-      : 1;
-    
+    const slidesPerView =
+      typeof swiper.params.slidesPerView === "number"
+        ? swiper.params.slidesPerView
+        : 1;
+
     const slidesPerGroup = swiper.params.slidesPerGroup || 1;
     const threshold = slidesPerGroup * 2;
-    const remainingSlides = medias.length - (swiper.activeIndex + slidesPerView);
-    
+    const remainingSlides =
+      medias.length - (swiper.activeIndex + slidesPerView);
+
     if (remainingSlides <= threshold && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }

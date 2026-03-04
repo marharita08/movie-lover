@@ -1,3 +1,4 @@
+import { ImageOffIcon } from "lucide-react";
 import { useMemo } from "react";
 import { generatePath, Link } from "react-router-dom";
 
@@ -16,11 +17,12 @@ export const MediaCard: React.FC<MediaCardProps> = ({ media }) => {
           <img
             src={`${TMDBImageUrl.ORIGINAL}${media.posterPath}`}
             alt={media.title}
+            className="aspect-2/3 w-full"
             loading="lazy"
           />
         ) : (
           <div className="bg-muted flex aspect-2/3 w-full items-center justify-center">
-            <span className="text-muted-foreground text-sm">No Image</span>
+            <ImageOffIcon className="text-muted-foreground h-12 w-12" />
           </div>
         )}
         <div className="flex-1 truncate p-2 text-sm font-medium">

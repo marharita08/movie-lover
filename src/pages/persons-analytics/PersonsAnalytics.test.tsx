@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PersonRole, personRoleMap } from "@/const";
-import { usePersonStats, useSearch } from "@/hooks";
+import { useIsMobile, usePersonStats, useSearch } from "@/hooks";
 
 import { PersonsAnalytics } from "./PersonsAnalytics";
 
@@ -16,10 +16,15 @@ vi.mock("react-router-dom", () => ({
 vi.mock("@/hooks", () => ({
   usePersonStats: vi.fn(),
   useSearch: vi.fn(),
+  useIsMobile: vi.fn(),
 }));
 
-vi.mock("react-intersection-observer", () => ({
-  useInView: vi.fn(() => ({ ref: vi.fn(), inView: false })),
+vi.mock("@tanstack/react-virtual", () => ({
+  useVirtualizer: vi.fn(() => ({
+    getVirtualItems: () => [],
+    getTotalSize: () => 0,
+    measureElement: vi.fn(),
+  })),
 }));
 
 vi.mock("@/components", () => ({
@@ -77,7 +82,7 @@ const defaultSearchResult = {
   debouncedSearch: "",
 };
 
-describe("PersonsAnalitics", () => {
+describe("PersonsAnalytics", () => {
   const setSearchMock = vi.fn();
 
   beforeEach(() => {
@@ -87,6 +92,7 @@ describe("PersonsAnalitics", () => {
       ...defaultSearchResult,
       setSearch: setSearchMock,
     });
+    vi.mocked(useIsMobile).mockReturnValue(false);
   });
 
   it("calls usePersonStats with correct params", () => {
@@ -199,7 +205,15 @@ describe("PersonsAnalitics", () => {
     expect(emptyState).toBeInTheDocument();
   });
 
-  it("renders persons when data is present", () => {
+  it("renders persons when data is present", async () => {
+    const { useVirtualizer } = await import("@tanstack/react-virtual");
+    vi.mocked(useVirtualizer).mockReturnValue({
+      getVirtualItems: () =>
+        [{ index: 0, key: "0", start: 0, size: 150 }] as never,
+      getTotalSize: () => 150,
+      measureElement: vi.fn(),
+    } as never);
+
     vi.mocked(usePersonStats).mockReturnValue({
       ...defaultQueryResult,
       data: {
@@ -217,7 +231,15 @@ describe("PersonsAnalitics", () => {
     expect(screen.getAllByTestId("person")).toHaveLength(2);
   });
 
-  it("flattens pages into single list", () => {
+  it("flattens pages into single list", async () => {
+    const { useVirtualizer } = await import("@tanstack/react-virtual");
+    vi.mocked(useVirtualizer).mockReturnValue({
+      getVirtualItems: () =>
+        [{ index: 0, key: "0", start: 0, size: 150 }] as never,
+      getTotalSize: () => 150,
+      measureElement: vi.fn(),
+    } as never);
+
     vi.mocked(usePersonStats).mockReturnValue({
       ...defaultQueryResult,
       data: {
@@ -231,37 +253,64 @@ describe("PersonsAnalitics", () => {
     expect(screen.getAllByTestId("person")).toHaveLength(2);
   });
 
-  it("calls fetchNextPage when inView and hasNextPage", async () => {
+  it("calls fetchNextPage when near end of virtual list", async () => {
     const fetchNextPage = vi.fn();
-    const { useInView } = await import("react-intersection-observer");
-    vi.mocked(useInView).mockReturnValue({
-      ref: vi.fn(),
-      inView: true,
+    const { useVirtualizer } = await import("@tanstack/react-virtual");
+
+    // Створюємо 40 персон, щоб мати 20 рядків (по 2 персони в рядку на desktop)
+    const persons = Array.from({ length: 40 }, (_, i) => ({
+      id: `${i}`,
+      name: `Person ${i}`,
+    }));
+
+    // Симулюємо що користувач проскролив до рядка 17 (близько до кінця, якщо всього 20 рядків)
+    vi.mocked(useVirtualizer).mockReturnValue({
+      getVirtualItems: () =>
+        [{ index: 17, key: "17", start: 2550, size: 150 }] as never,
+      getTotalSize: () => 3000,
+      measureElement: vi.fn(),
     } as never);
+
     vi.mocked(usePersonStats).mockReturnValue({
       ...defaultQueryResult,
-      data: { pages: [{ results: [{ id: "1", name: "Person 1" }] }] },
+      data: {
+        pages: [{ results: persons }],
+      },
       hasNextPage: true,
       fetchNextPage,
     } as never);
+
     render(<PersonsAnalytics />);
     expect(fetchNextPage).toHaveBeenCalled();
   });
 
   it("does not call fetchNextPage when isFetchingNextPage is true", async () => {
     const fetchNextPage = vi.fn();
-    const { useInView } = await import("react-intersection-observer");
-    vi.mocked(useInView).mockReturnValue({
-      ref: vi.fn(),
-      inView: true,
+    const { useVirtualizer } = await import("@tanstack/react-virtual");
+
+    // Створюємо 40 персон
+    const persons = Array.from({ length: 40 }, (_, i) => ({
+      id: `${i}`,
+      name: `Person ${i}`,
+    }));
+
+    vi.mocked(useVirtualizer).mockReturnValue({
+      getVirtualItems: () =>
+        [{ index: 17, key: "17", start: 2550, size: 150 }] as never,
+      getTotalSize: () => 3000,
+      measureElement: vi.fn(),
     } as never);
+
     vi.mocked(usePersonStats).mockReturnValue({
       ...defaultQueryResult,
-      data: { pages: [{ results: [{ id: "1", name: "Person 1" }] }] },
+      data: {
+        pages: [{ results: persons }],
+      },
       hasNextPage: true,
       isFetchingNextPage: true,
       fetchNextPage,
     } as never);
+
     render(<PersonsAnalytics />);
     expect(fetchNextPage).not.toHaveBeenCalled();
   });
@@ -270,5 +319,11 @@ describe("PersonsAnalitics", () => {
     render(<PersonsAnalytics />);
     fireEvent.click(screen.getByText("Back"));
     expect(mockNavigate).toHaveBeenCalledWith(-1);
+  });
+
+  it("uses mobile layout when isMobile is true", () => {
+    vi.mocked(useIsMobile).mockReturnValue(true);
+    render(<PersonsAnalytics />);
+    expect(useIsMobile).toHaveBeenCalled();
   });
 });
