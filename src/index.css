@@ -144,3 +144,21 @@
   --color-sphere-medium: rgb(var(--sphere-medium));
   --color-sphere-light: rgb(var(--sphere-light));
 }
+
+@layer base {
+  html {
+    scrollbar-gutter: stable;
+    height: -webkit-fill-available;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  html body[data-scroll-locked] {
+    --removed-body-scroll-bar-size: 0 !important;
+    margin-right: 0 !important;
+  }
+}
