@@ -1,4 +1,6 @@
 export * from "./auth-response.type";
+export * from "./chat-history-query.type";
+export * from "./chat-message-response.type";
 export * from "./discover-movies-query.type";
 export * from "./exception.type";
 export * from "./file-response.type";

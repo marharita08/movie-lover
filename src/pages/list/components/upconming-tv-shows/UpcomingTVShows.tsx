@@ -26,7 +26,7 @@ export const UpcomingTVShows = () => {
   return (
     <section className="flex flex-col gap-4">
       <h2 className="px-2 text-xl font-bold md:px-0">
-        TV shows with upcoming episodes from this list
+        TV shows with upcoming episodes
       </h2>
       <MediaList
         medias={items}

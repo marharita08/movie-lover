@@ -137,8 +137,30 @@ const CreateListLoading = React.forwardRef<HTMLDivElement, LoadingOverlayProps>(
   },
 );
 
+const LoadingBubbles = () => {
+  return (
+    <div className="bg-muted rounded-lg px-4 py-3">
+      <div className="flex items-center gap-1.5">
+        <span
+          className="bg-muted-foreground/60 h-2 w-2 animate-bounce rounded-full"
+          style={{ animationDelay: "0ms" }}
+        />
+        <span
+          className="bg-muted-foreground/60 h-2 w-2 animate-bounce rounded-full"
+          style={{ animationDelay: "160ms" }}
+        />
+        <span
+          className="bg-muted-foreground/60 h-2 w-2 animate-bounce rounded-full"
+          style={{ animationDelay: "320ms" }}
+        />
+      </div>
+    </div>
+  );
+};
+
 Loading.displayName = "Loading";
 LoadingOverlay.displayName = "LoadingOverlay";
 CreateListLoading.displayName = "CreateListLoading";
+LoadingBubbles.displayName = "LoadingBubbles";
 
-export { CreateListLoading, Loading, LoadingOverlay };
+export { CreateListLoading, Loading, LoadingBubbles, LoadingOverlay };

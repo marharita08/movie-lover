@@ -23,14 +23,15 @@ export const MediasFromList = () => {
 
   return (
     <section className="flex flex-col gap-4">
-      <div className="flex items-center gap-8">
-        <h2 className="mb-4 px-2 text-2xl font-bold md:px-0">List</h2>
-        <search>
+      <div className="mb-4 flex items-center gap-8 py-1">
+        <h2 className="px-2 text-2xl font-bold md:px-0">List</h2>
+        <search className="w-full flex-1">
           <Input
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             startIcon={<SearchIcon className="h-4 w-4" />}
+            className="w-full max-w-md"
             maxLength={255}
           />
         </search>
