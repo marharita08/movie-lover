@@ -6,5 +6,6 @@ export type ChatMessageResponse = {
   text: string;
   author: MessageAuthor;
   mediaItems: ShortMedia[] | null;
+  isError?: boolean;
   createdAt: string;
 };

@@ -1,4 +1,4 @@
-import { Bot, User } from "lucide-react";
+import { AlertTriangleIcon, Bot, User } from "lucide-react";
 
 import { MediaList } from "@/components";
 import { MessageAuthor } from "@/const";
@@ -9,7 +9,7 @@ interface MessageItemProps {
   message: ChatMessageResponse;
 }
 
-export const MessageItem = ({ message }: MessageItemProps) => {
+export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   const isAssistant = message.author === MessageAuthor.ASSISTANT;
 
   return (
@@ -39,9 +39,25 @@ export const MessageItem = ({ message }: MessageItemProps) => {
               : "bg-primary text-primary-foreground",
           )}
         >
-          <p className="text-sm leading-relaxed whitespace-pre-wrap">
-            {message.text}
-          </p>
+          <div className="flex items-center gap-2">
+            {message.isError && (
+              <div
+                className={
+                  "bg-error text-error-foreground mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+                }
+              >
+                <AlertTriangleIcon className="h-5 w-5" />
+              </div>
+            )}
+            <p
+              className={cn(
+                "text-sm leading-relaxed whitespace-pre-wrap",
+                message.isError && "text-error",
+              )}
+            >
+              {message.text}
+            </p>
+          </div>
         </div>
 
         {message.mediaItems && message.mediaItems.length > 0 && (
