@@ -15,6 +15,7 @@ export const ExpandableText: React.FC<ExpandableTextProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [shouldShowButton, setShouldShowButton] = useState(false);
+  const [heights, setHeights] = useState({ collapsed: 0, expanded: 0 });
   const textRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
@@ -23,10 +24,11 @@ export const ExpandableText: React.FC<ExpandableTextProps> = ({
         const lineHeight = parseInt(
           window.getComputedStyle(textRef.current).lineHeight,
         );
-        const maxHeight = lineHeight * 4;
-        const actualHeight = textRef.current.scrollHeight;
+        const collapsedHeight = lineHeight * 4;
+        const expandedHeight = textRef.current.scrollHeight;
 
-        setShouldShowButton(actualHeight > maxHeight);
+        setHeights({ collapsed: collapsedHeight, expanded: expandedHeight });
+        setShouldShowButton(expandedHeight > collapsedHeight);
       }
     };
 
@@ -38,12 +40,16 @@ export const ExpandableText: React.FC<ExpandableTextProps> = ({
 
   return (
     <div className={cn("flex w-full flex-col", className)}>
-      <p
-        ref={textRef}
-        className={!isExpanded && shouldShowButton ? "line-clamp-4" : ""}
+      <div
+        className="overflow-hidden transition-all duration-300 ease-in-out"
+        style={{
+          maxHeight: isExpanded
+            ? `${heights.expanded}px`
+            : `${heights.collapsed}px`,
+        }}
       >
-        {text}
-      </p>
+        <p ref={textRef}>{text}</p>
+      </div>
 
       {shouldShowButton && (
         <Button

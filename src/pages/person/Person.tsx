@@ -1,4 +1,4 @@
-import { ArrowLeft, ImageOffIcon } from "lucide-react";
+import { ArrowLeft, ImageOffIcon, SearchXIcon } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Button, ErrorState, LoadingOverlay } from "@/components";
@@ -91,6 +91,23 @@ export const Person = () => {
                 )}
               </div>
             )}
+            {!person.biography &&
+              !person.birthday &&
+              !person.deathday &&
+              !person.placeOfBirth && (
+                <div className="flex flex-1 flex-col items-center justify-center gap-4">
+                  <SearchXIcon className="text-muted-foreground h-10 w-10" />
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="text-lg font-bold">
+                      No additional information available
+                    </div>
+                    <div className="text-muted-foreground text-sm">
+                      TMDB does not provide any additional information about
+                      this person.
+                    </div>
+                  </div>
+                </div>
+              )}
             {person.imdbId && (
               <Button asChild variant="link" className="px-0">
                 <a
@@ -102,16 +119,6 @@ export const Person = () => {
                 </a>
               </Button>
             )}
-            {!person.biography &&
-              !person.birthday &&
-              !person.deathday &&
-              !person.placeOfBirth &&
-              !person.imdbId && (
-                <div className="text-muted-foreground text-sm">
-                  TMDB does not provide any additional information about this
-                  person.
-                </div>
-              )}
           </div>
         </div>
       </div>
