@@ -88,14 +88,14 @@ export const PersonsAnalytics = () => {
           <span className="hidden md:block">Back</span>
         </Button>
         <h1 className="text-2xl font-bold">{personRoleMap[roleParsed]}</h1>
-        <search className="ml-2 flex-1 md:ml-6">
+        <search className="ml-2 max-w-md flex-1 md:ml-6">
           <Input
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             startIcon={<SearchIcon className="h-4 w-4" />}
             maxLength={255}
-            className="max-w-md"
+            onClear={() => setSearch("")}
           />
         </search>
       </div>

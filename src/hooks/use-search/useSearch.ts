@@ -11,9 +11,9 @@ export const useSearch = () => {
 
   useEffect(() => {
     if (debouncedSearch) {
-      setSearchParams({ search: debouncedSearch });
+      setSearchParams({ search: debouncedSearch }, { replace: true });
     } else {
-      setSearchParams({});
+      setSearchParams({}, { replace: true });
     }
   }, [debouncedSearch, setSearchParams]);
 

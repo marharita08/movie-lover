@@ -132,7 +132,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                   type="button"
                   onClick={onClear}
                   aria-label="Clear input"
-                  className="text-muted-foreground flex h-5 w-5 items-center justify-center"
+                  className="text-muted-foreground flex h-5 w-5 cursor-pointer items-center justify-center"
                 >
                   <X className="h-4 w-4" />
                 </button>

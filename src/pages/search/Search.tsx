@@ -63,7 +63,7 @@ export const Search = () => {
   const isEmpty = results.length === 0 && !isLoading && !isError;
 
   return (
-    <div className="flex h-[calc(100vh-88px)] flex-col overflow-hidden px-4 md:px-0">
+    <search className="flex h-[calc(100vh-88px)] flex-col overflow-hidden px-4 md:px-0">
       <div className="shrink-0">
         <h2 className="text-xl font-bold">Search</h2>
         <div className="my-4 max-w-md">
@@ -73,6 +73,7 @@ export const Search = () => {
             onChange={(e) => setSearch(e.target.value)}
             startIcon={<SearchIcon className="h-4 w-4" />}
             maxLength={255}
+            onClear={() => setSearch("")}
           />
         </div>
       </div>
@@ -144,6 +145,6 @@ export const Search = () => {
           )}
         </div>
       )}
-    </div>
+    </search>
   );
 };
