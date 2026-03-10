@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 
@@ -11,24 +10,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components";
-import { QueryKey } from "@/const";
-import { toast, useClearChat } from "@/hooks";
+import { useClearChat } from "@/hooks";
 
 export const ClearChatDialog = () => {
   const [open, setOpen] = useState(false);
-  const queryClient = useQueryClient();
 
   const { mutate: clearChat, isPending } = useClearChat();
 
   const handleClear = () => {
     clearChat(undefined, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [QueryKey.CHAT_HISTORY] });
         setOpen(false);
-        toast({
-          title: "Chat cleared",
-          description: "All messages have been deleted.",
-        });
       },
     });
   };

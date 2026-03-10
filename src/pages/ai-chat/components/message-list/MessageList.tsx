@@ -7,7 +7,7 @@ import { MessageAuthor } from "@/const";
 import { useChatHistory } from "@/hooks";
 import { type ChatMessageResponse } from "@/types";
 
-import { MessageItem } from "./MessageItem";
+import { MessageItem } from "../message-item/MessageItem";
 
 interface MessageListProps {
   pendingMessage?: string | null;
@@ -57,7 +57,7 @@ export const MessageList = ({ pendingMessage }: MessageListProps) => {
         lastMessageIdRef.current = allMessages[allMessages.length - 1]?.id;
       }, 0);
     }
-  }, [isLoading, allMessages.length]);
+  }, [isLoading, allMessages]);
 
   useEffect(() => {
     if (allMessages.length > 0 && isInitialScrollDone.current) {
@@ -110,9 +110,8 @@ export const MessageList = ({ pendingMessage }: MessageListProps) => {
       {hasNextPage && (
         <div ref={loadMoreRef} className="mb-4 flex justify-center">
           {isFetchingNextPage && (
-            <div className="text-muted-foreground flex items-center gap-2 text-sm">
-              <div className="border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent" />
-              <span>Loading...</span>
+            <div className="flex items-center">
+              <Loading />
             </div>
           )}
         </div>

@@ -20,12 +20,10 @@ export class ChatService {
   async getHistory(
     query: ChatHistoryQuery,
   ): Promise<PaginatedResponse<ChatMessageResponse>> {
-    console.log(query);
-    const response = await httpService.get<
-      PaginatedResponse<ChatMessageResponse>
-    >("/chat/history", query);
-    console.log(response);
-    return response;
+    return httpService.get<PaginatedResponse<ChatMessageResponse>>(
+      "/chat/history",
+      query,
+    );
   }
 
   async clear(): Promise<void> {
