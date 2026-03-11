@@ -1,4 +1,4 @@
-import { PlusIcon, SearchIcon } from "lucide-react";
+import { AlertTriangleIcon, PlusIcon, SearchIcon } from "lucide-react";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
@@ -47,6 +47,18 @@ export const Lists = () => {
           </Link>
         </Button>
       </div>
+      {data?.pages && data?.pages[0].totalResults > 10 && (
+        <div className="bg-warning/10 mt-2 flex items-center gap-4 rounded-md p-4">
+          <div
+            className={
+              "bg-warning text-warning-foreground mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+            }
+          >
+            <AlertTriangleIcon className="h-5 w-5" />
+          </div>
+          <div>AI chat can process only your 10 most recent lists.</div>
+        </div>
+      )}
 
       <search className="mt-4 mb-6 max-w-md">
         <Input
@@ -55,6 +67,7 @@ export const Lists = () => {
           onChange={(e) => setSearch(e.target.value)}
           startIcon={<SearchIcon className="h-4 w-4" />}
           maxLength={255}
+          onClear={() => setSearch("")}
         />
       </search>
 

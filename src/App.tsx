@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster, TooltipProvider, Wrapper } from "./components";
 import { RouterKey } from "./const";
 import { AuthGuard } from "./guards";
+import { AIChat } from "./pages/ai-chat";
 import { CreateList } from "./pages/create-list/CreateList";
 import { Dashboard } from "./pages/dashboard";
 import { EmailVerification } from "./pages/email-verification";
@@ -24,6 +25,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      refetchOnMount: false,
     },
   },
 });
@@ -48,6 +50,12 @@ const privateRoutes = [
   {
     path: RouterKey.PERSONS_ANALYTICS,
     element: <PersonsAnalytics />,
+  },
+  {
+    path: RouterKey.CHAT,
+    element: <AIChat />,
+    wrapperClassName: "h-svh overflow-hidden",
+    mainClassName: "h-full overflow-hidden",
   },
 ];
 
@@ -113,7 +121,12 @@ function App() {
                   path={route.path}
                   element={
                     <AuthGuard>
-                      <Wrapper>{route.element}</Wrapper>
+                      <Wrapper
+                        wrapperClassName={route.wrapperClassName}
+                        mainClassName={route.mainClassName}
+                      >
+                        {route.element}
+                      </Wrapper>
                     </AuthGuard>
                   }
                 />

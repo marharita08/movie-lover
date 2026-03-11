@@ -3,6 +3,7 @@ import { cn } from "@/utils";
 interface SphereProps {
   className?: string;
 }
+
 export const Sphere: React.FC<SphereProps> = ({ className }) => {
   return (
     <div

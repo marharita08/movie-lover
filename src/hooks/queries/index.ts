@@ -1,4 +1,5 @@
 export * from "./use-amount-stats/useAmountStats";
+export * from "./use-chat-history/useChatHistory";
 export * from "./use-company-stats/useCompanyStats";
 export * from "./use-country-stats/useCountryStats";
 export * from "./use-current-user/useCurrentUser";

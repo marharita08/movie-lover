@@ -81,7 +81,6 @@
 }
 
 @theme {
-  /* Перетворюємо змінні на класи Tailwind автоматично */
   --color-background: rgb(var(--background));
   --color-foreground: rgb(var(--foreground));
 

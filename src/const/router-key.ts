@@ -13,4 +13,5 @@ export const RouterKey = {
   PERSONS_ANALYTICS: "/list/:id/:role",
   PERSON: "/person/:id",
   SEARCH: "/search",
+  CHAT: "/chat",
 } as const;

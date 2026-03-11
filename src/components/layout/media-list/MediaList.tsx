@@ -14,23 +14,23 @@ import { MediaCard } from "../media-card/MediaCard";
 
 interface MediaListProps {
   medias: ShortMedia[];
-  isLoading: boolean;
-  isError: boolean;
-  error: Error | null;
-  fetchNextPage: () => void;
-  hasNextPage: boolean;
-  isFetchingNextPage: boolean;
-  refetch: () => void;
+  isLoading?: boolean;
+  isError?: boolean;
+  error?: Error | null;
+  fetchNextPage?: () => void;
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
+  refetch?: () => void;
 }
 
 export const MediaList: React.FC<MediaListProps> = ({
   medias,
-  isLoading,
-  isError,
+  isLoading = false,
+  isError = false,
   error,
   fetchNextPage,
-  hasNextPage,
-  isFetchingNextPage,
+  hasNextPage = false,
+  isFetchingNextPage = false,
   refetch,
 }) => {
   const prevRef = useRef<HTMLButtonElement | null>(null);
@@ -55,7 +55,7 @@ export const MediaList: React.FC<MediaListProps> = ({
         title="Failed to load medias"
         description="We're having trouble fetching medias right now. Please try again."
         error={error}
-        onRetry={() => refetch()}
+        onRetry={() => refetch?.()}
         type="server"
       />
     );
@@ -70,6 +70,7 @@ export const MediaList: React.FC<MediaListProps> = ({
   }
 
   const handleSlideChange = (swiper: SwiperType) => {
+    if (!fetchNextPage) return;
     const slidesPerView =
       typeof swiper.params.slidesPerView === "number"
         ? swiper.params.slidesPerView

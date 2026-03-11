@@ -5,15 +5,22 @@ import { Sidebar } from "../sidebar/Sidebar";
 
 type WrapperProps = {
   children: React.ReactNode;
-  className?: string;
+  wrapperClassName?: string;
+  mainClassName?: string;
 };
 
-export const Wrapper: React.FC<WrapperProps> = ({ children, className }) => {
+export const Wrapper: React.FC<WrapperProps> = ({
+  children,
+  wrapperClassName,
+  mainClassName,
+}) => {
   return (
-    <div>
+    <div className={cn(wrapperClassName)}>
       <Header />
       <Sidebar />
-      <main className={cn("pt-22 pl-0 md:pl-14", className)}>{children}</main>
+      <main className={cn("pt-22 pl-0 md:pl-14", mainClassName)}>
+        {children}
+      </main>
     </div>
   );
 };

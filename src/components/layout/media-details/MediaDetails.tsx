@@ -1,10 +1,10 @@
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import { Button, ErrorState, LoadingOverlay } from "@/components";
+import { Button, ErrorState, LoadingOverlay, PosterImage } from "@/components";
 import { ImdbUrl, MediaType, mediaTypeToLabel, TMDBImageUrl } from "@/const";
 import type { MovieDetailsDto, TVShowResponse } from "@/types";
-import { formatDate, formatRuntime } from "@/utils";
+import { cn, formatDate, formatRuntime } from "@/utils";
 
 interface MediaDetailsProps {
   media?: MovieDetailsDto | TVShowResponse | null;
@@ -40,6 +40,8 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
   }
 
   const mediaTitle = "title" in media ? media.title : media.name;
+  const originalTitle =
+    "originalTitle" in media ? media.originalTitle : media.originalName;
 
   return (
     <div className="relative flex min-h-[calc(100vh-(--spacing(22)))] w-full items-center justify-center p-4 md:p-10">
@@ -63,21 +65,18 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
           Back
         </Button>
         <div className="flex flex-col gap-8 lg:flex-row">
-          <div className="flex shrink-0 justify-center">
-            {media.posterPath ? (
-              <img
-                src={`${TMDBImageUrl.ORIGINAL}${media.posterPath}`}
-                alt={mediaTitle}
-                className="h-fit w-64 rounded-lg shadow-lg"
-              />
-            ) : (
-              <div className="bg-muted flex h-96 w-64 items-center justify-center rounded-lg shadow-lg">
-                <span className="text-muted-foreground">No Image</span>
-              </div>
-            )}
+          <div className="flex h-fit shrink-0 justify-center">
+            <PosterImage
+              path={media.posterPath}
+              alt={mediaTitle}
+              className="w-64 rounded-lg shadow-lg"
+            />
           </div>
           <div className="flex flex-col gap-4">
-            <h1 className="text-4xl font-bold">{mediaTitle}</h1>
+            <h1 className="text-4xl font-bold">
+              <span>{mediaTitle}</span>{" "}
+              {originalTitle !== mediaTitle && <span>({originalTitle})</span>}
+            </h1>
             {media.tagline && (
               <p className="text-muted-foreground text-xl italic">
                 {media.tagline}
@@ -167,32 +166,42 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
                 </span>
                 <span>{media.status}</span>
               </div>
+              {media.productionCountries.length > 0 && (
+                <div
+                  className={cn(
+                    "col-span-2 md:col-span-1",
+                    media.productionCountries.length > 3 && "md:col-span-2",
+                  )}
+                >
+                  <span className="text-muted-foreground block text-sm font-medium">
+                    Production Countries
+                  </span>
+                  <div>
+                    {media.productionCountries
+                      .map((country) => country.name)
+                      .join(", ")}
+                  </div>
+                </div>
+              )}
+              {media.productionCompanies.length > 0 && (
+                <div
+                  className={cn(
+                    "col-span-2 md:col-span-1",
+                    media.productionCompanies.length > 3 && "md:col-span-2",
+                  )}
+                >
+                  <span className="text-muted-foreground block text-sm font-medium">
+                    Production Companies
+                  </span>
+                  <div>
+                    {media.productionCompanies
+                      .map((company) => company.name)
+                      .join(", ")}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {media.productionCountries.length > 0 && (
-              <div>
-                <h2 className="text-base font-semibold">
-                  Production Countries
-                </h2>
-                <div>
-                  {media.productionCountries
-                    .map((country) => country.name)
-                    .join(", ")}
-                </div>
-              </div>
-            )}
-            {media.productionCompanies.length > 0 && (
-              <div>
-                <h2 className="text-base font-semibold">
-                  Production Companies
-                </h2>
-                <div>
-                  {media.productionCompanies
-                    .map((company) => company.name)
-                    .join(", ")}
-                </div>
-              </div>
-            )}
             {media.imdbId && (
               <Button asChild variant="link" className="p-0">
                 <a

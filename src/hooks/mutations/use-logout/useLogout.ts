@@ -14,7 +14,7 @@ export const useLogout = () => {
     mutationFn: authService.logout,
     onSuccess: () => {
       removeAccessToken();
-      queryClient.invalidateQueries({ queryKey: [QueryKey.CURRENT_USER] });
+      queryClient.removeQueries({ queryKey: [QueryKey.CURRENT_USER] });
     },
   });
 };
