@@ -24,13 +24,9 @@ export const PosterImage: React.FC<PosterImageProps> = ({
           alt={alt}
           loading="lazy"
           className="h-full w-full object-cover"
-          aria-label={`${alt} image`}
         />
       ) : (
-        <div
-          className="flex h-full items-center justify-center"
-          aria-label={`${alt} image`}
-        >
+        <div className="flex h-full items-center justify-center">
           <ImageOffIcon className="text-muted-foreground h-12 w-12" />
         </div>
       )}

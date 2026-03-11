@@ -16,7 +16,7 @@ import {
 import { useToast } from "@/hooks";
 import { cn } from "@/utils";
 
-const varianToDetails = {
+const variantToDetails = {
   default: {
     icon: InfoIcon,
     className: "bg-primary text-primary-foreground",
@@ -49,7 +49,7 @@ export function Toaster() {
         ...props
       }) {
         const { icon: Icon, className } =
-          varianToDetails[variant || "default"] || varianToDetails["default"];
+          variantToDetails[variant || "default"] || variantToDetails["default"];
 
         return (
           <Toast key={id} variant={variant} {...props}>
