@@ -1,4 +1,9 @@
-import { AlertTriangleIcon, CheckIcon, InfoIcon, XIcon } from "lucide-react";
+import {
+  AlertTriangleIcon,
+  CircleCheckIcon,
+  CircleXIcon,
+  InfoIcon,
+} from "lucide-react";
 
 import {
   Toast,
@@ -21,11 +26,11 @@ const varianToDetails = {
     className: "bg-warning text-warning-foreground",
   },
   destructive: {
-    icon: XIcon,
+    icon: CircleXIcon,
     className: "bg-error text-error-foreground",
   },
   success: {
-    icon: CheckIcon,
+    icon: CircleCheckIcon,
     className: "bg-success text-success-foreground",
   },
 };

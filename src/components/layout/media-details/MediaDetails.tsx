@@ -1,7 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import { Button, ErrorState, LoadingOverlay } from "@/components";
+import { Button, ErrorState, LoadingOverlay, PosterImage } from "@/components";
 import { ImdbUrl, MediaType, mediaTypeToLabel, TMDBImageUrl } from "@/const";
 import type { MovieDetailsDto, TVShowResponse } from "@/types";
 import { cn, formatDate, formatRuntime } from "@/utils";
@@ -65,18 +65,12 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
           Back
         </Button>
         <div className="flex flex-col gap-8 lg:flex-row">
-          <div className="flex shrink-0 justify-center">
-            {media.posterPath ? (
-              <img
-                src={`${TMDBImageUrl.ORIGINAL}${media.posterPath}`}
-                alt={mediaTitle}
-                className="h-fit w-64 rounded-lg shadow-lg"
-              />
-            ) : (
-              <div className="bg-muted flex h-96 w-64 items-center justify-center rounded-lg shadow-lg">
-                <span className="text-muted-foreground">No Image</span>
-              </div>
-            )}
+          <div className="flex h-fit shrink-0 justify-center">
+            <PosterImage
+              path={media.posterPath}
+              alt={mediaTitle}
+              className="w-64 rounded-lg shadow-lg"
+            />
           </div>
           <div className="flex flex-col gap-4">
             <h1 className="text-4xl font-bold">

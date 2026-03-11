@@ -1,8 +1,8 @@
-import { ImageOffIcon } from "lucide-react";
 import { useMemo } from "react";
 import { generatePath, Link } from "react-router-dom";
 
-import { ImdbUrl, MediaType, RouterKey, TMDBImageUrl } from "@/const";
+import { PosterImage } from "@/components";
+import { ImdbUrl, MediaType, RouterKey } from "@/const";
 import type { ShortMedia } from "@/types";
 
 interface MediaCardProps {
@@ -13,18 +13,7 @@ export const MediaCard: React.FC<MediaCardProps> = ({ media }) => {
   const CardContent = useMemo(() => {
     return (
       <div className="bg-card flex shrink-0 flex-col overflow-hidden rounded-md shadow-md">
-        {media.posterPath ? (
-          <img
-            src={`${TMDBImageUrl.ORIGINAL}${media.posterPath}`}
-            alt={media.title}
-            className="aspect-2/3 w-full"
-            loading="lazy"
-          />
-        ) : (
-          <div className="bg-muted flex aspect-2/3 w-full items-center justify-center">
-            <ImageOffIcon className="text-muted-foreground h-12 w-12" />
-          </div>
-        )}
+        <PosterImage path={media.posterPath} alt={media.title} />
         <div className="flex-1 truncate p-2 text-sm font-medium">
           {media.title}
         </div>

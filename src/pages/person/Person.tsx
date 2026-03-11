@@ -1,9 +1,9 @@
-import { ArrowLeft, ImageOffIcon, SearchXIcon } from "lucide-react";
+import { ArrowLeft, SearchXIcon } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Button, ErrorState, LoadingOverlay } from "@/components";
+import { Button, ErrorState, LoadingOverlay, PosterImage } from "@/components";
 import { ExpandableText } from "@/components/ui/ExpandableText";
-import { ImdbUrl, TMDBImageUrl } from "@/const";
+import { ImdbUrl } from "@/const";
 import { usePerson } from "@/hooks";
 import { formatDate } from "@/utils";
 
@@ -40,18 +40,12 @@ export const Person = () => {
           Back
         </Button>
         <div className="flex flex-col gap-8 lg:flex-row">
-          <div className="flex shrink-0 justify-center">
-            {person.profilePath ? (
-              <img
-                src={`${TMDBImageUrl.ORIGINAL}${person.profilePath}`}
-                alt={person.name}
-                className="h-fit w-64 rounded-lg shadow-lg"
-              />
-            ) : (
-              <div className="bg-muted flex h-96 w-64 items-center justify-center rounded-lg shadow-lg">
-                <ImageOffIcon className="text-muted-foreground h-12 w-12" />
-              </div>
-            )}
+          <div className="flex h-fit shrink-0 justify-center">
+            <PosterImage
+              path={person.profilePath}
+              alt={person.name}
+              className="w-64 rounded-lg shadow-lg"
+            />
           </div>
           <div className="flex flex-col gap-4">
             <h1 className="text-4xl font-bold">{person.name}</h1>
@@ -59,6 +53,7 @@ export const Person = () => {
               <ExpandableText
                 className="text-muted-foreground text-sm"
                 text={person.biography}
+                maxExpandedHeight="180px"
               />
             )}
             {(!!person.birthday ||
