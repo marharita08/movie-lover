@@ -77,6 +77,17 @@ vi.mock("@/components", async () => {
     InputError: ({ error }: { error?: string }) =>
       error ? <span data-testid="input-error">{error}</span> : null,
     Sphere: () => null,
+    LoginWithGoogleButton: ({
+      className,
+      label,
+    }: {
+      className?: string;
+      label?: string;
+    }) => (
+      <button type="button" className={className}>
+        {label}
+      </button>
+    ),
   };
 });
 
@@ -150,5 +161,12 @@ describe("Signup", () => {
       "href",
       "/login",
     );
+  });
+
+  it("renders signup with google button", () => {
+    render(<Signup />);
+    expect(
+      screen.getByRole("button", { name: "Sign up with Google" }),
+    ).toBeInTheDocument();
   });
 });
