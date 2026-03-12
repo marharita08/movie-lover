@@ -1,7 +1,14 @@
 import { ArrowLeft, MailIcon, UserIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Button, Input, InputError, PasswordInput, Sphere } from "@/components";
+import {
+  Button,
+  Input,
+  InputError,
+  LoginWithGoogleButton,
+  PasswordInput,
+  Sphere,
+} from "@/components";
 import { StorageKey } from "@/const";
 import { useAppForm, useSignUp } from "@/hooks";
 
@@ -36,7 +43,7 @@ export const Signup = () => {
     <div className="bg-primary-900 relative flex h-screen items-center justify-center overflow-hidden">
       <Sphere className="absolute bottom-40 left-50 h-10 w-10" />
       <Sphere className="absolute top-20 left-30 h-15 w-15" />
-      <Sphere className="absolute top-18 left-[calc(50%+7.5rem)] h-13 w-13" />
+      <Sphere className="absolute top-12 left-[calc(50%+7.5rem)] h-13 w-13" />
       <Sphere className="absolute right-40 bottom-20 h-20 w-20" />
       <main className="bg-card h-full w-full p-8 shadow-md sm:h-fit sm:w-[500px] sm:rounded-xl">
         <form
@@ -90,11 +97,12 @@ export const Signup = () => {
           </div>
           <Button
             type="submit"
-            className="mt-6 w-full"
+            className="mt-4 w-full"
             disabled={signupMutation.isPending}
           >
             Sign up
           </Button>
+          <LoginWithGoogleButton className="mt-6" label="Sign up with Google" />
           <div className="mt-8 text-center">
             Already have an account?{" "}
             <Button type="button" variant="link" asChild className="p-0">

@@ -17,7 +17,7 @@ export const ListCard: React.FC<ListCardProps> = ({ list }) => {
   return (
     <div className="bg-card flex h-fit flex-col gap-2 rounded-md border border-neutral-300 px-4 py-3 shadow-md">
       <div className="flex items-center justify-between">
-        <p className="text-lg font-semibold">{list.name}</p>
+        <p className="text-lg font-bold">{list.name}</p>
         <DeleteListDialog listName={list.name} listId={list.id} />
       </div>
       <FilePreview fileId={list.fileId} />
@@ -25,7 +25,7 @@ export const ListCard: React.FC<ListCardProps> = ({ list }) => {
         {list.status === ListStatus.COMPLETED && (
           <Button variant="ghost" asChild>
             <Link to={generatePath(RouterKey.LIST, { id: list.id })}>
-              View analitics
+              View list details
             </Link>
           </Button>
         )}

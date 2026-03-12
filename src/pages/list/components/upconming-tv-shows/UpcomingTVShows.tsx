@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 
-import { MediaList } from "@/components";
-import { useUpcomingTVShows } from "@/hooks/queries/use-upcoming-tv-shows/useUpcomingTVShows";
+import { MediaList, Separator } from "@/components";
+import { useUpcomingTVShows } from "@/hooks";
 
 export const UpcomingTVShows = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,20 +24,23 @@ export const UpcomingTVShows = () => {
   }
 
   return (
-    <section className="flex flex-col gap-4">
-      <h2 className="px-2 text-xl font-bold md:px-0">
-        TV shows with upcoming episodes
-      </h2>
-      <MediaList
-        medias={items}
-        isLoading={isLoading}
-        isError={isError}
-        error={error}
-        fetchNextPage={fetchNextPage}
-        hasNextPage={hasNextPage}
-        isFetchingNextPage={isFetchingNextPage}
-        refetch={refetch}
-      />
-    </section>
+    <>
+      <Separator />
+      <section className="flex flex-col gap-4">
+        <h2 className="px-2 text-xl font-bold md:px-0">
+          TV shows with upcoming episodes
+        </h2>
+        <MediaList
+          medias={items}
+          isLoading={isLoading}
+          isError={isError}
+          error={error}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          refetch={refetch}
+        />
+      </section>
+    </>
   );
 };

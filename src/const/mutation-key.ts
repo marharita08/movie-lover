@@ -15,4 +15,5 @@ export const MutationKey = {
   DELETE_LIST: "DELETE_LIST",
   SEND_MESSAGE: "SEND_MESSAGE",
   CLEAR_CHAT: "CLEAR_CHAT",
+  LOGIN_WITH_GOOGLE: "LOGIN_WITH_GOOGLE",
 } as const;

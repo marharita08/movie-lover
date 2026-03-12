@@ -11,7 +11,12 @@ export const Header = () => {
 
   return (
     <header className="bg-background fixed top-0 right-0 z-20 flex w-full items-center justify-end py-6 pr-4 pl-14 md:justify-between">
-      <h1 className="hidden text-2xl font-bold md:block">Movie Lover</h1>
+      <Link to={RouterKey.DASHBOARD}>
+        <div className="flex items-center gap-1">
+          <img src="/movie-tape.png" alt="Logo" className="h-10 w-10" />
+          <h1 className="hidden text-2xl font-bold md:block">Movie Lover</h1>
+        </div>
+      </Link>
       {isLoading && <Loading data-testid="loading" />}
       {!isLoading && user && <HeaderMenu user={user} />}
       {!isLoading && !user && (

@@ -1,3 +1,4 @@
+export * from "./ai-chat";
 export * from "./create-list";
 export * from "./dashboard";
 export * from "./email-verification";
@@ -6,8 +7,10 @@ export * from "./lists";
 export * from "./login";
 export * from "./movie-details";
 export * from "./not-found";
+export * from "./person";
 export * from "./persons-analytics";
 export * from "./reset-password";
+export * from "./search";
 export * from "./signup";
 export * from "./tv-show-details";
 export * from "./user-profile";

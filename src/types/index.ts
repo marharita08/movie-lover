@@ -12,6 +12,7 @@ export * from "./get-media-type-stats-response.type";
 export * from "./get-person-stats-query.type";
 export * from "./get-rating-stats-query.type";
 export * from "./list-response.type";
+export * from "./login-with-google-body.type";
 export * from "./message-response.type";
 export * from "./movie-details.type";
 export * from "./movies-response.type";

@@ -18,7 +18,6 @@ export const List = () => {
   return (
     <div className="flex flex-col gap-15">
       <MediasFromList />
-      <Separator />
       <UpcomingTVShows />
       <Separator />
       <section>

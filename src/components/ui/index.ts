@@ -8,6 +8,7 @@ export * from "./EmptyState";
 export * from "./ErrorState";
 export * from "./FileInput";
 export * from "./FilePreview";
+export * from "./GoogleIcon";
 export * from "./Input";
 export * from "./InputError";
 export * from "./Label";

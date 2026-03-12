@@ -5,6 +5,7 @@ export * from "./use-delete-account/useDeleteAccount";
 export * from "./use-delete-file/useDeleteFile";
 export * from "./use-delete-list/useDeleteList";
 export * from "./use-login/useLogin";
+export * from "./use-login-with-google/useLoginWithGoogle";
 export * from "./use-logout/useLogout";
 export * from "./use-reset-password-email/useResetPasswordEmail";
 export * from "./use-reset-password-new-password/useResetPasswordNewPassword";
