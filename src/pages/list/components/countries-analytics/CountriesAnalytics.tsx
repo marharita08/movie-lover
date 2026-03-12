@@ -1,14 +1,28 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { EmptyState, ErrorState, Loading } from "@/components";
 import { useCountryStats } from "@/hooks";
 
+import { ListSection } from "../../const";
 import { WorldMap } from "./WorldMap";
 
-export const CountriesAnalytics = () => {
+interface CountriesAnalyticsProps {
+  onReady?: (section: ListSection) => void;
+}
+
+export const CountriesAnalytics: React.FC<CountriesAnalyticsProps> = ({
+  onReady,
+}) => {
   const { id } = useParams<{ id: string }>();
 
   const { data, isLoading, isError, error, refetch } = useCountryStats(id!);
+
+  useEffect(() => {
+    if (!isLoading) {
+      onReady?.(ListSection.COUNTRIES);
+    }
+  }, [isLoading, onReady]);
 
   return (
     <section className="flex flex-col gap-4">

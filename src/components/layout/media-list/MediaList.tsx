@@ -21,6 +21,7 @@ interface MediaListProps {
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
   refetch?: () => void;
+  storageKey?: string;
 }
 
 export const MediaList: React.FC<MediaListProps> = ({
@@ -32,10 +33,14 @@ export const MediaList: React.FC<MediaListProps> = ({
   hasNextPage = false,
   isFetchingNextPage = false,
   refetch,
+  storageKey,
 }) => {
   const prevRef = useRef<HTMLButtonElement | null>(null);
   const nextRef = useRef<HTMLButtonElement | null>(null);
   const [isLocked, setIsLocked] = useState(false);
+
+  const swiperRef = useRef<SwiperType | null>(null);
+  const fullStorageKey = storageKey ? `swiper_${storageKey}` : null;
 
   const isEmpty = !isLoading && !isError && !medias?.length;
 
@@ -69,18 +74,31 @@ export const MediaList: React.FC<MediaListProps> = ({
     );
   }
 
+  const handleSwiper = (swiper: SwiperType) => {
+    swiperRef.current = swiper;
+
+    if (fullStorageKey) {
+      const saved = sessionStorage.getItem(fullStorageKey);
+      if (saved) {
+        swiper.slideTo(parseInt(saved), 0);
+      }
+    }
+  };
+
   const handleSlideChange = (swiper: SwiperType) => {
+    if (fullStorageKey) {
+      sessionStorage.setItem(fullStorageKey, String(swiper.activeIndex));
+    }
+
     if (!fetchNextPage) return;
     const slidesPerView =
       typeof swiper.params.slidesPerView === "number"
         ? swiper.params.slidesPerView
         : 1;
-
     const slidesPerGroup = swiper.params.slidesPerGroup || 1;
     const threshold = slidesPerGroup * 2;
     const remainingSlides =
       medias.length - (swiper.activeIndex + slidesPerView);
-
     if (remainingSlides <= threshold && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
@@ -140,6 +158,7 @@ export const MediaList: React.FC<MediaListProps> = ({
             swiper.params.navigation!.nextEl = nextRef.current;
           }
         }}
+        onSwiper={handleSwiper}
         onSlideChange={handleSlideChange}
         watchOverflow
         onLock={() => setIsLocked(true)}

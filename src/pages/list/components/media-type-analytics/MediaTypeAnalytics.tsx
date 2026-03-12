@@ -5,8 +5,16 @@ import type { MediaType } from "@/const";
 import { useMediaTypeStats } from "@/hooks";
 
 import { MediaTypePieChart } from "./MediaTypePieChart";
+import { useEffect } from "react";
+import { ListSection } from "../../const";
 
-export const MediaTypeAnalytics = () => {
+interface MediaTypeAnalyticsProps {
+  onReady?: (section: ListSection) => void;
+}
+
+export const MediaTypeAnalytics: React.FC<MediaTypeAnalyticsProps> = ({
+  onReady,
+}) => {
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -16,6 +24,12 @@ export const MediaTypeAnalytics = () => {
     error,
     refetch,
   } = useMediaTypeStats(id!);
+
+  useEffect(() => {
+    if (!isLoading) {
+      onReady?.(ListSection.MEDIA_TYPE);
+    }
+  }, [isLoading, onReady]);
 
   const chartData = Object.entries(analitics || {}).map(([key, value]) => ({
     name: key as MediaType,

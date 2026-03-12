@@ -14,8 +14,16 @@ import { MediaType } from "@/const";
 import { useListGenres, useListYears, useRatingStats } from "@/hooks";
 
 import { RatingBarChart } from "./RatingBarChart";
+import { useEffect } from "react";
+import { ListSection } from "../../const";
 
-export const RatingAnalytics = () => {
+interface RatingAnalyticsProps {
+  onReady?: (section: ListSection) => void;
+}
+
+export const RatingAnalytics: React.FC<RatingAnalyticsProps> = ({
+  onReady,
+}) => {
   const { id } = useParams<{ id: string }>();
 
   const [genre, setGenre] = useState<string>("all");
@@ -38,6 +46,12 @@ export const RatingAnalytics = () => {
     error,
     refetch,
   } = useRatingStats(id!, query);
+
+  useEffect(() => {
+    if (!isLoading) {
+      onReady?.(ListSection.RATING);
+    }
+  }, [isLoading, onReady]);
 
   const chartData = Object.entries(stats || {})
     .map(([key, value]) => ({

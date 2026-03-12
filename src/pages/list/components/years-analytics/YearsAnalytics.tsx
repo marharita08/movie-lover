@@ -4,8 +4,14 @@ import { EmptyState, ErrorState, Loading } from "@/components";
 import { useYearsStats } from "@/hooks";
 
 import { YearsBarChart } from "./YearsBarChart";
+import { useEffect } from "react";
+import { ListSection } from "../../const";
 
-export const YearsAnalytics = () => {
+interface YearsAnalyticsProps {
+  onReady?: (section: ListSection) => void;
+}
+
+export const YearsAnalytics: React.FC<YearsAnalyticsProps> = ({ onReady }) => {
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -15,6 +21,12 @@ export const YearsAnalytics = () => {
     error,
     refetch,
   } = useYearsStats(id!);
+
+  useEffect(() => {
+    if (!isLoading) {
+      onReady?.(ListSection.YEARS);
+    }
+  }, [isLoading, onReady]);
 
   const chartData = Object.entries(stats || {}).map(([key, value]) => ({
     year: key,

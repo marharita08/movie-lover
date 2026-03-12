@@ -1,6 +1,7 @@
 import { Bot } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
 import { useInView } from "react-intersection-observer";
+import { useLocation } from "react-router-dom";
 
 import { Loading, LoadingBubbles } from "@/components";
 import { MessageAuthor } from "@/const";
@@ -49,15 +50,37 @@ export const MessageList = ({ pendingMessage }: MessageListProps) => {
     [data],
   );
 
+  const location = useLocation();
+  const scrollKey = `scroll_${location.key}`;
+  const isRestoredRef = useRef(false);
+
   useEffect(() => {
-    if (!isLoading && allMessages.length > 0 && !isInitialScrollDone.current) {
-      setTimeout(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+
+    const handleScroll = () => {
+      sessionStorage.setItem(scrollKey, String(el.scrollTop));
+    };
+
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [scrollKey]);
+
+  useEffect(() => {
+    if (isLoading || allMessages.length === 0 || isRestoredRef.current) return;
+
+    const saved = sessionStorage.getItem(scrollKey);
+
+    setTimeout(() => {
+      if (saved) {
+        scrollContainerRef.current?.scrollTo(0, parseInt(saved));
+      } else {
         messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
-        isInitialScrollDone.current = true;
-        lastMessageIdRef.current = allMessages[allMessages.length - 1]?.id;
-      }, 0);
-    }
-  }, [isLoading, allMessages]);
+      }
+      isRestoredRef.current = true;
+      lastMessageIdRef.current = allMessages[allMessages.length - 1]?.id;
+    }, 0);
+  }, [isLoading, allMessages, scrollKey]);
 
   useEffect(() => {
     if (allMessages.length > 0 && isInitialScrollDone.current) {

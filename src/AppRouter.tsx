@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import { Wrapper } from "./components";
 import { RouterKey } from "./const";
@@ -99,41 +99,38 @@ const publicRoutes = [
   },
 ];
 
+const router = createBrowserRouter([
+  {
+    element: <Outlet />,
+    children: [
+      ...privateRoutes.map((route) => ({
+        path: route.path,
+        element: (
+          <AuthGuard>
+            <Wrapper
+              wrapperClassName={route.wrapperClassName}
+              mainClassName={route.mainClassName}
+            >
+              {route.element}
+            </Wrapper>
+          </AuthGuard>
+        ),
+      })),
+
+      ...publicRoutes.map((route) => ({
+        path: route.path,
+        element: route.withWrapper ? (
+          <Wrapper>{route.element}</Wrapper>
+        ) : (
+          route.element
+        ),
+      })),
+
+      { path: "*", element: <NotFound /> },
+    ],
+  },
+]);
+
 export const AppRouter = () => {
-  return (
-    <BrowserRouter>
-      <Routes>
-        {privateRoutes.map((route) => (
-          <Route
-            key={route.path}
-            path={route.path}
-            element={
-              <AuthGuard>
-                <Wrapper
-                  wrapperClassName={route.wrapperClassName}
-                  mainClassName={route.mainClassName}
-                >
-                  {route.element}
-                </Wrapper>
-              </AuthGuard>
-            }
-          />
-        ))}
-        {publicRoutes.map((route) => (
-          <Route
-            key={route.path}
-            path={route.path}
-            element={
-              route.withWrapper ? (
-                <Wrapper>{route.element}</Wrapper>
-              ) : (
-                route.element
-              )
-            }
-          />
-        ))}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 };

@@ -1,11 +1,19 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { EmptyState, ErrorState, Loading } from "@/components";
 import { useCompanyStats } from "@/hooks";
 
+import { ListSection } from "../../const";
 import { CompaniesBarChart } from "./CompaniesBarChart";
 
-export const CompaniesAnalytics = () => {
+interface CompaniesAnalyticsProps {
+  onReady?: (section: ListSection) => void;
+}
+
+export const CompaniesAnalytics: React.FC<CompaniesAnalyticsProps> = ({
+  onReady,
+}) => {
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -15,6 +23,12 @@ export const CompaniesAnalytics = () => {
     error,
     refetch,
   } = useCompanyStats(id!);
+
+  useEffect(() => {
+    if (!isLoading) {
+      onReady?.(ListSection.COMPANIES);
+    }
+  }, [isLoading, onReady]);
 
   const companies = Object.entries(analitics || {}).map(([key, value]) => ({
     company: key,

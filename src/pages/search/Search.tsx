@@ -3,7 +3,12 @@ import { SearchIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 import { EmptyState, ErrorState, Input, Loading } from "@/components";
-import { useIsMobile, useMultiSearch, useSearch } from "@/hooks";
+import {
+  useIsMobile,
+  useMultiSearch,
+  useSearch,
+  useVirtualScrollRestoration,
+} from "@/hooks";
 import type { MultiSearchResponseItem } from "@/types";
 
 import { SearchResultCard } from "./components/SearchResultCard";
@@ -41,6 +46,8 @@ export const Search = () => {
   });
 
   const virtualItems = rowVirtualizer.getVirtualItems();
+
+  useVirtualScrollRestoration(rowVirtualizer, parentRef, !isLoading);
 
   useEffect(() => {
     if (virtualItems.length === 0) return;

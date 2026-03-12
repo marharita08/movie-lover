@@ -1,9 +1,19 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { MediaList, Separator } from "@/components";
+import { StorageKey } from "@/const";
 import { useUpcomingTVShows } from "@/hooks";
 
-export const UpcomingTVShows = () => {
+import { ListSection } from "../../const";
+
+interface UpcomingTVShowsProps {
+  onReady?: (section: ListSection) => void;
+}
+
+export const UpcomingTVShows: React.FC<UpcomingTVShowsProps> = ({
+  onReady,
+}) => {
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -18,6 +28,12 @@ export const UpcomingTVShows = () => {
   } = useUpcomingTVShows(id!);
 
   const items = data?.pages.flatMap((page) => page.results) ?? [];
+
+  useEffect(() => {
+    if (!isLoading) {
+      onReady?.(ListSection.UPCOMING_TV_SHOWS);
+    }
+  }, [isLoading, onReady]);
 
   if (items.length === 0) {
     return null;
@@ -39,6 +55,7 @@ export const UpcomingTVShows = () => {
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
           refetch={refetch}
+          storageKey={`${StorageKey.UPCOMING_TV_SHOWS}_${id}`}
         />
       </section>
     </>

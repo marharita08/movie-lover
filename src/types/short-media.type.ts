@@ -5,5 +5,5 @@ export interface ShortMedia {
   posterPath: string | null;
   title: string;
   type: MediaType;
-  imdbId?: string;
+  imdbId?: string | null;
 }
