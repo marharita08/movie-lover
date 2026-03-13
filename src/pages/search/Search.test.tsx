@@ -1,7 +1,12 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { useIsMobile, useMultiSearch, useSearch } from "@/hooks";
+import {
+  useIsMobile,
+  useMultiSearch,
+  useSearch,
+  useVirtualScrollRestoration,
+} from "@/hooks";
 
 import { Search } from "./Search";
 
@@ -11,6 +16,7 @@ vi.mock("@/hooks", () => ({
   useMultiSearch: vi.fn(),
   useSearch: vi.fn(),
   useIsMobile: vi.fn(),
+  useVirtualScrollRestoration: vi.fn(),
 }));
 
 vi.mock("@tanstack/react-virtual", () => ({
@@ -93,6 +99,7 @@ describe("Search", () => {
       setSearch: setSearchMock,
     });
     vi.mocked(useIsMobile).mockReturnValue(false);
+    vi.mocked(useVirtualScrollRestoration).mockReturnValue(undefined);
   });
 
   it("renders search input and heading", () => {
@@ -100,6 +107,36 @@ describe("Search", () => {
 
     expect(screen.getByPlaceholderText("Search...")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Search" })).toBeInTheDocument();
+  });
+
+  it("calls useVirtualScrollRestoration with correct isReady value", () => {
+    vi.mocked(useMultiSearch).mockReturnValue({
+      ...defaultQueryResult,
+      isLoading: false,
+    } as never);
+
+    render(<Search />);
+
+    expect(useVirtualScrollRestoration).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.anything(),
+      true,
+    );
+  });
+
+  it("passes isReady=false to useVirtualScrollRestoration when loading", () => {
+    vi.mocked(useMultiSearch).mockReturnValue({
+      ...defaultQueryResult,
+      isLoading: true,
+    } as never);
+
+    render(<Search />);
+
+    expect(useVirtualScrollRestoration).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.anything(),
+      false,
+    );
   });
 
   it("shows Loading when isLoading is true", () => {
@@ -246,14 +283,12 @@ describe("Search", () => {
   it("calls fetchNextPage when near end of virtual list", () => {
     const fetchNextPage = vi.fn();
 
-    // Створюємо 40 результатів для 20 рядків (по 2 на desktop)
     const results = Array.from({ length: 40 }, (_, i) => ({
       id: i,
       title: `Movie ${i}`,
       mediaType: "movie" as const,
     }));
 
-    // Симулюємо скрол до рядка 17 (близько до кінця)
     mockUseVirtualizer.mockReturnValue({
       getVirtualItems: () => [{ index: 17, key: "17", start: 2329, size: 137 }],
       getTotalSize: () => 2740,
@@ -261,9 +296,7 @@ describe("Search", () => {
 
     vi.mocked(useMultiSearch).mockReturnValue({
       ...defaultQueryResult,
-      data: {
-        pages: [{ results }],
-      },
+      data: { pages: [{ results }] },
       hasNextPage: true,
       fetchNextPage,
     } as never);
@@ -289,9 +322,7 @@ describe("Search", () => {
 
     vi.mocked(useMultiSearch).mockReturnValue({
       ...defaultQueryResult,
-      data: {
-        pages: [{ results }],
-      },
+      data: { pages: [{ results }] },
       hasNextPage: true,
       isFetchingNextPage: true,
       fetchNextPage,

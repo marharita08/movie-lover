@@ -2,7 +2,12 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PersonRole, personRoleMap } from "@/const";
-import { useIsMobile, usePersonStats, useSearch } from "@/hooks";
+import {
+  useIsMobile,
+  usePersonStats,
+  useSearch,
+  useVirtualScrollRestoration,
+} from "@/hooks";
 
 import { PersonsAnalytics } from "./PersonsAnalytics";
 
@@ -17,6 +22,7 @@ vi.mock("@/hooks", () => ({
   usePersonStats: vi.fn(),
   useSearch: vi.fn(),
   useIsMobile: vi.fn(),
+  useVirtualScrollRestoration: vi.fn(),
 }));
 
 vi.mock("@tanstack/react-virtual", () => ({
@@ -93,6 +99,7 @@ describe("PersonsAnalytics", () => {
       setSearch: setSearchMock,
     });
     vi.mocked(useIsMobile).mockReturnValue(false);
+    vi.mocked(useVirtualScrollRestoration).mockReturnValue(undefined);
   });
 
   it("calls usePersonStats with correct params", () => {
@@ -102,6 +109,36 @@ describe("PersonsAnalytics", () => {
       limit: 20,
       search: "",
     });
+  });
+
+  it("calls useVirtualScrollRestoration with isReady=true when not loading", () => {
+    vi.mocked(usePersonStats).mockReturnValue({
+      ...defaultQueryResult,
+      isLoading: false,
+    } as never);
+
+    render(<PersonsAnalytics />);
+
+    expect(useVirtualScrollRestoration).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.anything(),
+      true,
+    );
+  });
+
+  it("calls useVirtualScrollRestoration with isReady=false when loading", () => {
+    vi.mocked(usePersonStats).mockReturnValue({
+      ...defaultQueryResult,
+      isLoading: true,
+    } as never);
+
+    render(<PersonsAnalytics />);
+
+    expect(useVirtualScrollRestoration).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.anything(),
+      false,
+    );
   });
 
   it("shows correct heading based on role", () => {
@@ -142,9 +179,7 @@ describe("PersonsAnalytics", () => {
   it("passes search parameter through useSearch", () => {
     render(<PersonsAnalytics />);
     const searchInput = screen.getByTestId("search-input");
-
     fireEvent.change(searchInput, { target: { value: "Spielberg" } });
-
     expect(setSearchMock).toHaveBeenCalledWith("Spielberg");
   });
 
@@ -200,9 +235,7 @@ describe("PersonsAnalytics", () => {
       data: { pages: [{ results: [] }] },
     } as never);
     render(<PersonsAnalytics />);
-
-    const emptyState = screen.getByTestId("empty-state");
-    expect(emptyState).toBeInTheDocument();
+    expect(screen.getByTestId("empty-state")).toBeInTheDocument();
   });
 
   it("renders persons when data is present", async () => {
@@ -257,13 +290,11 @@ describe("PersonsAnalytics", () => {
     const fetchNextPage = vi.fn();
     const { useVirtualizer } = await import("@tanstack/react-virtual");
 
-    // Створюємо 40 персон, щоб мати 20 рядків (по 2 персони в рядку на desktop)
     const persons = Array.from({ length: 40 }, (_, i) => ({
       id: `${i}`,
       name: `Person ${i}`,
     }));
 
-    // Симулюємо що користувач проскролив до рядка 17 (близько до кінця, якщо всього 20 рядків)
     vi.mocked(useVirtualizer).mockReturnValue({
       getVirtualItems: () =>
         [{ index: 17, key: "17", start: 2550, size: 150 }] as never,
@@ -273,9 +304,7 @@ describe("PersonsAnalytics", () => {
 
     vi.mocked(usePersonStats).mockReturnValue({
       ...defaultQueryResult,
-      data: {
-        pages: [{ results: persons }],
-      },
+      data: { pages: [{ results: persons }] },
       hasNextPage: true,
       fetchNextPage,
     } as never);
@@ -288,7 +317,6 @@ describe("PersonsAnalytics", () => {
     const fetchNextPage = vi.fn();
     const { useVirtualizer } = await import("@tanstack/react-virtual");
 
-    // Створюємо 40 персон
     const persons = Array.from({ length: 40 }, (_, i) => ({
       id: `${i}`,
       name: `Person ${i}`,
@@ -303,9 +331,7 @@ describe("PersonsAnalytics", () => {
 
     vi.mocked(usePersonStats).mockReturnValue({
       ...defaultQueryResult,
-      data: {
-        pages: [{ results: persons }],
-      },
+      data: { pages: [{ results: persons }] },
       hasNextPage: true,
       isFetchingNextPage: true,
       fetchNextPage,

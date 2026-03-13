@@ -1,12 +1,14 @@
 import { render, screen } from "@testing-library/react";
+import { useEffect } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { useCurrentUser } from "@/hooks";
+import { useCurrentUser, useScrollRestoration } from "@/hooks";
 
 import { Dashboard } from "./Dashboard";
 
 vi.mock("@/hooks", () => ({
   useCurrentUser: vi.fn(),
+  useScrollRestoration: vi.fn(),
 }));
 
 vi.mock("./components", () => ({
@@ -42,6 +44,40 @@ describe("Dashboard", () => {
     });
   });
 
+  it("passes onReady callback to each DiscoverMovies", async () => {
+    const { DiscoverMovies } = await import("./components");
+
+    render(<Dashboard />);
+
+    const calls = vi.mocked(DiscoverMovies).mock.calls;
+    expect(calls).toHaveLength(3);
+    calls.forEach(([props]) => {
+      expect(typeof props.onReady).toBe("function");
+    });
+  });
+
+  it("calls useScrollRestoration with false before all sections are ready", () => {
+    render(<Dashboard />);
+
+    expect(vi.mocked(useScrollRestoration)).toHaveBeenCalledWith(false);
+  });
+
+  it("calls useScrollRestoration with true after all sections report ready", async () => {
+    const { DiscoverMovies } = await import("./components");
+
+    vi.mocked(DiscoverMovies).mockImplementation(({ onReady, query }) => {
+      useEffect(() => {
+        onReady(query.primaryReleaseYear!);
+      }, [onReady, query.primaryReleaseYear]);
+      return <div data-testid="discover-movies" />;
+    });
+
+    render(<Dashboard />);
+
+    const calls = vi.mocked(useScrollRestoration).mock.calls;
+    const lastCall = calls[calls.length - 1];
+    expect(lastCall[0]).toBe(true);
+  });
   it("shows info banner when user is not logged in", () => {
     vi.mocked(useCurrentUser).mockReturnValue({
       data: null,
