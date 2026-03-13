@@ -21,6 +21,10 @@ vi.mock("react-intersection-observer", () => ({
   }),
 }));
 
+vi.mock("react-router-dom", () => ({
+  useLocation: () => ({ key: "test-key" }),
+}));
+
 vi.mock("@/hooks", () => ({
   useChatHistory: vi.fn(),
 }));
@@ -82,6 +86,7 @@ describe("MessageList", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    sessionStorage.clear();
     vi.mocked(useChatHistory).mockReturnValue(
       defaultChatHistoryReturn as never,
     );
@@ -106,15 +111,7 @@ describe("MessageList", () => {
       vi.mocked(useChatHistory).mockReturnValue({
         ...defaultChatHistoryReturn,
         data: {
-          pages: [
-            {
-              results: [],
-              total: 0,
-              page: 1,
-              limit: 20,
-              totalPages: 0,
-            },
-          ],
+          pages: [{ results: [], total: 0, page: 1, limit: 20, totalPages: 0 }],
           pageParams: [undefined],
         },
       } as never);
@@ -128,15 +125,7 @@ describe("MessageList", () => {
       vi.mocked(useChatHistory).mockReturnValue({
         ...defaultChatHistoryReturn,
         data: {
-          pages: [
-            {
-              results: [],
-              total: 0,
-              page: 1,
-              limit: 20,
-              totalPages: 0,
-            },
-          ],
+          pages: [{ results: [], total: 0, page: 1, limit: 20, totalPages: 0 }],
           pageParams: [undefined],
         },
       } as never);
@@ -189,6 +178,34 @@ describe("MessageList", () => {
     });
   });
 
+  describe("Scroll restoration", () => {
+    it("should scroll to bottom on initial load when no saved position", async () => {
+      render(<MessageList />);
+
+      await waitFor(() => {
+        expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith({
+          behavior: "instant",
+        });
+      });
+    });
+
+    it("should restore saved scroll position when returning to chat", async () => {
+      sessionStorage.setItem("scroll_test-key", "300");
+
+      const scrollToMock = vi.fn();
+      Object.defineProperty(HTMLElement.prototype, "scrollTo", {
+        value: scrollToMock,
+        writable: true,
+      });
+
+      render(<MessageList />);
+
+      await waitFor(() => {
+        expect(scrollToMock).toHaveBeenCalledWith(0, 300);
+      });
+    });
+  });
+
   describe("Pagination", () => {
     it("should show loading indicator when fetching next page", () => {
       vi.mocked(useChatHistory).mockReturnValue({
@@ -218,39 +235,35 @@ describe("MessageList", () => {
 
   describe("Multiple pages", () => {
     it("should render messages from multiple pages", () => {
-      const page1Messages: ChatMessageResponse[] = [
-        {
-          id: "1",
-          text: "Message 1",
-          author: MessageAuthor.USER,
-          mediaItems: null,
-          createdAt: "2024-01-01T10:00:00Z",
-        },
-      ];
-
-      const page2Messages: ChatMessageResponse[] = [
-        {
-          id: "2",
-          text: "Message 2",
-          author: MessageAuthor.ASSISTANT,
-          mediaItems: null,
-          createdAt: "2024-01-01T10:01:00Z",
-        },
-      ];
-
       vi.mocked(useChatHistory).mockReturnValue({
         ...defaultChatHistoryReturn,
         data: {
           pages: [
             {
-              results: page1Messages,
+              results: [
+                {
+                  id: "1",
+                  text: "Message 1",
+                  author: MessageAuthor.USER,
+                  mediaItems: null,
+                  createdAt: "2024-01-01T10:00:00Z",
+                },
+              ],
               total: 2,
               page: 1,
               limit: 1,
               totalPages: 2,
             },
             {
-              results: page2Messages,
+              results: [
+                {
+                  id: "2",
+                  text: "Message 2",
+                  author: MessageAuthor.ASSISTANT,
+                  mediaItems: null,
+                  createdAt: "2024-01-01T10:01:00Z",
+                },
+              ],
               total: 2,
               page: 2,
               limit: 1,

@@ -7,11 +7,11 @@ import { useAccessTokenStore } from "@/store/access-token.store";
 import { useAppMutation } from "../../use-app-mutation/useAppMutation";
 import { useLogout } from "./useLogout";
 
-const mockInvalidateQueries = vi.fn();
+const mockRemoveQueries = vi.fn();
 
 vi.mock("@tanstack/react-query", () => ({
   useQueryClient: () => ({
-    invalidateQueries: mockInvalidateQueries,
+    removeQueries: mockRemoveQueries,
   }),
 }));
 
@@ -54,7 +54,7 @@ describe("useLogout", () => {
     renderHook(() => useLogout());
 
     expect(removeAccessToken).toHaveBeenCalled();
-    expect(mockInvalidateQueries).toHaveBeenCalledWith({
+    expect(mockRemoveQueries).toHaveBeenCalledWith({
       queryKey: [QueryKey.CURRENT_USER],
     });
   });

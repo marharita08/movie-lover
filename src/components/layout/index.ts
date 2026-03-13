@@ -1,5 +1,6 @@
 export * from "./file-uploader/FileUploader";
 export * from "./header/Header";
+export * from "./login-with-google/LoginWithGoogleButton";
 export * from "./media-card/MediaCard";
 export * from "./media-details/MediaDetails";
 export * from "./media-list/MediaList";

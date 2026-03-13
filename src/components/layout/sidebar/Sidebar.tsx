@@ -92,7 +92,7 @@ export const Sidebar = () => {
           </nav>
         </div>
       </aside>
-      <div className="fixed top-5 left-2 z-20 md:hidden">
+      <div className="fixed top-6 left-2 z-20 md:hidden">
         <Sheet>
           <SheetTrigger asChild>
             <Button variant={"ghost"}>

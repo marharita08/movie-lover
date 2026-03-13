@@ -25,6 +25,7 @@ vi.mock("@/components", () => ({
     children: React.ReactNode;
     onClick: () => void;
   }) => <button onClick={onClick}>{children}</button>,
+  PosterImage: () => <div data-testid="poster-image" />,
 }));
 
 const movieMedia = {
@@ -214,19 +215,6 @@ describe("MediaDetails", () => {
       />,
     );
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
-  });
-
-  it("shows placeholder when no poster", () => {
-    render(
-      <MediaDetails
-        media={tvMedia as never}
-        type={MediaType.TV}
-        isLoading={false}
-        error={null}
-        refetch={refetch}
-      />,
-    );
-    expect(screen.getByText("No Image")).toBeInTheDocument();
   });
 
   it("navigates back on Back button click", () => {

@@ -1,14 +1,21 @@
+import { useEffect } from "react";
 import { generatePath, Link, useParams } from "react-router-dom";
 
 import { Button, EmptyState, ErrorState, Loading, Person } from "@/components";
 import { PersonRole, personRoleMap, RouterKey } from "@/const";
 import { usePersonStats } from "@/hooks";
 
+import { ListSection } from "../../const";
+
 interface PersonsAnalyticsProps {
   role: PersonRole;
+  onReady?: (section: ListSection) => void;
 }
 
-export const PersonsAnalytics: React.FC<PersonsAnalyticsProps> = ({ role }) => {
+export const PersonsAnalytics: React.FC<PersonsAnalyticsProps> = ({
+  role,
+  onReady,
+}) => {
   const { id } = useParams<{ id: string }>();
 
   const { data, isLoading, isError, error, refetch } = usePersonStats(id!, {
@@ -17,6 +24,16 @@ export const PersonsAnalytics: React.FC<PersonsAnalyticsProps> = ({ role }) => {
   });
 
   const analitics = data?.pages.flatMap((page) => page.results) || [];
+
+  useEffect(() => {
+    if (!isLoading) {
+      onReady?.(
+        role === PersonRole.ACTOR
+          ? ListSection.PERSONS_ACTORS
+          : ListSection.PERSONS_DIRECTORS,
+      );
+    }
+  }, [isLoading, onReady, role]);
 
   return (
     <div className="flex flex-col gap-4 px-2">

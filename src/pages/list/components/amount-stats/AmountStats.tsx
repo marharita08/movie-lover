@@ -4,10 +4,22 @@ import { useParams } from "react-router-dom";
 import { Loading, Tooltip, TooltipContent, TooltipTrigger } from "@/components";
 import { useAmountStats } from "@/hooks";
 import { formatRuntime } from "@/utils";
+import { useEffect } from "react";
+import { ListSection } from "../../const";
 
-export const AmountStats = () => {
+interface AmountStatsProps {
+  onReady?: (section: ListSection) => void;
+}
+
+export const AmountStats: React.FC<AmountStatsProps> = ({ onReady }) => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading, isError } = useAmountStats(id!);
+
+  useEffect(() => {
+    if (!isLoading) {
+      onReady?.(ListSection.AMOUNT_STATS);
+    }
+  }, [isLoading, onReady]);
 
   if (isLoading) {
     return (

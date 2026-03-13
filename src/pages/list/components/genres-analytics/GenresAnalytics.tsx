@@ -1,11 +1,19 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { EmptyState, ErrorState, Loading } from "@/components";
 import { useGenreStats } from "@/hooks";
 
+import { ListSection } from "../../const";
 import { GenresBarChart } from "./GenresBarChart";
 
-export const GenresAnalytics = () => {
+interface GenresAnalyticsProps {
+  onReady?: (section: ListSection) => void;
+}
+
+export const GenresAnalytics: React.FC<GenresAnalyticsProps> = ({
+  onReady,
+}) => {
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -20,6 +28,12 @@ export const GenresAnalytics = () => {
     genre: key,
     amount: value,
   }));
+
+  useEffect(() => {
+    if (!isLoading) {
+      onReady?.(ListSection.GENRES);
+    }
+  }, [isLoading, onReady]);
 
   return (
     <section className="flex flex-col gap-4">

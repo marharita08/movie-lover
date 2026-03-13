@@ -17,4 +17,5 @@ export * from "./use-person/usePerson";
 export * from "./use-person-stats/usePersonStats";
 export * from "./use-rating-stats/useRatingStats";
 export * from "./use-tv-show/useTVShow";
+export * from "./use-upcoming-tv-shows/useUpcomingTVShows";
 export * from "./use-years-stats/useYearsStats";

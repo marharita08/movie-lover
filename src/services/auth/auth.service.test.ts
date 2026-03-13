@@ -174,4 +174,15 @@ describe("AuthService", () => {
       );
     });
   });
+
+  describe("loginWithGoogle", () => {
+    it("calls httpService.post with correct url and data", async () => {
+      const data = { code: "code" };
+      vi.mocked(httpService.post).mockResolvedValue({ accessToken: "token" });
+
+      await authService.loginWithGoogle(data);
+
+      expect(httpService.post).toHaveBeenCalledWith("/auth/google", data);
+    });
+  });
 });

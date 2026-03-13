@@ -1,7 +1,7 @@
 import { AlertTriangleIcon, Bot, User } from "lucide-react";
 
 import { MediaList } from "@/components";
-import { MessageAuthor } from "@/const";
+import { MessageAuthor, StorageKey } from "@/const";
 import type { ChatMessageResponse } from "@/types";
 import { cn, formatDateTime } from "@/utils";
 
@@ -62,7 +62,10 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
 
         {message.mediaItems && message.mediaItems.length > 0 && (
           <div className="w-full">
-            <MediaList medias={message.mediaItems} />
+            <MediaList
+              medias={message.mediaItems}
+              storageKey={`${StorageKey.MESSAGE_MEDIA_ITEMS}_${message.id}`}
+            />
           </div>
         )}
 

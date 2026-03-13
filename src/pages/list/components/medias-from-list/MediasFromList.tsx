@@ -1,10 +1,18 @@
 import { SearchIcon } from "lucide-react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { Input, MediaList } from "@/components";
+import { StorageKey } from "@/const";
 import { useMediaItems, useSearch } from "@/hooks";
 
-export const MediasFromList = () => {
+import { ListSection } from "../../const";
+
+interface MediasFromListProps {
+  onReady?: (section: ListSection) => void;
+}
+
+export const MediasFromList: React.FC<MediasFromListProps> = ({ onReady }) => {
   const { id } = useParams<{ id: string }>();
   const { search, setSearch, debouncedSearch } = useSearch();
 
@@ -20,6 +28,12 @@ export const MediasFromList = () => {
   } = useMediaItems(id!, { search: debouncedSearch });
 
   const items = data?.pages.flatMap((page) => page.results) ?? [];
+
+  useEffect(() => {
+    if (!isLoading) {
+      onReady?.(ListSection.MEDIAS);
+    }
+  }, [isLoading, onReady]);
 
   return (
     <section className="flex flex-col gap-4">
@@ -45,6 +59,7 @@ export const MediasFromList = () => {
         hasNextPage={hasNextPage}
         isFetchingNextPage={isFetchingNextPage}
         refetch={refetch}
+        storageKey={`${StorageKey.LIST_MEDIA_ITEMS}_${id}`}
       />
     </section>
   );

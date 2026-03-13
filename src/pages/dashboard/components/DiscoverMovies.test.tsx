@@ -1,13 +1,17 @@
 import { render } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { MediaType } from "@/const";
+import { MediaType, StorageKey } from "@/const";
 import { useDiscoverMovies } from "@/hooks";
 
 import { DiscoverMovies } from "./DiscoverMovies";
 
 vi.mock("@/hooks", () => ({
   useDiscoverMovies: vi.fn(),
+}));
+
+vi.mock("react-router-dom", () => ({
+  useLocation: () => ({ key: "test-key" }),
 }));
 
 vi.mock("@/components", () => ({
@@ -35,14 +39,19 @@ const defaultQueryResult = {
   refetch: vi.fn(),
 };
 
+const defaultQuery = { primaryReleaseYear: 2024 };
+
 describe("DiscoverMovies", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    sessionStorage.clear();
     vi.mocked(useDiscoverMovies).mockReturnValue(defaultQueryResult as never);
   });
 
   it("passes empty array to MediaList when data is undefined", () => {
-    const { getByTestId } = render(<DiscoverMovies query={{}} />);
+    const { getByTestId } = render(
+      <DiscoverMovies query={defaultQuery} onReady={vi.fn()} />,
+    );
     expect(getByTestId("media-list")).toBeInTheDocument();
   });
 
@@ -62,7 +71,9 @@ describe("DiscoverMovies", () => {
       },
     } as never);
 
-    const { getAllByTestId } = render(<DiscoverMovies query={{}} />);
+    const { getAllByTestId } = render(
+      <DiscoverMovies query={defaultQuery} onReady={vi.fn()} />,
+    );
     const items = getAllByTestId("media-item");
 
     expect(items).toHaveLength(3);
@@ -85,14 +96,41 @@ describe("DiscoverMovies", () => {
       refetch,
     } as never);
 
-    render(<DiscoverMovies query={{}} />);
+    render(<DiscoverMovies query={defaultQuery} onReady={vi.fn()} />);
 
     expect(vi.mocked(MediaList).mock.calls[0][0]).toEqual(
       expect.objectContaining({
         isLoading: true,
         fetchNextPage,
         refetch,
+        storageKey: `${StorageKey.DISCOVER_MOVIES}_${defaultQuery.primaryReleaseYear}`,
       }),
     );
+  });
+
+  it("calls onReady with primaryReleaseYear when loading is done", () => {
+    const onReady = vi.fn();
+
+    vi.mocked(useDiscoverMovies).mockReturnValue({
+      ...defaultQueryResult,
+      isLoading: false,
+    } as never);
+
+    render(<DiscoverMovies query={defaultQuery} onReady={onReady} />);
+
+    expect(onReady).toHaveBeenCalledWith(defaultQuery.primaryReleaseYear);
+  });
+
+  it("does not call onReady while loading", () => {
+    const onReady = vi.fn();
+
+    vi.mocked(useDiscoverMovies).mockReturnValue({
+      ...defaultQueryResult,
+      isLoading: true,
+    } as never);
+
+    render(<DiscoverMovies query={defaultQuery} onReady={onReady} />);
+
+    expect(onReady).not.toHaveBeenCalled();
   });
 });

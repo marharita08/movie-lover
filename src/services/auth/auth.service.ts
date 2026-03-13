@@ -10,6 +10,7 @@ import type {
 } from "@/pages";
 import type {
   AuthResponse,
+  LoginWithGoogleBody,
   MessageResponse,
   ResetPasswordVerifyResponse,
   SendOtpRequest,
@@ -99,6 +100,13 @@ export class AuthService {
       void,
       Omit<ChangePasswordValidationSchemaType, "confirmPassword">
     >("/auth/change-password", data);
+  }
+
+  async loginWithGoogle(data: LoginWithGoogleBody): Promise<AuthResponse> {
+    return httpService.post<AuthResponse, LoginWithGoogleBody>(
+      "/auth/google",
+      data,
+    );
   }
 }
 

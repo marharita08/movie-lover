@@ -12,7 +12,12 @@ import {
   Person,
 } from "@/components";
 import { PersonRole, personRoleMap } from "@/const";
-import { useIsMobile, usePersonStats, useSearch } from "@/hooks";
+import {
+  useIsMobile,
+  usePersonStats,
+  useSearch,
+  useVirtualScrollRestoration,
+} from "@/hooks";
 import type { PersonStatsItem } from "@/types";
 
 export const PersonsAnalytics = () => {
@@ -59,6 +64,8 @@ export const PersonsAnalytics = () => {
         ? (element) => element.getBoundingClientRect().height
         : undefined,
   });
+
+  useVirtualScrollRestoration(rowVirtualizer, parentRef, !isLoading);
 
   const virtualItems = rowVirtualizer.getVirtualItems();
 

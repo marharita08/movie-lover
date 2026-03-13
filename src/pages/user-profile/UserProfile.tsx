@@ -51,9 +51,9 @@ export const UserProfile = () => {
           className="mt-8 flex flex-col gap-2"
           onSubmit={form.handleSubmit(handleSubmit)}
         >
-          <div className="flex gap-2">
-            <div>Email:</div>
-            <div className="font-medium">{user?.email}</div>
+          <div className="flex items-center gap-2">
+            <div className="text-sm font-medium">Email:</div>
+            <div>{user?.email}</div>
           </div>
           <div>
             <Input
