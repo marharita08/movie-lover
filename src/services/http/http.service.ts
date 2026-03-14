@@ -22,6 +22,7 @@ interface RefreshResponse {
 
 export class HttpService {
   private readonly baseUrl: string;
+  private refreshPromise: Promise<string> | null = null;
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
@@ -122,20 +123,29 @@ export class HttpService {
   }
 
   private async refreshToken(): Promise<string> {
-    const response = await fetch(`${this.baseUrl}/auth/refresh`, {
+    if (this.refreshPromise) {
+      return this.refreshPromise;
+    }
+
+    this.refreshPromise = fetch(`${this.baseUrl}/auth/refresh`, {
       method: "GET",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-    });
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Refresh failed");
+        }
+        const data = (await response.json()) as RefreshResponse;
+        return data.accessToken;
+      })
+      .finally(() => {
+        this.refreshPromise = null;
+      });
 
-    if (!response.ok) {
-      throw new Error("Refresh failed");
-    }
-
-    const data = (await response.json()) as RefreshResponse;
-    return data.accessToken;
+    return this.refreshPromise;
   }
 
   get<TResponse>(url: string, params?: QueryParams): Promise<TResponse> {
