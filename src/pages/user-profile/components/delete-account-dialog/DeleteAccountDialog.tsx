@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  Loading,
 } from "@/components";
 import { useDeleteAccount } from "@/hooks";
 
@@ -60,8 +61,12 @@ export const DeleteAccountDialog = () => {
               onClick={handleConfirm}
               disabled={isDeleting}
             >
-              <TrashIcon className="h-4 w-4" />
-              Delete Account
+              {isDeleting ? (
+                <Loading size="sm" />
+              ) : (
+                <TrashIcon className="h-4 w-4" />
+              )}
+              {isDeleting ? "Deleting..." : "Delete Account"}
             </Button>
           </div>
         </div>

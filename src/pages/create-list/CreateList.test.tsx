@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { useCreateList } from "@/hooks";
+import { useCreateList, useListPolling } from "@/hooks";
 
 import { CreateList } from "./CreateList";
 
@@ -80,6 +80,7 @@ vi.mock("@/hooks", async () => {
         defaultValues: defaultValues as never,
       }),
     useCreateList: vi.fn(),
+    useListPolling: vi.fn().mockReturnValue({ isProcessing: false }),
   };
 });
 
@@ -93,13 +94,11 @@ describe("CreateList", () => {
       mutate,
       isPending: false,
     } as never);
+    vi.mocked(useListPolling).mockReturnValue({ isProcessing: false } as never);
   });
 
-  it("shows CreateListLoading when isPending is true", () => {
-    vi.mocked(useCreateList).mockReturnValue({
-      mutate,
-      isPending: true,
-    } as never);
+  it("shows CreateListLoading when isProcessing is true", () => {
+    vi.mocked(useListPolling).mockReturnValue({ isProcessing: true } as never);
     render(<CreateList />);
     expect(screen.getByTestId("create-list-loading")).toBeInTheDocument();
   });
@@ -136,6 +135,7 @@ describe("CreateList", () => {
           name: "My List",
           fileId: "12345678-1234-1234-1234-123456789012",
         }),
+        expect.objectContaining({ onSuccess: expect.any(Function) }),
       ),
     );
   });

@@ -76,6 +76,9 @@ vi.mock("@/components", () => {
     DialogTitle: ({ children }: { children: React.ReactNode }) => (
       <div>{children}</div>
     ),
+    Loading: ({ size }: { size: "sm" | "md" | "lg" }) => (
+      <div data-testid="loading">Loading {size}</div>
+    ),
   };
 });
 

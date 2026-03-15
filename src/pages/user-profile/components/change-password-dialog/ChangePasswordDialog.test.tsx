@@ -105,6 +105,7 @@ vi.mock("@/components", async () => {
     )),
     InputError: ({ error }: { error?: string }) =>
       error ? <span data-testid="input-error">{error}</span> : null,
+    Loading: ({ size }: { size: string }) => <div data-size={size} />,
   };
 });
 

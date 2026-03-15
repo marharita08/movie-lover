@@ -51,10 +51,7 @@ vi.mock("@/components", async () => {
               open: boolean;
               onOpenChange: (v: boolean) => void;
             }>,
-            {
-              open,
-              onOpenChange,
-            },
+            { open, onOpenChange },
           ),
         )}
       </div>
@@ -83,6 +80,9 @@ vi.mock("@/components", async () => {
     DialogTitle: ({ children }: { children: React.ReactNode }) => (
       <div>{children}</div>
     ),
+    Loading: ({ size }: { size: string }) => (
+      <div data-testid="loading" data-size={size} />
+    ),
   };
 });
 
@@ -94,7 +94,7 @@ const openDialog = () => {
 
 const getConfirmButton = () =>
   screen
-    .getAllByRole("button", { name: /Delete Account/i })
+    .getAllByRole("button")
     .find((btn) => btn.getAttribute("data-variant") === "destructive")!;
 
 describe("DeleteAccountDialog", () => {
@@ -169,5 +169,16 @@ describe("DeleteAccountDialog", () => {
     render(<DeleteAccountDialog />);
     openDialog();
     expect(getConfirmButton()).toBeDisabled();
+  });
+
+  it("shows loading state when isDeleting is true", () => {
+    vi.mocked(useDeleteAccount).mockReturnValue({
+      mutate,
+      isPending: true,
+    } as never);
+    render(<DeleteAccountDialog />);
+    openDialog();
+    expect(screen.getByTestId("loading")).toBeInTheDocument();
+    expect(screen.getByText("Deleting...")).toBeInTheDocument();
   });
 });

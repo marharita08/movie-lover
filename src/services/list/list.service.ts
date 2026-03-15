@@ -27,6 +27,10 @@ export class ListService {
     return httpService.get<PaginatedResponse<ListResponse>>("/list", query);
   }
 
+  async getById(id: string): Promise<ListResponse> {
+    return httpService.get<ListResponse>(`/list/${id}`);
+  }
+
   async delete(id: string): Promise<void> {
     return httpService.delete(`/list/${id}`);
   }

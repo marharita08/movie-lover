@@ -95,7 +95,7 @@ export const ChangePasswordDialog = () => {
               className="min-w-[120px]"
               disabled={changePasswordMutation.isPending}
             >
-              Save
+              {changePasswordMutation.isPending ? "Saving..." : "Save"}
             </Button>
           </div>
         </form>
