@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  Loading,
 } from "@/components";
 import { useDeleteList } from "@/hooks";
 
@@ -69,8 +70,12 @@ export const DeleteListDialog: React.FC<DeleteListDialogProps> = ({
               onClick={handleConfirm}
               disabled={isDeleting}
             >
-              <Trash2Icon className="mr-2 h-4 w-4" />
-              Delete List
+              {isDeleting ? (
+                <Loading size="sm" />
+              ) : (
+                <Trash2Icon className="mr-2 h-4 w-4" />
+              )}
+              {isDeleting ? "Deleting..." : "Delete List"}
             </Button>
           </div>
         </div>

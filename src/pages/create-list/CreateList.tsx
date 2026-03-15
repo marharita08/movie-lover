@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ListIcon, SaveIcon } from "lucide-react";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -11,7 +11,7 @@ import {
   Label,
   Sphere,
 } from "@/components";
-import { useAppForm, useCreateList } from "@/hooks";
+import { useAppForm, useCreateList, useListPolling } from "@/hooks";
 
 import {
   CreateListValidationSchema,
@@ -20,6 +20,12 @@ import {
 
 export const CreateList = () => {
   const navigate = useNavigate();
+  const [processingListId, setProcessingListId] = useState<string | null>(null);
+
+  const { isProcessing } = useListPolling(
+    processingListId,
+    setProcessingListId,
+  );
 
   const form = useAppForm<CreateListValidationSchemaType>({
     schema: CreateListValidationSchema,
@@ -32,7 +38,11 @@ export const CreateList = () => {
   const createListMutation = useCreateList();
 
   const handleSubmit = (data: CreateListValidationSchemaType) => {
-    createListMutation.mutate(data);
+    createListMutation.mutate(data, {
+      onSuccess: (list) => {
+        setProcessingListId(list.id);
+      },
+    });
   };
 
   const handleBack = () => {
@@ -44,7 +54,7 @@ export const CreateList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (createListMutation.isPending) {
+  if (createListMutation.isPending || isProcessing || !!processingListId) {
     return <CreateListLoading />;
   }
 

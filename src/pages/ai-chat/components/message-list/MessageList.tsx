@@ -78,6 +78,7 @@ export const MessageList = ({ pendingMessage }: MessageListProps) => {
         messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
       }
       isRestoredRef.current = true;
+      isInitialScrollDone.current = true;
       lastMessageIdRef.current = allMessages[allMessages.length - 1]?.id;
     }, 0);
   }, [isLoading, allMessages, scrollKey]);

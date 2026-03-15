@@ -7,6 +7,7 @@ export * from "./use-discover-movies/useDiscoverMovies";
 export * from "./use-file-data/useFileData";
 export * from "./use-genre-stats/useGenreStats";
 export * from "./use-list-genres/useListGenres";
+export * from "./use-list-polling/useListPolling";
 export * from "./use-list-years/useListYears";
 export * from "./use-lists/useLists";
 export * from "./use-media-items/useMediaItems";
