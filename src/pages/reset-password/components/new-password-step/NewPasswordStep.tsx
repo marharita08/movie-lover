@@ -1,6 +1,10 @@
 import { Button, InputError, PasswordInput } from "@/components";
-import { StorageKey } from "@/const";
-import { useAppForm, useResetPasswordNewPassword } from "@/hooks";
+import { StorageKey, TranslationKey } from "@/const";
+import {
+  useAppForm,
+  useResetPasswordNewPassword,
+  useTranslation,
+} from "@/hooks";
 
 import {
   NewPasswordStepValidationSchema,
@@ -8,6 +12,7 @@ import {
 } from "../../validation";
 
 export const NewPasswordStep = () => {
+  const { t } = useTranslation();
   const form = useAppForm<NewPasswordStepValidationSchemaType>({
     schema: NewPasswordStepValidationSchema,
     defaultValues: {
@@ -31,10 +36,13 @@ export const NewPasswordStep = () => {
       className="flex flex-col gap-4"
       aria-label="new-password-step-form"
     >
-      <h2 className="text-muted-foreground">Enter your new password</h2>
+      <h2 className="text-muted-foreground">
+        {t(TranslationKey.RESET_PASSWORD_NEW_PROMPT)}
+      </h2>
       <div className="flex flex-col gap-1">
         <PasswordInput
           {...form.register("password")}
+          label={t(TranslationKey.AUTH_PASSWORD)}
           error={!!form.formState.errors.password?.message}
           placeholder="********"
         />
@@ -43,7 +51,7 @@ export const NewPasswordStep = () => {
       <div className="flex flex-col gap-1">
         <PasswordInput
           {...form.register("confirmPassword")}
-          label="Confirm Password"
+          label={t(TranslationKey.RESET_PASSWORD_CONFIRM_LABEL)}
           error={!!form.formState.errors.confirmPassword?.message}
           placeholder="********"
         />
@@ -55,7 +63,7 @@ export const NewPasswordStep = () => {
           className="min-w-[150px]"
           disabled={resetPasswordNewPasswordMutation.isPending}
         >
-          Save
+          {t(TranslationKey.RESET_PASSWORD_SAVE)}
         </Button>
       </div>
     </form>

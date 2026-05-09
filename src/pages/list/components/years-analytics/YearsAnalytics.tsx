@@ -1,11 +1,12 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { EmptyState, ErrorState, Loading } from "@/components";
-import { useYearsStats } from "@/hooks";
+import { TranslationKey } from "@/const";
+import { useTranslation, useYearsStats } from "@/hooks";
 
-import { YearsBarChart } from "./YearsBarChart";
-import { useEffect } from "react";
 import { ListSection } from "../../const";
+import { YearsBarChart } from "./YearsBarChart";
 
 interface YearsAnalyticsProps {
   onReady?: (section: ListSection) => void;
@@ -13,6 +14,7 @@ interface YearsAnalyticsProps {
 
 export const YearsAnalytics: React.FC<YearsAnalyticsProps> = ({ onReady }) => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
 
   const {
     data: stats,
@@ -35,7 +37,9 @@ export const YearsAnalytics: React.FC<YearsAnalyticsProps> = ({ onReady }) => {
 
   return (
     <section className="flex flex-col gap-4">
-      <h3 className="px-2 text-lg font-bold">Years Distribution</h3>
+      <h3 className="px-2 text-lg font-bold">
+        {t(TranslationKey.LIST_YEARS_TITLE)}
+      </h3>
       {isLoading && (
         <div className="flex h-[400px] items-center justify-center">
           <Loading />
@@ -43,7 +47,7 @@ export const YearsAnalytics: React.FC<YearsAnalyticsProps> = ({ onReady }) => {
       )}
       {isError && (
         <ErrorState
-          title="Failed to load years analytics"
+          title={t(TranslationKey.LIST_YEARS_LOAD_FAILED)}
           error={error}
           onRetry={refetch}
         />
@@ -53,8 +57,9 @@ export const YearsAnalytics: React.FC<YearsAnalyticsProps> = ({ onReady }) => {
       )}
       {!isLoading && !isError && chartData.length === 0 && (
         <EmptyState
-          title="No data found"
-          description="No media found in your list"
+          title={t(TranslationKey.COMMON_DATA_NOT_FOUND)}
+          description={t(TranslationKey.COMMON_NO_MEDIA_FOUND)}
+          icon={"film"}
         />
       )}
     </section>

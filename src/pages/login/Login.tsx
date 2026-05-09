@@ -9,8 +9,8 @@ import {
   PasswordInput,
   Sphere,
 } from "@/components";
-import { RouterKey } from "@/const";
-import { useAppForm, useLogin } from "@/hooks";
+import { RouterKey, TranslationKey } from "@/const";
+import { useAppForm, useLogin, useTranslation } from "@/hooks";
 
 import {
   LoginValidationSchema,
@@ -18,6 +18,7 @@ import {
 } from "./validation";
 
 export const Login = () => {
+  const { t } = useTranslation();
   const form = useAppForm<LoginValidationSchemaType>({
     schema: LoginValidationSchema,
     defaultValues: {
@@ -53,10 +54,12 @@ export const Login = () => {
               type="button"
             >
               <ArrowLeft className="h-4 w-4" />
-              Back
+              {t(TranslationKey.AUTH_BACK)}
             </Button>
 
-            <h1 className="text-center text-2xl font-bold">Login</h1>
+            <h1 className="text-center text-2xl font-bold">
+              {t(TranslationKey.AUTH_LOGIN)}
+            </h1>
 
             <div />
           </div>
@@ -64,16 +67,17 @@ export const Login = () => {
             <div className="flex flex-col gap-1">
               <Input
                 {...form.register("email")}
-                label="Email"
+                label={t(TranslationKey.AUTH_EMAIL)}
                 error={!!form.formState.errors.email?.message}
                 startIcon={<MailIcon className="h-4 w-4" />}
-                placeholder="jane.smith@example.com"
+                placeholder={t(TranslationKey.AUTH_EMAIL_PLACEHOLDER)}
               />
               <InputError error={form.formState.errors.email?.message} />
             </div>
             <div className="flex flex-col gap-1">
               <PasswordInput
                 {...form.register("password")}
+                label={t(TranslationKey.AUTH_PASSWORD)}
                 error={!!form.formState.errors.password?.message}
                 placeholder="********"
               />
@@ -85,24 +89,29 @@ export const Login = () => {
             className="mt-4 w-full"
             disabled={loginMutation.isPending}
           >
-            Login
+            {t(TranslationKey.AUTH_LOGIN)}
           </Button>
-          <LoginWithGoogleButton className="mt-6" />
+          <LoginWithGoogleButton
+            className="mt-6"
+            label={t(TranslationKey.AUTH_LOGIN_WITH_GOOGLE)}
+          />
           <div className="mt-6 flex flex-col">
             <div className="text-center text-sm">
-              Don't have an account?{" "}
+              {t(TranslationKey.AUTH_NO_ACCOUNT)}{" "}
               <Button
                 type="button"
                 variant="link"
                 asChild
                 className="p-0 text-sm"
               >
-                <Link to="/signup">Sign up</Link>
+                <Link to="/signup">{t(TranslationKey.AUTH_SIGNUP)}</Link>
               </Button>
             </div>
             <div className="text-center">
               <Button asChild variant={"link"} className="p-0 text-sm">
-                <Link to={RouterKey.RESET_PASSWORD}>Forgot password?</Link>
+                <Link to={RouterKey.RESET_PASSWORD}>
+                  {t(TranslationKey.AUTH_FORGOT_PASSWORD)}
+                </Link>
               </Button>
             </div>
           </div>

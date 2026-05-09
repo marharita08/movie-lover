@@ -3,13 +3,14 @@ import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Button } from "@/components";
-import { ImdbUrl, RouterKey } from "@/const";
-import { useCurrentUser, useScrollRestoration } from "@/hooks";
+import { ImdbUrl, RouterKey, TranslationKey } from "@/const";
+import { useCurrentUser, useScrollRestoration, useTranslation } from "@/hooks";
 
 import { DiscoverMovies, HowItWorksCard } from "./components";
 
 export const Dashboard = () => {
   const { data: user, isLoading: isUserLoading } = useCurrentUser();
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
   const lastThreeYears = Array.from({ length: 3 }, (_, i) => currentYear - i);
 
@@ -38,28 +39,34 @@ export const Dashboard = () => {
           </div>
           <div>
             <Button variant="link" asChild className="p-0">
-              <Link to={RouterKey.LOGIN}>Log in</Link>
+              <Link to={RouterKey.LOGIN}>
+                {t(TranslationKey.DASHBOARD_LOGIN_PROMPT)}
+              </Link>
             </Button>{" "}
-            or{" "}
+            {t(TranslationKey.DASHBOARD_OR)}{" "}
             <Button variant="link" asChild className="p-0">
-              <Link to={RouterKey.SIGNUP}>sign up</Link>
+              <Link to={RouterKey.SIGNUP}>
+                {t(TranslationKey.DASHBOARD_SIGNUP_PROMPT)}
+              </Link>
             </Button>{" "}
-            to view statistics for your IMDb lists and access the AI chat.
+            {t(TranslationKey.DASHBOARD_INFO_TEXT)}
           </div>
         </div>
       )}
       <div className="mx-auto px-4">
-        <h2 className="mb-2 text-2xl font-semibold">How it works</h2>
+        <h2 className="mb-2 text-2xl font-semibold">
+          {t(TranslationKey.DASHBOARD_HOW_IT_WORKS)}
+        </h2>
         <p className="text-muted-foreground mb-6">
-          Turn your IMDb lists into insights and personalized recommendations.
+          {t(TranslationKey.DASHBOARD_HOW_IT_WORKS_DESC)}
         </p>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <a href={ImdbUrl.BASE} target="_blank" rel="noopener noreferrer">
             <HowItWorksCard
               step={1}
-              title="Export your IMDb list"
-              description="Download your IMDb list as a CSV file (rated titles are recommended for better insights)."
+              title={t(TranslationKey.DASHBOARD_STEP_1_TITLE)}
+              description={t(TranslationKey.DASHBOARD_STEP_1_DESC)}
             />
           </a>
           <Link
@@ -67,22 +74,22 @@ export const Dashboard = () => {
           >
             <HowItWorksCard
               step={2}
-              title="Upload your list"
-              description="Upload your CSV file here to create your personal movie profile. You can upload multiple IMDb lists (watchlist, rated, or custom lists)."
+              title={t(TranslationKey.DASHBOARD_STEP_2_TITLE)}
+              description={t(TranslationKey.DASHBOARD_STEP_2_DESC)}
             />
           </Link>
           <Link to={isNotAuthenticated ? RouterKey.LOGIN : RouterKey.LISTS}>
             <HowItWorksCard
               step={3}
-              title="Explore your statistics"
-              description="Discover your movie taste through statistics and insights."
+              title={t(TranslationKey.DASHBOARD_STEP_3_TITLE)}
+              description={t(TranslationKey.DASHBOARD_STEP_3_DESC)}
             />
           </Link>
           <Link to={isNotAuthenticated ? RouterKey.LOGIN : RouterKey.CHAT}>
             <HowItWorksCard
               step={4}
-              title="Get AI recommendations"
-              description="Chat with AI to receive personalized movie and TV show recommendations based on your lists."
+              title={t(TranslationKey.DASHBOARD_STEP_4_TITLE)}
+              description={t(TranslationKey.DASHBOARD_STEP_4_DESC)}
             />
           </Link>
         </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import {
@@ -10,12 +10,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components";
-import { MediaType } from "@/const";
-import { useListGenres, useListYears, useRatingStats } from "@/hooks";
+import { MediaType, TranslationKey } from "@/const";
+import {
+  useListGenres,
+  useListYears,
+  useRatingStats,
+  useTranslation,
+} from "@/hooks";
 
-import { RatingBarChart } from "./RatingBarChart";
-import { useEffect } from "react";
 import { ListSection } from "../../const";
+import { RatingBarChart } from "./RatingBarChart";
 
 interface RatingAnalyticsProps {
   onReady?: (section: ListSection) => void;
@@ -25,6 +29,7 @@ export const RatingAnalytics: React.FC<RatingAnalyticsProps> = ({
   onReady,
 }) => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
 
   const [genre, setGenre] = useState<string>("all");
   const [year, setYear] = useState<string>("all");
@@ -62,15 +67,21 @@ export const RatingAnalytics: React.FC<RatingAnalyticsProps> = ({
 
   return (
     <section className="flex w-fit flex-col gap-4">
-      <h3 className="px-2 text-lg font-bold">Rating Distribution</h3>
+      <h3 className="px-2 text-lg font-bold">
+        {t(TranslationKey.LIST_RATING_TITLE)}
+      </h3>
       <div className="flex flex-wrap justify-center gap-4 px-2">
         <div className="w-full sm:w-48">
           <Select value={genre} onValueChange={setGenre}>
-            <SelectTrigger label="Genre">
-              <SelectValue placeholder="Select genre" />
+            <SelectTrigger label={t(TranslationKey.COMMON_GENRE)}>
+              <SelectValue
+                placeholder={t(TranslationKey.COMMON_SELECT_GENRE)}
+              />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Genres</SelectItem>
+              <SelectItem value="all">
+                {t(TranslationKey.COMMON_ALL_GENRES)}
+              </SelectItem>
               {genresData?.map((g) => (
                 <SelectItem key={g} value={g}>
                   {g}
@@ -82,11 +93,13 @@ export const RatingAnalytics: React.FC<RatingAnalyticsProps> = ({
 
         <div className="w-full sm:w-32">
           <Select value={year} onValueChange={setYear}>
-            <SelectTrigger label="Year">
-              <SelectValue placeholder="Select year" />
+            <SelectTrigger label={t(TranslationKey.COMMON_YEAR)}>
+              <SelectValue placeholder={t(TranslationKey.COMMON_SELECT_YEAR)} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Years</SelectItem>
+              <SelectItem value="all">
+                {t(TranslationKey.COMMON_ALL_YEARS)}
+              </SelectItem>
               {yearsData
                 ?.sort((a, b) => b - a)
                 .map((y) => (
@@ -103,13 +116,21 @@ export const RatingAnalytics: React.FC<RatingAnalyticsProps> = ({
             value={mediaType}
             onValueChange={(value) => setMediaType(value as MediaType | "all")}
           >
-            <SelectTrigger label="Media Type">
-              <SelectValue placeholder="Select media type" />
+            <SelectTrigger label={t(TranslationKey.COMMON_MEDIA_TYPE)}>
+              <SelectValue
+                placeholder={t(TranslationKey.COMMON_SELECT_MEDIA_TYPE)}
+              />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value={MediaType.MOVIE}>Movie</SelectItem>
-              <SelectItem value={MediaType.TV}>TV Show</SelectItem>
+              <SelectItem value="all">
+                {t(TranslationKey.COMMON_ALL_TYPES)}
+              </SelectItem>
+              <SelectItem value={MediaType.MOVIE}>
+                {t(TranslationKey.COMMON_MOVIE)}
+              </SelectItem>
+              <SelectItem value={MediaType.TV}>
+                {t(TranslationKey.COMMON_TV_SHOW)}
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -123,7 +144,7 @@ export const RatingAnalytics: React.FC<RatingAnalyticsProps> = ({
         )}
         {isError && (
           <ErrorState
-            title="Failed to load rating analytics"
+            title={t(TranslationKey.LIST_RATING_LOAD_FAILED)}
             error={error}
             onRetry={refetch}
           />

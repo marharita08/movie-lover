@@ -2,7 +2,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { generatePath, useNavigate } from "react-router-dom";
 
-import { ListStatus, QueryKey, RouterKey } from "@/const";
+import { ListStatus, QueryKey, RouterKey, TranslationKey } from "@/const";
+import { useTranslation } from "@/hooks";
 import { toast } from "@/hooks/use-toast/useToast";
 import { listService } from "@/services";
 
@@ -12,6 +13,7 @@ export const useListPolling = (
 ) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const query = useQuery({
     queryKey: [QueryKey.LISTS, listId],
@@ -35,7 +37,7 @@ export const useListPolling = (
     if (query.data?.status === ListStatus.FAILED) {
       setProcessingListId(null);
       toast({
-        title: "Error",
+        title: t(TranslationKey.COMMON_ERROR),
         description: query.data?.errorMessage,
         variant: "destructive",
       });
@@ -51,6 +53,7 @@ export const useListPolling = (
     query.data?.errorMessage,
     setProcessingListId,
     queryClient,
+    t,
   ]);
 
   const isProcessing = query.data?.status === ListStatus.PROCESSING;

@@ -10,9 +10,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components";
-import { useClearChat } from "@/hooks";
+import { TranslationKey } from "@/const";
+import { useClearChat, useTranslation } from "@/hooks";
 
 export const ClearChatDialog = () => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const { mutate: clearChat, isPending } = useClearChat();
@@ -30,17 +32,18 @@ export const ClearChatDialog = () => {
       <DialogTrigger asChild>
         <Button variant={"destructive"}>
           <Trash2 className="h-4 w-4" />
-          Clear Chat
+          {t(TranslationKey.AI_CHAT_CLEAR_CONFIRM)}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Clear chat history?</DialogTitle>
+          <DialogTitle>
+            {t(TranslationKey.AI_CHAT_CLEAR_CONFIRM_TITLE)}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="px-4">
-          This action cannot be undone. All messages and recommendations will be
-          permanently deleted.
+          {t(TranslationKey.AI_CHAT_CLEAR_CONFIRM_DESC)}
         </div>
         <DialogFooter className="p-4">
           <Button
@@ -48,14 +51,16 @@ export const ClearChatDialog = () => {
             onClick={() => setOpen(false)}
             disabled={isPending}
           >
-            Cancel
+            {t(TranslationKey.AI_CHAT_CLEAR_CANCEL)}
           </Button>
           <Button
             variant="destructive"
             onClick={handleClear}
             disabled={isPending}
           >
-            {isPending ? "Clearing..." : "Clear Chat"}
+            {isPending
+              ? t(TranslationKey.AI_CHAT_CLEARING)
+              : t(TranslationKey.AI_CHAT_CLEAR_CONFIRM)}
           </Button>
         </DialogFooter>
       </DialogContent>

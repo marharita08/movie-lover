@@ -2,7 +2,13 @@ import { RotateCcwIcon, SaveIcon, UserIcon } from "lucide-react";
 import { useEffect } from "react";
 
 import { Button, Input, InputError, Sphere } from "@/components";
-import { useAppForm, useCurrentUser, useUpdateUser } from "@/hooks";
+import { TranslationKey } from "@/const";
+import {
+  useAppForm,
+  useCurrentUser,
+  useTranslation,
+  useUpdateUser,
+} from "@/hooks";
 
 import { ChangePasswordDialog, DeleteAccountDialog } from "./components";
 import {
@@ -12,6 +18,7 @@ import {
 
 export const UserProfile = () => {
   const { data: user } = useCurrentUser();
+  const { t } = useTranslation();
 
   const form = useAppForm<UpdateUserValidationSchemaType>({
     schema: UpdateUserValidationSchema,
@@ -46,21 +53,25 @@ export const UserProfile = () => {
       <Sphere className="absolute top-28 right-30 h-13 w-13" />
       <Sphere className="absolute right-40 bottom-20 h-20 w-20" />
       <div className="bg-card h-full w-full p-6 shadow-md md:absolute md:top-2/5 md:left-1/2 md:h-fit md:w-[500px] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-xl">
-        <h1 className="text-center text-xl font-bold">My Profile</h1>
+        <h1 className="text-center text-xl font-bold">
+          {t(TranslationKey.USER_PROFILE_TITLE)}
+        </h1>
         <form
           className="mt-8 flex flex-col gap-2"
           onSubmit={form.handleSubmit(handleSubmit)}
         >
           <div className="flex items-center gap-2">
-            <div className="text-sm font-medium">Email:</div>
+            <div className="text-sm font-medium">
+              {t(TranslationKey.USER_PROFILE_EMAIL_LABEL)}
+            </div>
             <div>{user?.email}</div>
           </div>
           <div>
             <Input
               {...form.register("name")}
-              label="Name"
+              label={t(TranslationKey.USER_PROFILE_NAME_LABEL)}
               error={!!form.formState.errors.name?.message}
-              placeholder="Jane Smith"
+              placeholder={t(TranslationKey.USER_PROFILE_NAME_PLACEHOLDER)}
               startIcon={<UserIcon className="h-4 w-4" />}
             />
             <InputError error={form.formState.errors.name?.message} />
@@ -75,7 +86,7 @@ export const UserProfile = () => {
                 disabled={updateUserMutation.isPending}
               >
                 <RotateCcwIcon className="h-4 w-4" />
-                Reset
+                {t(TranslationKey.USER_PROFILE_RESET)}
               </Button>
               <Button
                 className="min-w-[120px]"
@@ -83,7 +94,7 @@ export const UserProfile = () => {
                 disabled={updateUserMutation.isPending}
               >
                 <SaveIcon className="h-4 w-4" />
-                Save
+                {t(TranslationKey.USER_PROFILE_SAVE)}
               </Button>
             </div>
           </div>

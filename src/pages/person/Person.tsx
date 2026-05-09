@@ -3,14 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { Button, ErrorState, LoadingOverlay, PosterImage } from "@/components";
 import { ExpandableText } from "@/components/ui/ExpandableText";
-import { ImdbUrl } from "@/const";
-import { usePerson } from "@/hooks";
+import { ImdbUrl, TranslationKey } from "@/const";
+import { usePerson, useTranslation } from "@/hooks";
 import { formatDate } from "@/utils";
 
 export const Person = () => {
   const { id } = useParams<{ id: string }>();
   const { data: person, isLoading, error, refetch } = usePerson(id!);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   if (isLoading) {
     return <LoadingOverlay />;
@@ -19,8 +20,8 @@ export const Person = () => {
   if (error || !person) {
     return (
       <ErrorState
-        title="Person not found"
-        description={`We couldn't load this person's details. The reel might be missing or damaged.`}
+        title={t(TranslationKey.PERSON_NOT_FOUND)}
+        description={t(TranslationKey.PERSON_LOAD_FAILED)}
         error={error}
         onRetry={() => refetch()}
         type="generic"
@@ -37,7 +38,7 @@ export const Person = () => {
           onClick={() => navigate(-1)}
         >
           <ArrowLeft className="h-4 w-4" />
-          Back
+          {t(TranslationKey.PERSON_BACK)}
         </Button>
         <div className="flex flex-col gap-8 lg:flex-row">
           <div className="flex h-fit shrink-0 justify-center">
@@ -63,7 +64,7 @@ export const Person = () => {
                 {person.birthday && (
                   <div>
                     <span className="text-muted-foreground block text-sm font-medium">
-                      Birthday
+                      {t(TranslationKey.PERSON_BIRTHDAY)}
                     </span>
                     <span>{formatDate(person.birthday)}</span>
                   </div>
@@ -71,7 +72,7 @@ export const Person = () => {
                 {person.deathday && (
                   <div>
                     <span className="text-muted-foreground block text-sm font-medium">
-                      Deathday
+                      {t(TranslationKey.PERSON_DEATHDAY)}
                     </span>
                     <span>{formatDate(person.deathday)}</span>
                   </div>
@@ -79,7 +80,7 @@ export const Person = () => {
                 {person.placeOfBirth && (
                   <div>
                     <span className="text-muted-foreground block text-sm font-medium">
-                      Place of Birth
+                      {t(TranslationKey.PERSON_BIRTH_PLACE)}
                     </span>
                     <span>{person.placeOfBirth}</span>
                   </div>
@@ -94,11 +95,10 @@ export const Person = () => {
                   <SearchXIcon className="text-muted-foreground h-10 w-10" />
                   <div className="flex flex-col items-center gap-1">
                     <div className="text-lg font-bold">
-                      No additional information available
+                      {t(TranslationKey.PERSON_NO_INFO_TITLE)}
                     </div>
                     <div className="text-muted-foreground text-sm">
-                      TMDB does not provide any additional information about
-                      this person.
+                      {t(TranslationKey.PERSON_NO_INFO_DESC)}
                     </div>
                   </div>
                 </div>
@@ -110,7 +110,7 @@ export const Person = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Open in IMDB
+                  {t(TranslationKey.PERSON_OPEN_IMDB)}
                 </a>
               </Button>
             )}

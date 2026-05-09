@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
-import { toast, useDeleteFile, useFileData } from "@/hooks";
+import { TranslationKey } from "@/const";
+import { toast, useDeleteFile, useFileData, useTranslation } from "@/hooks";
 import { fileService } from "@/services";
 
 import { FileInput, FilePreview } from "../../ui";
@@ -16,6 +17,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   fileId,
   setFileId,
 }) => {
+  const { t } = useTranslation();
   const [file, setFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
@@ -49,14 +51,16 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         if (error instanceof Error && error.message === "Upload aborted") {
           toast({
             variant: "destructive",
-            title: "Upload cancelled",
+            title: t(TranslationKey.FILE_UPLOADER_CANCELLED),
           });
         } else {
           toast({
             variant: "destructive",
-            title: "Upload failed",
+            title: t(TranslationKey.FILE_UPLOADER_FAILED),
             description:
-              error instanceof Error ? error.message : "Unknown error",
+              error instanceof Error
+                ? error.message
+                : t(TranslationKey.COMMON_UNKNOWN_ERROR),
           });
         }
       } finally {
@@ -66,7 +70,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     };
 
     handleUpload();
-  }, [file, setFileId]);
+  }, [file, setFileId, t]);
 
   const handleCancel = () => {
     abortControllerRef.current?.abort();

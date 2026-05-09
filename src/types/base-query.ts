@@ -1,6 +1,5 @@
 import type { Language } from "@/const";
 
-export type AuthResponse = {
-  accessToken: string;
+export type BaseQuery = {
   language: Language;
 };

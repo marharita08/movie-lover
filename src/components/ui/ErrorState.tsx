@@ -1,5 +1,7 @@
 import { AlertCircle, RefreshCw, ServerCrash, Wifi } from "lucide-react";
 
+import { TranslationKey } from "@/const";
+import { useTranslation } from "@/hooks";
 import { HttpException } from "@/types";
 
 import { Button } from "./Button";
@@ -25,11 +27,12 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
   onRetry,
   type = "generic",
 }) => {
+  const { t } = useTranslation();
   const IconComponent = icons[type] || AlertCircle;
   const descriptionText =
     (error instanceof HttpException && error.body?.message) ||
     description ||
-    "Please try again later";
+    t(TranslationKey.COMMON_PLEASE_TRY_LATER);
 
   return (
     <div className="flex h-64 flex-col items-center justify-center gap-4 text-center">
@@ -45,7 +48,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
       {onRetry && (
         <Button onClick={onRetry} variant="outline" className="mt-2">
           <RefreshCw className="h-4 w-4" />
-          Try Again
+          {t(TranslationKey.COMMON_TRY_AGAIN)}
         </Button>
       )}
     </div>

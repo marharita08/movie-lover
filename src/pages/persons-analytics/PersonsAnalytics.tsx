@@ -11,17 +11,19 @@ import {
   Loading,
   Person,
 } from "@/components";
-import { PersonRole, personRoleMap } from "@/const";
+import { PersonRole, personRoleMap, TranslationKey } from "@/const";
 import {
   useIsMobile,
   usePersonStats,
   useSearch,
+  useTranslation,
   useVirtualScrollRestoration,
 } from "@/hooks";
 import type { PersonStatsItem } from "@/types";
 
 export const PersonsAnalytics = () => {
   const { id, role } = useParams<{ id: string; role: PersonRole }>();
+  const { t } = useTranslation();
   const { search, setSearch, debouncedSearch } = useSearch();
   const parentRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
@@ -92,12 +94,14 @@ export const PersonsAnalytics = () => {
       <div className="bg-background flex shrink-0 items-center gap-2 px-2 py-4">
         <Button variant="ghost" onClick={() => navigate(-1)}>
           <ArrowLeft className="h-4 w-4" />
-          <span className="hidden md:block">Back</span>
+          <span className="hidden md:block">
+            {t(TranslationKey.PERSON_ANALYTICS_BACK)}
+          </span>
         </Button>
-        <h1 className="text-2xl font-bold">{personRoleMap[roleParsed]}</h1>
+        <h1 className="text-2xl font-bold">{t(personRoleMap[roleParsed])}</h1>
         <search className="ml-2 max-w-md flex-1 md:ml-6">
           <Input
-            placeholder="Search..."
+            placeholder={t(TranslationKey.PERSON_ANALYTICS_SEARCH_PLACEHOLDER)}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             startIcon={<SearchIcon className="h-4 w-4" />}
@@ -115,7 +119,7 @@ export const PersonsAnalytics = () => {
       {isError && (
         <div className="flex-1 overflow-auto">
           <ErrorState
-            title="Failed to load persons analitics"
+            title={t(TranslationKey.PERSON_ANALYTICS_LOAD_FAILED)}
             error={error}
             onRetry={refetch}
           />
@@ -124,8 +128,14 @@ export const PersonsAnalytics = () => {
       {!isLoading && !isError && analitics?.length === 0 && (
         <div className="flex-1 overflow-auto">
           <EmptyState
-            title={`No ${personRoleMap[roleParsed]} found`}
-            description={`No ${personRoleMap[roleParsed]} found in your list`}
+            title={t(TranslationKey.PERSON_ANALYTICS_EMPTY_TITLE).replace(
+              "{{role}}",
+              t(personRoleMap[roleParsed]).toLowerCase(),
+            )}
+            description={t(TranslationKey.PERSON_ANALYTICS_EMPTY_DESC).replace(
+              "{{role}}",
+              t(personRoleMap[roleParsed]).toLowerCase(),
+            )}
           />
         </div>
       )}

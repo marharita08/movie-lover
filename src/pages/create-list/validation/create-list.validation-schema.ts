@@ -1,14 +1,19 @@
 import { z } from "zod";
 
+import { TranslationKey } from "@/const";
+
 export const CreateListValidationSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }).max(255, {
-    message: "Name must be at most 255 characters",
-  }),
+  name: z
+    .string()
+    .min(1, { message: TranslationKey.VALIDATION_NAME_REQUIRED })
+    .max(255, {
+      message: TranslationKey.VALIDATION_NAME_MAX,
+    }),
   fileId: z
     .string()
-    .min(1, { message: "File is required" })
+    .min(1, { message: TranslationKey.VALIDATION_FILE_REQUIRED })
     .regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i, {
-      message: "Invalid file id",
+      message: TranslationKey.VALIDATION_FILE_ID_INVALID,
     }),
 });
 

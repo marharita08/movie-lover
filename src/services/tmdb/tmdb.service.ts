@@ -7,6 +7,7 @@ import type {
   PaginatedResponse,
   TVShowResponse,
 } from "@/types";
+import type { BaseQuery } from "@/types/base-query";
 import type { PersonResponseDto } from "@/types/person-response.type";
 
 import { httpService } from "../http/http.service";
@@ -16,16 +17,16 @@ export class TMDBService {
     return httpService.get<MoviesResponseDto>("/tmdb/discover/movie", query);
   }
 
-  async getMovie(id: string) {
-    return httpService.get<MovieDetailsDto>(`/tmdb/movie/${id}`);
+  async getMovie(id: string, query: BaseQuery) {
+    return httpService.get<MovieDetailsDto>(`/tmdb/movie/${id}`, query);
   }
 
-  async getTVShow(id: string) {
-    return httpService.get<TVShowResponse>(`/tmdb/tv/${id}`);
+  async getTVShow(id: string, query: BaseQuery) {
+    return httpService.get<TVShowResponse>(`/tmdb/tv/${id}`, query);
   }
 
-  async getPerson(id: string) {
-    return httpService.get<PersonResponseDto>(`/tmdb/person/${id}`);
+  async getPerson(id: string, query: BaseQuery) {
+    return httpService.get<PersonResponseDto>(`/tmdb/person/${id}`, query);
   }
 
   async multiSearch(query: MultiSearchQuery) {

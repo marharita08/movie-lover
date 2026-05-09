@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { Input, MediaList } from "@/components";
-import { StorageKey } from "@/const";
-import { useMediaItems, useSearch } from "@/hooks";
+import { StorageKey, TranslationKey } from "@/const";
+import { useMediaItems, useSearch, useTranslation } from "@/hooks";
 
 import { ListSection } from "../../const";
 
@@ -15,6 +15,7 @@ interface MediasFromListProps {
 export const MediasFromList: React.FC<MediasFromListProps> = ({ onReady }) => {
   const { id } = useParams<{ id: string }>();
   const { search, setSearch, debouncedSearch } = useSearch();
+  const { t } = useTranslation();
 
   const {
     data,
@@ -38,10 +39,12 @@ export const MediasFromList: React.FC<MediasFromListProps> = ({ onReady }) => {
   return (
     <section className="flex flex-col gap-4">
       <div className="mb-4 flex items-center gap-8 py-1">
-        <h2 className="px-2 text-2xl font-bold md:px-0">List</h2>
+        <h2 className="px-2 text-2xl font-bold md:px-0">
+          {t(TranslationKey.LIST_MEDIAS_TITLE)}
+        </h2>
         <search className="w-full max-w-md flex-1">
           <Input
-            placeholder="Search..."
+            placeholder={t(TranslationKey.COMMON_SEARCH_PLACEHOLDER)}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             startIcon={<SearchIcon className="h-4 w-4" />}

@@ -10,4 +10,5 @@ export * from "./use-otp-countdown/useOtpCountdown";
 export * from "./use-scroll-restoration/useScrollRestoration";
 export * from "./use-search/useSearch";
 export * from "./use-toast/useToast";
+export * from "./use-translation/useTranslation";
 export * from "./use-virtual-scroll-restoration/useVirtualScrollRestoration";

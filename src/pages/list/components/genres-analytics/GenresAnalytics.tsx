@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { EmptyState, ErrorState, Loading } from "@/components";
-import { useGenreStats } from "@/hooks";
+import { TranslationKey } from "@/const";
+import { useGenreStats, useTranslation } from "@/hooks";
 
 import { ListSection } from "../../const";
 import { GenresBarChart } from "./GenresBarChart";
@@ -15,6 +16,7 @@ export const GenresAnalytics: React.FC<GenresAnalyticsProps> = ({
   onReady,
 }) => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
 
   const {
     data: analitics,
@@ -37,7 +39,9 @@ export const GenresAnalytics: React.FC<GenresAnalyticsProps> = ({
 
   return (
     <section className="flex flex-col gap-4">
-      <h3 className="px-2 text-lg font-bold">Genres</h3>
+      <h3 className="px-2 text-lg font-bold">
+        {t(TranslationKey.LIST_GENRES_TITLE)}
+      </h3>
       {isLoading && (
         <div className="flex items-center justify-center">
           <Loading />
@@ -45,7 +49,7 @@ export const GenresAnalytics: React.FC<GenresAnalyticsProps> = ({
       )}
       {isError && (
         <ErrorState
-          title="Failed to load genres analitics"
+          title={t(TranslationKey.LIST_GENRES_LOAD_FAILED)}
           error={error}
           onRetry={refetch}
         />
@@ -55,8 +59,9 @@ export const GenresAnalytics: React.FC<GenresAnalyticsProps> = ({
       )}
       {!isLoading && !isError && genres.length === 0 && (
         <EmptyState
-          title="No genres found"
-          description="No genres found in your list"
+          title={t(TranslationKey.LIST_GENRES_EMPTY_TITLE)}
+          description={t(TranslationKey.LIST_GENRES_EMPTY_DESC)}
+          icon={"film"}
         />
       )}
     </section>

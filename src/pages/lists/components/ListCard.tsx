@@ -3,8 +3,9 @@ import { generatePath, Link } from "react-router-dom";
 
 import { Button } from "@/components";
 import { FilePreview } from "@/components";
-import { RouterKey } from "@/const";
+import { RouterKey, TranslationKey } from "@/const";
 import { ListStatus } from "@/const/list-status";
+import { useTranslation } from "@/hooks";
 import type { ListResponse } from "@/types";
 
 import { DeleteListDialog } from "./DeleteListDialog";
@@ -14,6 +15,8 @@ interface ListCardProps {
 }
 
 export const ListCard: React.FC<ListCardProps> = ({ list }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-card flex h-fit flex-col gap-2 rounded-md border border-neutral-300 px-4 py-3 shadow-md">
       <div className="flex items-center justify-between">
@@ -25,12 +28,14 @@ export const ListCard: React.FC<ListCardProps> = ({ list }) => {
         {list.status === ListStatus.COMPLETED && (
           <Button variant="ghost" asChild>
             <Link to={generatePath(RouterKey.LIST, { id: list.id })}>
-              View list details
+              {t(TranslationKey.LISTS_VIEW_DETAILS)}
             </Link>
           </Button>
         )}
         {list.status === ListStatus.PROCESSING && (
-          <div className="text-muted-foreground">Processing...</div>
+          <div className="text-muted-foreground">
+            {t(TranslationKey.LISTS_PROCESSING)}
+          </div>
         )}
         {list.status === ListStatus.FAILED && (
           <div className="bg-error/10 flex items-start gap-4 rounded-md p-4">
@@ -43,7 +48,7 @@ export const ListCard: React.FC<ListCardProps> = ({ list }) => {
             </div>
             <div className="flex flex-col gap-1">
               <div className="font-medium">
-                An error occurred while processing your list.
+                {t(TranslationKey.LISTS_ERROR_TITLE)}
               </div>
               {list.errorMessage && (
                 <div className="text-muted-foreground text-xs">
@@ -51,7 +56,7 @@ export const ListCard: React.FC<ListCardProps> = ({ list }) => {
                 </div>
               )}
               <div className="text-sm">
-                Please create a new list with valid IMDB list.
+                {t(TranslationKey.LISTS_ERROR_RETRY)}
               </div>
             </div>
           </div>

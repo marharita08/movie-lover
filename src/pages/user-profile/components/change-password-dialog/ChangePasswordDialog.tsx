@@ -11,7 +11,8 @@ import {
   InputError,
   PasswordInput,
 } from "@/components";
-import { useAppForm, useChangePassword } from "@/hooks";
+import { TranslationKey } from "@/const";
+import { useAppForm, useChangePassword, useTranslation } from "@/hooks";
 
 import {
   ChangePasswordValidationSchema,
@@ -20,6 +21,7 @@ import {
 
 export const ChangePasswordDialog = () => {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
   const form = useAppForm<ChangePasswordValidationSchemaType>({
     schema: ChangePasswordValidationSchema,
     defaultValues: {
@@ -50,12 +52,14 @@ export const ChangePasswordDialog = () => {
       <DialogTrigger asChild>
         <Button variant="ghost" className="text-sm">
           <LockIcon className="h-4 w-4" />
-          Change Password
+          {t(TranslationKey.USER_PROFILE_CHANGE_PASSWORD)}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Change Password</DialogTitle>
+          <DialogTitle>
+            {t(TranslationKey.USER_PROFILE_CHANGE_PASSWORD_TITLE)}
+          </DialogTitle>
         </DialogHeader>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -65,6 +69,7 @@ export const ChangePasswordDialog = () => {
           <div className="flex flex-col gap-1">
             <PasswordInput
               {...form.register("password")}
+              label={t(TranslationKey.AUTH_PASSWORD)}
               error={!!form.formState.errors.password?.message}
               placeholder="********"
             />
@@ -73,7 +78,7 @@ export const ChangePasswordDialog = () => {
           <div className="flex flex-col gap-1">
             <PasswordInput
               {...form.register("confirmPassword")}
-              label="Confirm Password"
+              label={t(TranslationKey.USER_PROFILE_CHANGE_PASSWORD_CONFIRM)}
               error={!!form.formState.errors.confirmPassword?.message}
               placeholder="********"
             />
@@ -88,14 +93,16 @@ export const ChangePasswordDialog = () => {
               className="min-w-[120px]"
               onClick={() => setOpen(false)}
             >
-              Cancel
+              {t(TranslationKey.USER_PROFILE_CHANGE_PASSWORD_CANCEL)}
             </Button>
             <Button
               type="submit"
               className="min-w-[120px]"
               disabled={changePasswordMutation.isPending}
             >
-              {changePasswordMutation.isPending ? "Saving..." : "Save"}
+              {changePasswordMutation.isPending
+                ? t(TranslationKey.USER_PROFILE_CHANGE_PASSWORD_SAVING)
+                : t(TranslationKey.USER_PROFILE_CHANGE_PASSWORD_SAVE)}
             </Button>
           </div>
         </form>

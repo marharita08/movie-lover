@@ -1,24 +1,25 @@
 import { z } from "zod";
 
-import { PASSWORD_REGEX } from "@/const";
+import { PASSWORD_REGEX, TranslationKey } from "@/const";
 
 export const NewPasswordStepValidationSchema = z
   .object({
     password: z
       .string()
-      .min(8, { message: "Password must be at least 8 characters" })
+      .min(8, { message: TranslationKey.VALIDATION_PASSWORD_MIN })
       .regex(PASSWORD_REGEX, {
-        message:
-          "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
+        message: TranslationKey.VALIDATION_PASSWORD_STRENGTH,
       }),
     confirmPassword: z
       .string()
-      .min(1, { message: "Confirm password is required" }),
-    email: z.string().min(1, { message: "Email is required" }),
-    token: z.string().min(1, { message: "Token is required" }),
+      .min(1, { message: TranslationKey.VALIDATION_PASSWORD_REQUIRED }),
+    email: z
+      .string()
+      .min(1, { message: TranslationKey.VALIDATION_EMAIL_REQUIRED }),
+    token: z.string().min(1, { message: TranslationKey.VALIDATION_REQUIRED }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: TranslationKey.VALIDATION_PASSWORD_MATCH,
     path: ["confirmPassword"],
   });
 

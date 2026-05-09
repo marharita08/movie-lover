@@ -9,8 +9,9 @@ import {
   PasswordInput,
   Sphere,
 } from "@/components";
-import { StorageKey } from "@/const";
-import { useAppForm, useSignUp } from "@/hooks";
+import { RouterKey, StorageKey, TranslationKey } from "@/const";
+import { useAppForm, useSignUp, useTranslation } from "@/hooks";
+import { useLanguageStore } from "@/store/language.store";
 
 import {
   SignUpValidationSchema,
@@ -18,12 +19,15 @@ import {
 } from "./validation";
 
 export const Signup = () => {
+  const { t } = useTranslation();
+  const { language } = useLanguageStore();
   const form = useAppForm<SignUpValidationSchemaType>({
     schema: SignUpValidationSchema,
     defaultValues: {
       name: "",
       email: "",
       password: "",
+      language,
     },
   });
 
@@ -58,10 +62,12 @@ export const Signup = () => {
               type="button"
             >
               <ArrowLeft className="h-4 w-4" />
-              Back
+              {t(TranslationKey.AUTH_BACK)}
             </Button>
 
-            <h1 className="text-center text-2xl font-bold">Sign up</h1>
+            <h1 className="text-center text-2xl font-bold">
+              {t(TranslationKey.AUTH_SIGNUP)}
+            </h1>
 
             <div />
           </div>
@@ -69,9 +75,9 @@ export const Signup = () => {
             <div className="flex flex-col gap-1">
               <Input
                 {...form.register("name")}
-                label="Name"
+                label={t(TranslationKey.AUTH_NAME)}
                 error={!!form.formState.errors.name?.message}
-                placeholder="Jane Smith"
+                placeholder={t(TranslationKey.AUTH_NAME_PLACEHOLDER)}
                 startIcon={<UserIcon className="h-4 w-4" />}
               />
               <InputError error={form.formState.errors.name?.message} />
@@ -79,9 +85,9 @@ export const Signup = () => {
             <div className="flex flex-col gap-1">
               <Input
                 {...form.register("email")}
-                label="Email"
+                label={t(TranslationKey.AUTH_EMAIL)}
                 error={!!form.formState.errors.email?.message}
-                placeholder="jane.smith@example.com"
+                placeholder={t(TranslationKey.AUTH_EMAIL_PLACEHOLDER)}
                 startIcon={<MailIcon className="h-4 w-4" />}
               />
               <InputError error={form.formState.errors.email?.message} />
@@ -89,6 +95,7 @@ export const Signup = () => {
             <div className="flex flex-col gap-1">
               <PasswordInput
                 {...form.register("password")}
+                label={t(TranslationKey.AUTH_PASSWORD)}
                 error={!!form.formState.errors.password?.message}
                 placeholder="********"
               />
@@ -100,13 +107,16 @@ export const Signup = () => {
             className="mt-4 w-full"
             disabled={signupMutation.isPending}
           >
-            Sign up
+            {t(TranslationKey.AUTH_SIGNUP)}
           </Button>
-          <LoginWithGoogleButton className="mt-6" label="Sign up with Google" />
+          <LoginWithGoogleButton
+            className="mt-6"
+            label={t(TranslationKey.AUTH_SIGNUP_WITH_GOOGLE)}
+          />
           <div className="mt-8 text-center">
-            Already have an account?{" "}
+            {t(TranslationKey.AUTH_ALREADY_HAVE_ACCOUNT)}{" "}
             <Button type="button" variant="link" asChild className="p-0">
-              <Link to="/login">Login</Link>
+              <Link to={RouterKey.LOGIN}>{t(TranslationKey.AUTH_LOGIN)}</Link>
             </Button>
           </div>
         </form>
