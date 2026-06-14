@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
 import { useCreateList, useListPolling } from "@/hooks";
 
 import { CreateList } from "./CreateList";
@@ -21,13 +22,15 @@ vi.mock("@/components", async () => {
       onClick,
       type,
       disabled,
+      ...props
     }: {
       children: React.ReactNode;
       onClick?: () => void;
       type?: "button" | "submit" | "reset";
       disabled?: boolean;
+      [key: string]: any;
     }) => (
-      <button onClick={onClick} type={type} disabled={disabled}>
+      <button onClick={onClick} type={type} disabled={disabled} {...props}>
         {children}
       </button>
     ),
@@ -68,6 +71,7 @@ vi.mock("@/hooks", async () => {
   const { useForm } = await import("react-hook-form");
   const { zodResolver } = await import("@hookform/resolvers/zod");
   return {
+    useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
     useAppForm: ({
       schema,
       defaultValues,
@@ -105,18 +109,20 @@ describe("CreateList", () => {
 
   it("renders form when not pending", () => {
     render(<CreateList />);
-    expect(screen.getByText("Create List")).toBeInTheDocument();
+    expect(screen.getByTestId("create-list-title")).toHaveTextContent(
+      "Create List",
+    );
   });
 
   it("navigates back on Back button click", async () => {
     render(<CreateList />);
-    await user.click(screen.getByText("Back"));
+    await user.click(screen.getByTestId("create-list-back"));
     expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 
   it("shows validation error when name is empty", async () => {
     render(<CreateList />);
-    await user.click(screen.getByText("Create"));
+    await user.click(screen.getByTestId("create-list-submit"));
     await waitFor(() =>
       expect(screen.getByTestId("input-error")).toBeInTheDocument(),
     );

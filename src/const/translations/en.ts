@@ -1,6 +1,6 @@
 import { TranslationKey } from "./keys";
 
-export const en = {
+export const en: Record<TranslationKey, string> = {
   [TranslationKey.AUTH_LOGIN]: "Login",
   [TranslationKey.AUTH_SIGNUP]: "Sign up",
   [TranslationKey.AUTH_BACK]: "Back",

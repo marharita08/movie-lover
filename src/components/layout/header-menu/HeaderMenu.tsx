@@ -26,29 +26,33 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ user }) => {
 
   const userName = useMemo(() => getFallback(user?.name), [user?.name]);
 
-  const handleLogout = () => {
-    logoutMutation.mutate();
-  };
-
-  const handleProfile = () => {
-    navigate(RouterKey.USER_PROFILE);
-  };
+  const handleLogout = () => logoutMutation.mutate();
+  const handleProfile = () => navigate(RouterKey.USER_PROFILE);
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="cursor-pointer">
+      <DropdownMenuTrigger
+        className="cursor-pointer"
+        data-testid="menu-trigger"
+      >
         <div className="flex items-center gap-2">
           <Avatar>
-            <AvatarFallback>{userName}</AvatarFallback>
+            <AvatarFallback>
+              <span data-testid="avatar-initials">{userName}</span>
+            </AvatarFallback>
           </Avatar>
-          <span className="hidden md:block">{user.email}</span>
+          <span className="hidden md:block" data-testid="user-email">
+            {user.email}
+          </span>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem onClick={handleProfile}>
+
+      <DropdownMenuContent data-testid="menu-content">
+        <DropdownMenuItem onClick={handleProfile} data-testid="menu-profile">
           {t(TranslationKey.COMMON_PROFILE)}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleLogout}>
+
+        <DropdownMenuItem onClick={handleLogout} data-testid="menu-logout">
           {t(TranslationKey.COMMON_LOGOUT)}
         </DropdownMenuItem>
       </DropdownMenuContent>

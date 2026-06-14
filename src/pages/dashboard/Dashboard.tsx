@@ -29,7 +29,10 @@ export const Dashboard = () => {
   return (
     <div className="flex flex-col gap-15 px-2 pt-8 pb-15 md:pr-4 md:pl-0 lg:pr-12 lg:pl-8">
       {isNotAuthenticated && (
-        <div className="bg-primary/10 flex flex-1 items-center gap-4 rounded-md px-4 py-3">
+        <div
+          data-testid="dashboard-info-banner"
+          className="bg-primary/10 flex flex-1 items-center gap-4 rounded-md px-4 py-3"
+        >
           <div
             className={
               "bg-primary text-primary-foreground mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
@@ -53,10 +56,12 @@ export const Dashboard = () => {
           </div>
         </div>
       )}
+
       <div className="mx-auto px-4">
         <h2 className="mb-2 text-2xl font-semibold">
           {t(TranslationKey.DASHBOARD_HOW_IT_WORKS)}
         </h2>
+
         <p className="text-muted-foreground mb-6">
           {t(TranslationKey.DASHBOARD_HOW_IT_WORKS_DESC)}
         </p>
@@ -69,6 +74,7 @@ export const Dashboard = () => {
               description={t(TranslationKey.DASHBOARD_STEP_1_DESC)}
             />
           </a>
+
           <Link
             to={isNotAuthenticated ? RouterKey.LOGIN : RouterKey.CREATE_LIST}
           >
@@ -78,6 +84,7 @@ export const Dashboard = () => {
               description={t(TranslationKey.DASHBOARD_STEP_2_DESC)}
             />
           </Link>
+
           <Link to={isNotAuthenticated ? RouterKey.LOGIN : RouterKey.LISTS}>
             <HowItWorksCard
               step={3}
@@ -85,6 +92,7 @@ export const Dashboard = () => {
               description={t(TranslationKey.DASHBOARD_STEP_3_DESC)}
             />
           </Link>
+
           <Link to={isNotAuthenticated ? RouterKey.LOGIN : RouterKey.CHAT}>
             <HowItWorksCard
               step={4}
@@ -94,9 +102,11 @@ export const Dashboard = () => {
           </Link>
         </div>
       </div>
+
       {lastThreeYears.map((year) => (
         <section key={year} className="flex flex-col gap-4">
           <h2 className="pl-8 text-2xl font-bold">{year}</h2>
+
           <DiscoverMovies
             query={{ primaryReleaseYear: year, sortBy: "vote_count.desc" }}
             onReady={markReady}

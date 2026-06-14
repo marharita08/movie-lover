@@ -108,6 +108,7 @@ export const EmailVerification = () => {
           {t(TranslationKey.AUTH_DIDNT_RECEIVE_CODE)}{" "}
           {isFinished ? (
             <Button
+              data-testid="resend-btn"
               type="button"
               variant="link"
               className="h-fit p-0"
@@ -116,7 +117,7 @@ export const EmailVerification = () => {
               {t(TranslationKey.AUTH_RESEND)}
             </Button>
           ) : (
-            <span>
+            <span data-testid="resend-countdown">
               {t(TranslationKey.AUTH_RESEND_AVAILABLE_IN)} {secondsLeft}{" "}
               {t(TranslationKey.AUTH_SECONDS)}
             </span>

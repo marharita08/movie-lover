@@ -35,12 +35,16 @@ vi.mock("@/components", () => ({
 vi.mock("./components", () => ({
   EmailStep: ({ onSuccess }: { onSuccess: () => void }) => (
     <div data-testid="email-step">
-      <button onClick={onSuccess}>Next from Email</button>
+      <button data-testid="email-step-next" onClick={onSuccess}>
+        Next from Email
+      </button>
     </div>
   ),
   OtpStep: ({ onSuccess }: { onSuccess: () => void }) => (
     <div data-testid="otp-step">
-      <button onClick={onSuccess}>Next from OTP</button>
+      <button data-testid="otp-step-next" onClick={onSuccess}>
+        Next from OTP
+      </button>
     </div>
   ),
   NewPasswordStep: () => <div data-testid="new-password-step" />,
@@ -65,7 +69,7 @@ describe("ResetPassword", () => {
 
   it("saves step to localStorage when step changes", async () => {
     render(<ResetPassword />);
-    fireEvent.click(screen.getByText("Next from Email"));
+    fireEvent.click(screen.getByTestId("email-step-next"));
     await waitFor(() =>
       expect(localStorage.getItem(StorageKey.RESET_PASSWORD_STEP)).toBe(
         ResetPasswordStep.OTP,
@@ -75,14 +79,14 @@ describe("ResetPassword", () => {
 
   it("moves to OtpStep after EmailStep onSuccess", () => {
     render(<ResetPassword />);
-    fireEvent.click(screen.getByText("Next from Email"));
+    fireEvent.click(screen.getByTestId("email-step-next"));
     expect(screen.getByTestId("otp-step")).toBeInTheDocument();
   });
 
   it("moves to NewPasswordStep after OtpStep onSuccess", () => {
     localStorage.setItem(StorageKey.RESET_PASSWORD_STEP, ResetPasswordStep.OTP);
     render(<ResetPassword />);
-    fireEvent.click(screen.getByText("Next from OTP"));
+    fireEvent.click(screen.getByTestId("otp-step-next"));
     expect(screen.getByTestId("new-password-step")).toBeInTheDocument();
   });
 

@@ -125,7 +125,7 @@ export const MessageList = ({ pendingMessage }: MessageListProps) => {
   if (allMessages.length === 0 && !pendingMessage) {
     return (
       <div className="flex flex-1 items-center justify-center overflow-hidden">
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground" data-testid="no-messages">
           {t(TranslationKey.AI_CHAT_NO_MESSAGES)}
         </p>
       </div>

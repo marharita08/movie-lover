@@ -104,12 +104,17 @@ export const Login = () => {
                 asChild
                 className="p-0 text-sm"
               >
-                <Link to="/signup">{t(TranslationKey.AUTH_SIGNUP)}</Link>
+                <Link data-testid="login-signup-link" to="/signup">
+                  {t(TranslationKey.AUTH_SIGNUP)}
+                </Link>
               </Button>
             </div>
             <div className="text-center">
               <Button asChild variant={"link"} className="p-0 text-sm">
-                <Link to={RouterKey.RESET_PASSWORD}>
+                <Link
+                  data-testid="login-forgot-link"
+                  to={RouterKey.RESET_PASSWORD}
+                >
                   {t(TranslationKey.AUTH_FORGOT_PASSWORD)}
                 </Link>
               </Button>

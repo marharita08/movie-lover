@@ -71,7 +71,9 @@ vi.mock("@/components", () => ({
   ),
   ErrorState: ({ onRetry }: { onRetry: () => void }) => (
     <div data-testid="error-state">
-      <button onClick={onRetry}>Retry</button>
+      <button data-testid="retry-btn" onClick={onRetry}>
+        Retry
+      </button>
     </div>
   ),
   Loading: () => <div data-testid="loading" />,
@@ -127,7 +129,7 @@ describe("MediaList", () => {
         refetch={refetch}
       />,
     );
-    fireEvent.click(screen.getByText("Retry"));
+    fireEvent.click(screen.getByTestId("retry-btn"));
     expect(refetch).toHaveBeenCalled();
   });
 

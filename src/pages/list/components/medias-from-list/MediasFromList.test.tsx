@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MediaList } from "@/components";
+import { en } from "@/const/translations/en";
 import { useMediaItems, useSearch } from "@/hooks";
 
 import { MediasFromList } from "./MediasFromList";
@@ -11,6 +12,7 @@ vi.mock("react-router-dom", () => ({
 }));
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useMediaItems: vi.fn(),
   useSearch: vi.fn(),
 }));

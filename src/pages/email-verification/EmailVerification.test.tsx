@@ -4,6 +4,7 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { OtpPurpose, RouterKey, StorageKey } from "@/const";
+import { en } from "@/const/translations/en";
 import { useOtpCountdown, useSendOtp, useVerifyEmail } from "@/hooks";
 
 import { EmailVerification } from "./EmailVerification";
@@ -14,19 +15,15 @@ vi.mock("react-router-dom", () => ({
   useNavigate: () => mockNavigate,
 }));
 
-vi.mock("@/hooks", () => ({
-  useOtpCountdown: vi.fn(),
-  useSendOtp: vi.fn(),
-  useVerifyEmail: vi.fn(),
-}));
-
 vi.mock("@/hooks", async () => {
   const { useForm } = await import("react-hook-form");
   const { zodResolver } = await import("@hookform/resolvers/zod");
+
   return {
     useOtpCountdown: vi.fn(),
     useSendOtp: vi.fn(),
     useVerifyEmail: vi.fn(),
+
     useAppForm: ({
       schema,
       defaultValues,
@@ -38,6 +35,10 @@ vi.mock("@/hooks", async () => {
         resolver: zodResolver(schema as never),
         defaultValues: defaultValues as never,
       }),
+
+    useTranslation: () => ({
+      t: (k: keyof typeof en) => en[k] || k,
+    }),
   };
 });
 
@@ -49,13 +50,15 @@ vi.mock("@/components", async () => {
       onClick,
       type,
       variant,
+      ...props
     }: {
       children: React.ReactNode;
       onClick?: () => void;
       type?: "button" | "submit";
       variant?: string;
+      [key: string]: any;
     }) => (
-      <button onClick={onClick} type={type} data-variant={variant}>
+      <button onClick={onClick} type={type} data-variant={variant} {...props}>
         {children}
       </button>
     ),
@@ -109,9 +112,7 @@ describe("EmailVerification", () => {
 
   it("shows countdown when isFinished is false", () => {
     render(<EmailVerification />);
-    expect(
-      screen.getByText(/Resend available in 60 seconds/),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("resend-countdown")).toBeInTheDocument();
   });
 
   it("shows Resend button when isFinished is true", () => {
@@ -121,7 +122,7 @@ describe("EmailVerification", () => {
       reset,
     });
     render(<EmailVerification />);
-    expect(screen.getByText("Resend")).toBeInTheDocument();
+    expect(screen.getByTestId("resend-btn")).toBeInTheDocument();
   });
 
   it("calls sendOtpMutation on Resend click", async () => {
@@ -131,7 +132,7 @@ describe("EmailVerification", () => {
       reset,
     });
     render(<EmailVerification />);
-    await user.click(screen.getByText("Resend"));
+    await user.click(screen.getByTestId("resend-btn"));
     expect(sendOtpMutate).toHaveBeenCalledWith(
       { email: "test@test.com", purpose: OtpPurpose.EMAIL_VERIFICATION },
       expect.objectContaining({ onSuccess: expect.any(Function) }),
@@ -151,7 +152,7 @@ describe("EmailVerification", () => {
     } as never);
 
     render(<EmailVerification />);
-    await user.click(screen.getByText("Resend"));
+    await user.click(screen.getByTestId("resend-btn"));
     expect(reset).toHaveBeenCalled();
   });
 

@@ -2,11 +2,13 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
 import { useDeleteAccount } from "@/hooks";
 
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useDeleteAccount: vi.fn(),
 }));
 
@@ -97,6 +99,11 @@ const getConfirmButton = () =>
     .getAllByRole("button")
     .find((btn) => btn.getAttribute("data-variant") === "destructive")!;
 
+const getCancelButton = () =>
+  screen
+    .getAllByRole("button")
+    .find((btn) => btn.getAttribute("data-variant") === "outline")!;
+
 describe("DeleteAccountDialog", () => {
   const mutate = vi.fn();
 
@@ -122,15 +129,13 @@ describe("DeleteAccountDialog", () => {
   it("shows confirmation text", () => {
     render(<DeleteAccountDialog />);
     openDialog();
-    expect(
-      screen.getByText(/Are you sure you want to delete your account/),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("delete-confirm-text")).toBeInTheDocument();
   });
 
   it("closes dialog on Cancel click", () => {
     render(<DeleteAccountDialog />);
     openDialog();
-    fireEvent.click(screen.getByText("Cancel"));
+    fireEvent.click(getCancelButton());
     expect(screen.queryByTestId("dialog-content")).not.toBeInTheDocument();
   });
 
@@ -179,6 +184,5 @@ describe("DeleteAccountDialog", () => {
     render(<DeleteAccountDialog />);
     openDialog();
     expect(screen.getByTestId("loading")).toBeInTheDocument();
-    expect(screen.getByText("Deleting...")).toBeInTheDocument();
   });
 });

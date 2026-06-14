@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
 import { useChangePassword } from "@/hooks";
 
 import { ChangePasswordDialog } from "./ChangePasswordDialog";
@@ -9,7 +10,9 @@ import { ChangePasswordDialog } from "./ChangePasswordDialog";
 vi.mock("@/hooks", async () => {
   const { useForm } = await import("react-hook-form");
   const { zodResolver } = await import("@hookform/resolvers/zod");
+
   return {
+    useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
     useChangePassword: vi.fn(),
     useAppForm: ({
       schema,
@@ -27,20 +30,24 @@ vi.mock("@/hooks", async () => {
 
 vi.mock("@/components", async () => {
   const React = await import("react");
+
   return {
     Button: ({
       children,
       onClick,
       type,
+      "data-testid": testId,
     }: {
       children: React.ReactNode;
       onClick?: () => void;
       type?: "button" | "submit" | "reset";
+      "data-testid"?: string;
     }) => (
-      <button onClick={onClick} type={type}>
+      <button onClick={onClick} type={type} data-testid={testId}>
         {children}
       </button>
     ),
+
     Dialog: ({
       open,
       onOpenChange,
@@ -57,14 +64,12 @@ vi.mock("@/components", async () => {
               open: boolean;
               onOpenChange: (v: boolean) => void;
             }>,
-            {
-              open,
-              onOpenChange,
-            },
+            { open, onOpenChange },
           ),
         )}
       </div>
     ),
+
     DialogTrigger: ({
       children,
       onOpenChange,
@@ -73,9 +78,12 @@ vi.mock("@/components", async () => {
       onOpenChange?: (v: boolean) => void;
     }) => (
       <div data-testid="dialog-trigger">
-        {React.cloneElement(children, { onClick: () => onOpenChange?.(true) })}
+        {React.cloneElement(children, {
+          onClick: () => onOpenChange?.(true),
+        })}
       </div>
     ),
+
     DialogContent: ({
       children,
       open,
@@ -83,12 +91,15 @@ vi.mock("@/components", async () => {
       children: React.ReactNode;
       open?: boolean;
     }) => (open ? <div data-testid="dialog-content">{children}</div> : null),
+
     DialogHeader: ({ children }: { children: React.ReactNode }) => (
       <div>{children}</div>
     ),
+
     DialogTitle: ({ children }: { children: React.ReactNode }) => (
       <div>{children}</div>
     ),
+
     PasswordInput: React.forwardRef<
       HTMLInputElement,
       React.InputHTMLAttributes<HTMLInputElement> & {
@@ -103,8 +114,10 @@ vi.mock("@/components", async () => {
         {...props}
       />
     )),
+
     InputError: ({ error }: { error?: string }) =>
       error ? <span data-testid="input-error">{error}</span> : null,
+
     Loading: ({ size }: { size: string }) => <div data-size={size} />,
   };
 });
@@ -125,7 +138,7 @@ describe("ChangePasswordDialog", () => {
 
   it("shows trigger button", () => {
     render(<ChangePasswordDialog />);
-    expect(screen.getByText("Change Password")).toBeInTheDocument();
+    expect(screen.getByTestId("change-password-trigger")).toBeInTheDocument();
   });
 
   it("opens dialog on trigger click", () => {
@@ -137,14 +150,18 @@ describe("ChangePasswordDialog", () => {
   it("closes dialog on Cancel click", () => {
     render(<ChangePasswordDialog />);
     openDialog();
-    fireEvent.click(screen.getByText("Cancel"));
+
+    fireEvent.click(screen.getByTestId("cancel-button"));
+
     expect(screen.queryByTestId("dialog-content")).not.toBeInTheDocument();
   });
 
   it("shows validation errors when fields are empty", async () => {
     render(<ChangePasswordDialog />);
     openDialog();
-    fireEvent.submit(screen.getByRole("form"));
+
+    fireEvent.submit(screen.getByTestId("change-password-form"));
+
     await waitFor(() =>
       expect(screen.getAllByTestId("input-error").length).toBeGreaterThan(0),
     );
@@ -154,19 +171,22 @@ describe("ChangePasswordDialog", () => {
     render(<ChangePasswordDialog />);
     openDialog();
 
-    fireEvent.change(screen.getByLabelText("password"), {
+    fireEvent.change(screen.getByTestId("password-input"), {
       target: { value: "Password123!" },
     });
-    fireEvent.change(screen.getByLabelText("Confirm Password"), {
+
+    fireEvent.change(screen.getByTestId("confirm-password-input"), {
       target: { value: "Password123!" },
     });
-    fireEvent.submit(screen.getByRole("form"));
+
+    fireEvent.submit(screen.getByTestId("change-password-form"));
 
     await waitFor(() => {
       expect(mutate).toHaveBeenCalledWith(
         expect.objectContaining({ password: "Password123!" }),
         expect.objectContaining({ onSuccess: expect.any(Function) }),
       );
+
       const calledWith = mutate.mock.calls[0][0];
       expect(calledWith).not.toHaveProperty("confirmPassword");
     });
@@ -182,13 +202,15 @@ describe("ChangePasswordDialog", () => {
     render(<ChangePasswordDialog />);
     openDialog();
 
-    fireEvent.change(screen.getByLabelText("password"), {
+    fireEvent.change(screen.getByTestId("password-input"), {
       target: { value: "Password123!" },
     });
-    fireEvent.change(screen.getByLabelText("Confirm Password"), {
+
+    fireEvent.change(screen.getByTestId("confirm-password-input"), {
       target: { value: "Password123!" },
     });
-    fireEvent.submit(screen.getByRole("form"));
+
+    fireEvent.submit(screen.getByTestId("change-password-form"));
 
     await waitFor(() =>
       expect(screen.queryByTestId("dialog-content")).not.toBeInTheDocument(),
@@ -199,17 +221,24 @@ describe("ChangePasswordDialog", () => {
     render(<ChangePasswordDialog />);
     openDialog();
 
-    const passwordInput = screen.getByLabelText("password") as HTMLInputElement;
-    fireEvent.change(passwordInput, { target: { value: "Password123!" } });
+    const passwordInput = screen.getByTestId(
+      "password-input",
+    ) as HTMLInputElement;
+
+    fireEvent.change(passwordInput, {
+      target: { value: "Password123!" },
+    });
+
     expect(passwordInput.value).toBe("Password123!");
 
-    fireEvent.click(screen.getByText("Cancel"));
+    fireEvent.click(screen.getByTestId("cancel-button"));
 
     expect(screen.queryByTestId("dialog-content")).not.toBeInTheDocument();
 
     openDialog();
-    expect((screen.getByLabelText("password") as HTMLInputElement).value).toBe(
-      "",
-    );
+
+    expect(
+      (screen.getByTestId("password-input") as HTMLInputElement).value,
+    ).toBe("");
   });
 });

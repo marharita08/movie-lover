@@ -2,12 +2,15 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
 import { useCurrentUser } from "@/hooks";
 
 import { Header } from "./Header";
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useCurrentUser: vi.fn(),
+  useUpdateUser: vi.fn(),
 }));
 
 vi.mock("../header-menu/HeaderMenu", () => ({
@@ -27,9 +30,8 @@ vi.stubGlobal(
   }),
 );
 
-const renderWithRouter = (component: React.ReactElement) => {
-  return render(<MemoryRouter>{component}</MemoryRouter>);
-};
+const renderWithRouter = (component: React.ReactElement) =>
+  render(<MemoryRouter>{component}</MemoryRouter>);
 
 describe("Header", () => {
   beforeEach(() => {
@@ -43,6 +45,7 @@ describe("Header", () => {
     } as never);
 
     renderWithRouter(<Header />);
+
     expect(screen.getByTestId("loading")).toBeInTheDocument();
   });
 
@@ -53,10 +56,11 @@ describe("Header", () => {
     } as never);
 
     renderWithRouter(<Header />);
+
     expect(screen.getByTestId("header-menu")).toBeInTheDocument();
   });
 
-  it("shows login and signup links when no user", () => {
+  it("shows auth links when no user", () => {
     vi.mocked(useCurrentUser).mockReturnValue({
       data: undefined,
       isLoading: false,
@@ -64,8 +68,7 @@ describe("Header", () => {
 
     renderWithRouter(<Header />);
 
-    expect(screen.getByText("Login")).toBeInTheDocument();
-    expect(screen.getByText("Sign Up")).toBeInTheDocument();
+    expect(screen.getByTestId("auth-links")).toBeInTheDocument();
   });
 
   it("renders header title", () => {
@@ -75,10 +78,11 @@ describe("Header", () => {
     } as never);
 
     renderWithRouter(<Header />);
-    expect(screen.getByText("Movie Lover")).toBeInTheDocument();
+
+    expect(screen.getByTestId("header-title")).toHaveTextContent("Movie Lover");
   });
 
-  it("does not render login/signup when user is loaded", () => {
+  it("does not render auth links when user is loaded", () => {
     vi.mocked(useCurrentUser).mockReturnValue({
       data: { name: "John Doe", email: "test@test.com" },
       isLoading: false,
@@ -86,8 +90,7 @@ describe("Header", () => {
 
     renderWithRouter(<Header />);
 
-    expect(screen.queryByText("Login")).not.toBeInTheDocument();
-    expect(screen.queryByText("Sign Up")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("auth-links")).not.toBeInTheDocument();
   });
 
   it("does not render HeaderMenu when no user", () => {

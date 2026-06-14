@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MessageAuthor } from "@/const";
+import { en } from "@/const/translations/en";
 import { useChatHistory } from "@/hooks";
 import type { ChatMessageResponse } from "@/types";
 
@@ -26,6 +27,7 @@ vi.mock("react-router-dom", () => ({
 }));
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useChatHistory: vi.fn(),
 }));
 
@@ -118,7 +120,7 @@ describe("MessageList", () => {
 
       render(<MessageList />);
 
-      expect(screen.getByText("No messages yet")).toBeInTheDocument();
+      expect(screen.getByTestId("no-messages")).toBeInTheDocument();
     });
 
     it("should not show empty message when pending message exists", () => {
@@ -132,7 +134,7 @@ describe("MessageList", () => {
 
       render(<MessageList pendingMessage="Typing..." />);
 
-      expect(screen.queryByText("No messages yet")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("no-messages")).not.toBeInTheDocument();
     });
   });
 
@@ -142,14 +144,17 @@ describe("MessageList", () => {
 
       expect(screen.getByTestId("message-1")).toBeInTheDocument();
       expect(screen.getByTestId("message-2")).toBeInTheDocument();
-      expect(screen.getByText("Hello")).toBeInTheDocument();
-      expect(screen.getByText("Hi there!")).toBeInTheDocument();
+      expect(screen.getByTestId("message-1")).toHaveTextContent("Hello");
+      expect(screen.getByTestId("message-2")).toHaveTextContent("Hi there!");
     });
 
     it("should render messages in correct order (reversed from API)", () => {
       render(<MessageList />);
 
-      const messages = screen.getAllByText(/Hello|Hi there!/);
+      const messages = [
+        screen.getByTestId("message-2"),
+        screen.getByTestId("message-1"),
+      ];
       expect(messages[0]).toHaveTextContent("Hi there!");
       expect(messages[1]).toHaveTextContent("Hello");
     });
@@ -159,7 +164,10 @@ describe("MessageList", () => {
     it("should render optimistic user message when pending", () => {
       render(<MessageList pendingMessage="User is typing..." />);
 
-      expect(screen.getByText("User is typing...")).toBeInTheDocument();
+      expect(screen.getByTestId("message-__optimistic__")).toBeInTheDocument();
+      expect(screen.getByTestId("message-__optimistic__")).toHaveTextContent(
+        "User is typing...",
+      );
       expect(screen.getByTestId("message-__optimistic__")).toBeInTheDocument();
     });
 
@@ -276,8 +284,8 @@ describe("MessageList", () => {
 
       render(<MessageList />);
 
-      expect(screen.getByText("Message 1")).toBeInTheDocument();
-      expect(screen.getByText("Message 2")).toBeInTheDocument();
+      expect(screen.getByTestId("message-1")).toBeInTheDocument();
+      expect(screen.getByTestId("message-2")).toBeInTheDocument();
     });
   });
 
@@ -285,9 +293,9 @@ describe("MessageList", () => {
     it("should render messages with pending message and loading bubbles", () => {
       render(<MessageList pendingMessage="Thinking..." />);
 
-      expect(screen.getByText("Hello")).toBeInTheDocument();
-      expect(screen.getByText("Hi there!")).toBeInTheDocument();
-      expect(screen.getByText("Thinking...")).toBeInTheDocument();
+      expect(screen.getByTestId("message-1")).toHaveTextContent("Hello");
+      expect(screen.getByTestId("message-2")).toHaveTextContent("Hi there!");
+      expect(screen.getByTestId("loading-bubbles")).toBeInTheDocument();
       expect(screen.getByTestId("loading-bubbles")).toBeInTheDocument();
     });
 
@@ -312,7 +320,7 @@ describe("MessageList", () => {
 
       await waitFor(() => {
         expect(screen.queryByTestId("loading")).not.toBeInTheDocument();
-        expect(screen.getByText("Hello")).toBeInTheDocument();
+        expect(screen.getByTestId("message-1")).toBeInTheDocument();
       });
     });
   });

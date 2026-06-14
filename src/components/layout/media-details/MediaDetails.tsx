@@ -73,7 +73,9 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
           onClick={() => navigate(-1)}
         >
           <ArrowLeft className="h-4 w-4" />
-          {t(TranslationKey.MEDIA_DETAILS_BACK)}
+          <span data-testid="back-btn">
+            {t(TranslationKey.MEDIA_DETAILS_BACK)}
+          </span>
         </Button>
         <div className="flex flex-col gap-8 lg:flex-row">
           <div className="flex h-fit shrink-0 justify-center">
@@ -85,8 +87,10 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
           </div>
           <div className="flex flex-col gap-4">
             <h1 className="text-4xl font-bold">
-              <span>{mediaTitle}</span>{" "}
-              {originalTitle !== mediaTitle && <span>({originalTitle})</span>}
+              <span data-testid="media-title">{mediaTitle}</span>{" "}
+              {originalTitle !== mediaTitle && (
+                <span data-testid="media-original">({originalTitle})</span>
+              )}
             </h1>
             {media.tagline && (
               <p className="text-muted-foreground text-xl italic">
@@ -110,7 +114,9 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
                   <span className="text-muted-foreground block text-sm font-medium">
                     {t(TranslationKey.MEDIA_DETAILS_RELEASE_DATE)}
                   </span>
-                  <span>{formatDate(media.releaseDate)}</span>
+                  <span data-testid="media-release-date">
+                    {formatDate(media.releaseDate)}
+                  </span>
                 </div>
               )}
               {"runtime" in media && !!media.runtime && (
@@ -118,7 +124,9 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
                   <span className="text-muted-foreground block text-sm font-medium">
                     {t(TranslationKey.MEDIA_DETAILS_RUNTIME)}
                   </span>
-                  <span>{formatRuntime(media.runtime)}</span>
+                  <span data-testid="media-runtime">
+                    {formatRuntime(media.runtime)}
+                  </span>
                 </div>
               )}
               {"numberOfSeasons" in media && !!media.numberOfSeasons && (
@@ -126,7 +134,9 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
                   <span className="text-muted-foreground block text-sm font-medium">
                     {t(TranslationKey.MEDIA_DETAILS_SEASONS)}
                   </span>
-                  <span>{media.numberOfSeasons}</span>
+                  <span data-testid="media-seasons">
+                    {media.numberOfSeasons}
+                  </span>
                 </div>
               )}
               {"numberOfEpisodes" in media && !!media.numberOfEpisodes && (
@@ -134,7 +144,9 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
                   <span className="text-muted-foreground block text-sm font-medium">
                     {t(TranslationKey.MEDIA_DETAILS_EPISODES)}
                   </span>
-                  <span>{media.numberOfEpisodes}</span>
+                  <span data-testid="media-episodes">
+                    {media.numberOfEpisodes}
+                  </span>
                 </div>
               )}
               {"firstAirDate" in media && media.firstAirDate && (

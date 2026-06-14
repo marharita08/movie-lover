@@ -72,7 +72,10 @@ export const CreateList = () => {
       <Sphere className="absolute top-28 right-30 h-13 w-13" />
       <Sphere className="absolute right-40 bottom-20 h-20 w-20" />
       <div className="bg-card h-full w-full p-6 shadow-md md:absolute md:top-2/5 md:left-1/2 md:h-fit md:w-[500px] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-xl">
-        <h1 className="text-center text-xl font-bold">
+        <h1
+          className="text-center text-xl font-bold"
+          data-testid="create-list-title"
+        >
           {t(TranslationKey.CREATE_LIST_TITLE)}
         </h1>
         <form
@@ -105,6 +108,7 @@ export const CreateList = () => {
           <div className="mt-4 flex justify-end gap-2">
             <div className="flex gap-4">
               <Button
+                data-testid="create-list-back"
                 className="min-w-[120px]"
                 type="button"
                 variant="outline"
@@ -114,6 +118,7 @@ export const CreateList = () => {
                 {t(TranslationKey.AUTH_BACK)}
               </Button>
               <Button
+                data-testid="create-list-submit"
                 className="min-w-[120px]"
                 type="submit"
                 disabled={createListMutation.isPending}

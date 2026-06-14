@@ -116,7 +116,9 @@ export const Signup = () => {
           <div className="mt-8 text-center">
             {t(TranslationKey.AUTH_ALREADY_HAVE_ACCOUNT)}{" "}
             <Button type="button" variant="link" asChild className="p-0">
-              <Link to={RouterKey.LOGIN}>{t(TranslationKey.AUTH_LOGIN)}</Link>
+              <Link to={RouterKey.LOGIN} data-testid="signup-login-link">
+                {t(TranslationKey.AUTH_LOGIN)}
+              </Link>
             </Button>
           </div>
         </form>

@@ -18,7 +18,7 @@ export const Wrapper: React.FC<WrapperProps> = ({
     <div className={cn(wrapperClassName)}>
       <Header />
       <Sidebar />
-      <main className={cn("pt-22 pl-0 md:pl-14", mainClassName)}>
+      <main className={cn("pt-24 pl-0 md:pl-14", mainClassName)}>
         {children}
       </main>
     </div>

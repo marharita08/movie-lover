@@ -16,14 +16,19 @@ import type {
   SendOtpRequest,
   User,
 } from "@/types";
+import type { BaseQuery } from "@/types/base-query";
 
 import { httpService } from "../http/http.service";
 
 export class AuthService {
-  async login(data: LoginValidationSchemaType): Promise<AuthResponse> {
+  async login(
+    data: LoginValidationSchemaType,
+    query?: BaseQuery,
+  ): Promise<AuthResponse> {
     return httpService.post<AuthResponse, LoginValidationSchemaType>(
       "/auth/login",
       data,
+      query,
     );
   }
 
@@ -47,10 +52,14 @@ export class AuthService {
     return httpService.get<User>("/auth/user");
   }
 
-  async sendOtp(data: SendOtpRequest): Promise<MessageResponse> {
+  async sendOtp(
+    data: SendOtpRequest,
+    query?: BaseQuery,
+  ): Promise<MessageResponse> {
     return httpService.post<MessageResponse, SendOtpRequest>(
       "/auth/send-otp",
       data,
+      query,
     );
   }
 
@@ -68,29 +77,33 @@ export class AuthService {
 
   async forgotPassword(
     data: EmailStepValidationSchemaType,
+    query?: BaseQuery,
   ): Promise<MessageResponse> {
     return httpService.post<MessageResponse, EmailStepValidationSchemaType>(
       "/auth/forgot-password",
       data,
+      query,
     );
   }
 
   async verifyResetPassword(
     data: OtpStepValidationSchemaType,
+    query?: BaseQuery,
   ): Promise<ResetPasswordVerifyResponse> {
     return httpService.post<
       ResetPasswordVerifyResponse,
       OtpStepValidationSchemaType
-    >("/auth/verify-reset-password", data);
+    >("/auth/verify-reset-password", data, query);
   }
 
   async resetPassword(
     data: Omit<NewPasswordStepValidationSchemaType, "confirmPassword">,
+    query?: BaseQuery,
   ): Promise<void> {
     return httpService.post<
       void,
       Omit<NewPasswordStepValidationSchemaType, "confirmPassword">
-    >("/auth/reset-password", data);
+    >("/auth/reset-password", data, query);
   }
 
   async changePassword(
@@ -102,10 +115,14 @@ export class AuthService {
     >("/auth/change-password", data);
   }
 
-  async loginWithGoogle(data: LoginWithGoogleBody): Promise<AuthResponse> {
+  async loginWithGoogle(
+    data: LoginWithGoogleBody,
+    query?: BaseQuery,
+  ): Promise<AuthResponse> {
     return httpService.post<AuthResponse, LoginWithGoogleBody>(
       "/auth/google",
       data,
+      query,
     );
   }
 }

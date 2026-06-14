@@ -75,6 +75,7 @@ export const FileInput: React.FC<FileInputProps> = ({
         isDragging && "border-primary",
       )}
       onClick={openFileDialog}
+      data-testid="file-dropzone"
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -85,13 +86,13 @@ export const FileInput: React.FC<FileInputProps> = ({
         </div>
 
         {isDragging ? (
-          <p className="p-3 text-sm font-medium">
+          <p className="p-3 text-sm font-medium" data-testid="drop-text">
             {t(TranslationKey.FILE_UPLOADER_DROP_HERE)}
           </p>
         ) : (
           <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-1">
-              <p className="text-sm">
+              <p className="text-sm" data-testid="drag-text">
                 {t(TranslationKey.FILE_UPLOADER_DRAG_DROP)}
               </p>
               <p className="text-xs">
@@ -102,7 +103,7 @@ export const FileInput: React.FC<FileInputProps> = ({
                 {t(TranslationKey.FILE_UPLOADER_TO_BROWSE)}
               </p>
             </div>
-            <p className="text-xs text-neutral-700">
+            <p className="text-xs text-neutral-700" data-testid="file-types">
               {t(TranslationKey.FILE_UPLOADER_ONLY_TYPES).replace(
                 "{{types}}",
                 validTypes.join(", "),

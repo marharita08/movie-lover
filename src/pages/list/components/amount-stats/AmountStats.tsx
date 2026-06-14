@@ -39,25 +39,36 @@ export const AmountStats: React.FC<AmountStatsProps> = ({ onReady }) => {
   return (
     <section className="grid grid-cols-1 justify-center gap-8 sm:grid-cols-2 md:grid-cols-4">
       <div className="flex flex-col items-center gap-1">
-        <div className="text-2xl font-bold">{data?.total}</div>
-        <div className="text-muted-foreground font-medium">
+        <div className="text-2xl font-bold" data-testid="amount-total">
+          {data?.total}
+        </div>
+        <div
+          className="text-muted-foreground font-medium"
+          data-testid="amount-total-label"
+        >
           {t(TranslationKey.LIST_AMOUNT_TOTAL_ITEMS)}
         </div>
       </div>
       <div className="flex flex-col items-center gap-1">
-        <div className="text-2xl font-bold">
+        <div className="text-2xl font-bold" data-testid="amount-movies-runtime">
           {formatRuntime(data?.totalMoviesRuntime)}
         </div>
-        <div className="text-muted-foreground font-medium">
+        <div
+          className="text-muted-foreground font-medium"
+          data-testid="amount-movies-runtime-label"
+        >
           {t(TranslationKey.LIST_AMOUNT_MOVIES_RUNTIME)}
         </div>
       </div>
       <div className="flex flex-col items-center gap-1">
-        <div className="text-2xl font-bold">
+        <div className="text-2xl font-bold" data-testid="amount-tv-runtime">
           {formatRuntime(data?.totalTVShowsRuntime)}
         </div>
         <div className="flex items-center gap-1">
-          <div className="text-muted-foreground font-medium">
+          <div
+            className="text-muted-foreground font-medium"
+            data-testid="amount-tv-runtime-label"
+          >
             {t(TranslationKey.LIST_AMOUNT_TV_RUNTIME)}
           </div>
           <Tooltip>
@@ -71,10 +82,13 @@ export const AmountStats: React.FC<AmountStatsProps> = ({ onReady }) => {
         </div>
       </div>
       <div className="flex flex-col items-center gap-1">
-        <div className="text-2xl font-bold">
+        <div className="text-2xl font-bold" data-testid="amount-total-runtime">
           {formatRuntime(data?.totalRuntime)}
         </div>
-        <div className="text-muted-foreground font-medium">
+        <div
+          className="text-muted-foreground font-medium"
+          data-testid="amount-total-runtime-label"
+        >
           {t(TranslationKey.LIST_AMOUNT_TOTAL_RUNTIME)}
         </div>
       </div>

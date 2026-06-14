@@ -2,12 +2,14 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
 import { toast, useDeleteFile, useFileData } from "@/hooks";
 import { fileService } from "@/services";
 
 import { FileUploader } from "./FileUploader";
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   toast: vi.fn(),
   useDeleteFile: vi.fn(),
   useFileData: vi.fn(),
@@ -40,8 +42,12 @@ vi.mock("../../ui", () => ({
   }) => (
     <div data-testid="file-preview">
       {isUploading && <span>Uploading {uploadProgress}%</span>}
-      <button onClick={onCancel}>Cancel</button>
-      <button onClick={onDelete}>Delete</button>
+      <button onClick={onCancel} data-testid="cancel-btn">
+        Cancel
+      </button>
+      <button onClick={onDelete} data-testid="delete-btn">
+        Delete
+      </button>
     </div>
   ),
 }));
@@ -204,7 +210,7 @@ describe("FileUploader", () => {
       />,
     );
 
-    await user.click(screen.getByText("Delete"));
+    await user.click(screen.getByTestId("delete-btn"));
 
     expect(mutate).toHaveBeenCalledWith("file-123");
     expect(setFileId).toHaveBeenCalledWith(null);

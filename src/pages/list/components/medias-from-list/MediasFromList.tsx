@@ -42,7 +42,7 @@ export const MediasFromList: React.FC<MediasFromListProps> = ({ onReady }) => {
         <h2 className="px-2 text-2xl font-bold md:px-0">
           {t(TranslationKey.LIST_MEDIAS_TITLE)}
         </h2>
-        <search className="w-full max-w-md flex-1">
+        <div className="w-full max-w-md flex-1">
           <Input
             placeholder={t(TranslationKey.COMMON_SEARCH_PLACEHOLDER)}
             value={search}
@@ -51,7 +51,7 @@ export const MediasFromList: React.FC<MediasFromListProps> = ({ onReady }) => {
             maxLength={255}
             onClear={() => setSearch("")}
           />
-        </search>
+        </div>
       </div>
       <MediaList
         medias={items}

@@ -39,11 +39,15 @@ export const Lists = () => {
   return (
     <div className="p-4 md:p-0">
       <div className="flex items-center justify-between md:pr-4">
-        <h1 className="text-xl font-bold">{t(TranslationKey.LISTS_TITLE)}</h1>
+        <h1 className="text-xl font-bold" data-testid="lists-title">
+          {t(TranslationKey.LISTS_TITLE)}
+        </h1>
         <Button asChild variant="outline">
           <Link to={RouterKey.CREATE_LIST}>
             <PlusIcon className="h-4 w-4" />
-            {t(TranslationKey.LISTS_CREATE_LIST)}
+            <span data-testid="create-list-link">
+              {t(TranslationKey.LISTS_CREATE_LIST)}
+            </span>
           </Link>
         </Button>
       </div>
@@ -60,7 +64,7 @@ export const Lists = () => {
         </div>
       )}
 
-      <search className="mt-4 mb-6 max-w-md">
+      <div className="mt-4 mb-6 max-w-md">
         <Input
           placeholder={t(TranslationKey.LISTS_SEARCH_PLACEHOLDER)}
           value={search}
@@ -69,7 +73,7 @@ export const Lists = () => {
           maxLength={255}
           onClear={() => setSearch("")}
         />
-      </search>
+      </div>
 
       <div className="h-full flex-1 pr-4">
         {isError && (

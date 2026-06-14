@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { Language } from "@/const";
+
 import { httpService } from "../http/http.service";
 import { TMDBService } from "./tmdb.service";
 
@@ -12,6 +14,10 @@ vi.mock("../http/http.service", () => ({
 describe("TMDBService", () => {
   let tmdbService: TMDBService;
 
+  const baseQuery = {
+    language: Language.ENGLISH,
+  };
+
   beforeEach(() => {
     tmdbService = new TMDBService();
     vi.clearAllMocks();
@@ -19,7 +25,11 @@ describe("TMDBService", () => {
 
   describe("getDiscoverMovies", () => {
     it("calls httpService.get with correct url and query", async () => {
-      const query = { page: 1, sort_by: "popularity.desc" };
+      const query = {
+        page: 1,
+        sort_by: "popularity.desc",
+      };
+
       vi.mocked(httpService.get).mockResolvedValue({
         results: [],
         total_pages: 1,
@@ -35,48 +45,58 @@ describe("TMDBService", () => {
   });
 
   describe("getMovie", () => {
-    it("calls httpService.get with correct url", async () => {
+    it("calls httpService.get with correct url and query", async () => {
       vi.mocked(httpService.get).mockResolvedValue({
         id: "123",
         title: "Inception",
       });
 
-      await tmdbService.getMovie("123");
+      await tmdbService.getMovie("123", baseQuery);
 
-      expect(httpService.get).toHaveBeenCalledWith("/tmdb/movie/123");
+      expect(httpService.get).toHaveBeenCalledWith(
+        "/tmdb/movie/123",
+        baseQuery,
+      );
     });
   });
 
   describe("getTVShow", () => {
-    it("calls httpService.get with correct url", async () => {
+    it("calls httpService.get with correct url and query", async () => {
       vi.mocked(httpService.get).mockResolvedValue({
         id: "456",
         name: "Breaking Bad",
       });
 
-      await tmdbService.getTVShow("456");
+      await tmdbService.getTVShow("456", baseQuery);
 
-      expect(httpService.get).toHaveBeenCalledWith("/tmdb/tv/456");
+      expect(httpService.get).toHaveBeenCalledWith("/tmdb/tv/456", baseQuery);
     });
   });
 
   describe("getPerson", () => {
-    it("calls httpService.get with correct url", async () => {
+    it("calls httpService.get with correct url and query", async () => {
       vi.mocked(httpService.get).mockResolvedValue({
         id: "789",
         name: "Leonardo DiCaprio",
         knownForDepartment: "Acting",
       });
 
-      await tmdbService.getPerson("789");
+      await tmdbService.getPerson("789", baseQuery);
 
-      expect(httpService.get).toHaveBeenCalledWith("/tmdb/person/789");
+      expect(httpService.get).toHaveBeenCalledWith(
+        "/tmdb/person/789",
+        baseQuery,
+      );
     });
   });
 
   describe("multiSearch", () => {
     it("calls httpService.get with correct url and query", async () => {
-      const query = { query: "inception", page: 1 };
+      const query = {
+        query: "inception",
+        page: 1,
+      };
+
       vi.mocked(httpService.get).mockResolvedValue({
         results: [
           {
@@ -96,7 +116,11 @@ describe("TMDBService", () => {
     });
 
     it("returns paginated response with mixed media types", async () => {
-      const query = { query: "avatar", page: 1 };
+      const query = {
+        query: "avatar",
+        page: 1,
+      };
+
       const mockResponse = {
         results: [
           {

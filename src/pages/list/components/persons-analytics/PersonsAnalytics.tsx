@@ -38,12 +38,16 @@ export const PersonsAnalytics: React.FC<PersonsAnalyticsProps> = ({
 
   return (
     <div className="flex flex-col gap-4 px-2">
-      <h3 className="text-lg font-bold">{t(personRoleMap[role])}</h3>
+      <h3 className="text-lg font-bold" data-testid="persons-analytics-heading">
+        {t(personRoleMap[role])}
+      </h3>
+
       {isLoading && (
         <div className="flex items-center justify-center">
           <Loading />
         </div>
       )}
+
       {isError && (
         <ErrorState
           title={t(TranslationKey.LIST_PERSONS_LOAD_FAILED)}
@@ -51,6 +55,7 @@ export const PersonsAnalytics: React.FC<PersonsAnalyticsProps> = ({
           onRetry={refetch}
         />
       )}
+
       {!isLoading && !isError && analitics?.length === 0 && (
         <EmptyState
           title={t(TranslationKey.LIST_PERSONS_EMPTY_TITLE).replace(
@@ -64,6 +69,7 @@ export const PersonsAnalytics: React.FC<PersonsAnalyticsProps> = ({
           icon={"film"}
         />
       )}
+
       {analitics.length > 0 && (
         <div className="flex flex-col">
           <div className="grid grid-cols-1 gap-4 px-0 pb-4 md:grid-cols-2 md:px-4">
@@ -71,9 +77,11 @@ export const PersonsAnalytics: React.FC<PersonsAnalyticsProps> = ({
               <Person key={person.id} person={person} />
             ))}
           </div>
+
           <div>
             <Button asChild variant={"link"}>
               <Link
+                data-testid="persons-analytics-view-all-link"
                 to={generatePath(RouterKey.PERSONS_ANALYTICS, {
                   id: id!,
                   role,

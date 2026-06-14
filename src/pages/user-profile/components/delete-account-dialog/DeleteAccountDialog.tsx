@@ -44,10 +44,12 @@ export const DeleteAccountDialog = () => {
         </DialogHeader>
         <div className="flex flex-col gap-4 p-4">
           <div>
-            <p className="font-medium">
+            <p className="font-medium" data-testid="delete-confirm-text">
               {t(TranslationKey.USER_PROFILE_DELETE_CONFIRM_TEXT)}
             </p>
-            <p>{t(TranslationKey.USER_PROFILE_DELETE_CONFIRM_SUBTEXT)}</p>
+            <p data-testid="delete-confirm-subtext">
+              {t(TranslationKey.USER_PROFILE_DELETE_CONFIRM_SUBTEXT)}
+            </p>
           </div>
           <div className="flex justify-end gap-4">
             <Button

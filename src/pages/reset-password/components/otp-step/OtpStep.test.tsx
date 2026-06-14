@@ -4,6 +4,7 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { StorageKey } from "@/const";
+import { en } from "@/const/translations/en";
 import { useResetPasswordVerify } from "@/hooks";
 
 import { OtpStep } from "./OtpStep";
@@ -12,6 +13,7 @@ vi.mock("@/hooks", async () => {
   const { useForm } = await import("react-hook-form");
   const { zodResolver } = await import("@hookform/resolvers/zod");
   return {
+    useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
     useResetPasswordVerify: vi.fn(),
     useAppForm: ({
       schema,

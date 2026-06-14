@@ -2,11 +2,13 @@ import { render } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MediaType, StorageKey } from "@/const";
+import { en } from "@/const/translations/en";
 import { useDiscoverMovies } from "@/hooks";
 
 import { DiscoverMovies } from "./DiscoverMovies";
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useDiscoverMovies: vi.fn(),
 }));
 

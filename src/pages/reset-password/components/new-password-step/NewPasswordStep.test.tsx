@@ -3,6 +3,7 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { StorageKey } from "@/const";
+import { en } from "@/const/translations/en";
 import { useResetPasswordNewPassword } from "@/hooks";
 
 import { NewPasswordStep } from "./NewPasswordStep";
@@ -10,7 +11,9 @@ import { NewPasswordStep } from "./NewPasswordStep";
 vi.mock("@/hooks", async () => {
   const { useForm } = await import("react-hook-form");
   const { zodResolver } = await import("@hookform/resolvers/zod");
+
   return {
+    useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
     useResetPasswordNewPassword: vi.fn(),
     useAppForm: ({
       schema,
@@ -28,25 +31,24 @@ vi.mock("@/hooks", async () => {
 
 vi.mock("@/components", async () => {
   const React = await import("react");
+
   return {
     Button: ({
       children,
       onClick,
       type,
-      asChild,
+      "data-testid": testId,
     }: {
       children: React.ReactNode;
       onClick?: () => void;
       type?: "submit" | "button" | "reset";
-      asChild?: boolean;
-    }) =>
-      asChild ? (
-        <>{children}</>
-      ) : (
-        <button onClick={onClick} type={type}>
-          {children}
-        </button>
-      ),
+      "data-testid"?: string;
+    }) => (
+      <button onClick={onClick} type={type} data-testid={testId}>
+        {children}
+      </button>
+    ),
+
     PasswordInput: React.forwardRef<
       HTMLInputElement,
       React.InputHTMLAttributes<HTMLInputElement> & {
@@ -61,6 +63,7 @@ vi.mock("@/components", async () => {
         {...props}
       />
     )),
+
     InputError: ({ error }: { error?: string }) =>
       error ? <span data-testid="input-error">{error}</span> : null,
   };
@@ -72,19 +75,23 @@ describe("NewPasswordStep", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useResetPasswordNewPassword).mockReturnValue({ mutate } as never);
+
     localStorage.setItem(StorageKey.EMAIL, "test@test.com");
     localStorage.setItem(StorageKey.RESET_PASSWORD_TOKEN, "reset-token");
   });
 
   it("renders password inputs", () => {
     render(<NewPasswordStep />);
-    expect(screen.getByLabelText("password")).toBeInTheDocument();
-    expect(screen.getByLabelText("Confirm Password")).toBeInTheDocument();
+
+    expect(screen.getByTestId("password-input")).toBeInTheDocument();
+    expect(screen.getByTestId("confirm-password-input")).toBeInTheDocument();
   });
 
   it("shows validation errors when fields are empty", async () => {
     render(<NewPasswordStep />);
-    fireEvent.submit(screen.getByRole("form"));
+
+    fireEvent.submit(screen.getByTestId("new-password-step-form"));
+
     await waitFor(() =>
       expect(screen.getAllByTestId("input-error").length).toBeGreaterThan(0),
     );
@@ -92,13 +99,16 @@ describe("NewPasswordStep", () => {
 
   it("calls mutate without confirmPassword on valid submit", async () => {
     render(<NewPasswordStep />);
-    fireEvent.change(screen.getByLabelText("password"), {
+
+    fireEvent.change(screen.getByTestId("password-input"), {
       target: { value: "Password123!" },
     });
-    fireEvent.change(screen.getByLabelText("Confirm Password"), {
+
+    fireEvent.change(screen.getByTestId("confirm-password-input"), {
       target: { value: "Password123!" },
     });
-    fireEvent.submit(screen.getByRole("form"));
+
+    fireEvent.submit(screen.getByTestId("new-password-step-form"));
 
     await waitFor(() =>
       expect(mutate).toHaveBeenCalledWith(
@@ -113,13 +123,16 @@ describe("NewPasswordStep", () => {
 
   it("does not include confirmPassword in mutate call", async () => {
     render(<NewPasswordStep />);
-    fireEvent.change(screen.getByLabelText("password"), {
+
+    fireEvent.change(screen.getByTestId("password-input"), {
       target: { value: "Password123!" },
     });
-    fireEvent.change(screen.getByLabelText("Confirm Password"), {
+
+    fireEvent.change(screen.getByTestId("confirm-password-input"), {
       target: { value: "Password123!" },
     });
-    fireEvent.submit(screen.getByRole("form"));
+
+    fireEvent.submit(screen.getByTestId("new-password-step-form"));
 
     await waitFor(() => {
       const calledWith = mutate.mock.calls[0][0];
@@ -127,17 +140,20 @@ describe("NewPasswordStep", () => {
     });
   });
 
-  it("reads email and token from localStorage", () => {
+  it("reads email and token from localStorage", async () => {
     render(<NewPasswordStep />);
-    fireEvent.change(screen.getByLabelText("password"), {
-      target: { value: "Password123!" },
-    });
-    fireEvent.change(screen.getByLabelText("Confirm Password"), {
-      target: { value: "Password123!" },
-    });
-    fireEvent.submit(screen.getByRole("form"));
 
-    waitFor(() =>
+    fireEvent.change(screen.getByTestId("password-input"), {
+      target: { value: "Password123!" },
+    });
+
+    fireEvent.change(screen.getByTestId("confirm-password-input"), {
+      target: { value: "Password123!" },
+    });
+
+    fireEvent.submit(screen.getByTestId("new-password-step-form"));
+
+    await waitFor(() =>
       expect(mutate).toHaveBeenCalledWith(
         expect.objectContaining({
           email: "test@test.com",

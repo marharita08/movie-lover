@@ -64,7 +64,7 @@ export const UserProfile = () => {
             <div className="text-sm font-medium">
               {t(TranslationKey.USER_PROFILE_EMAIL_LABEL)}
             </div>
-            <div>{user?.email}</div>
+            <div data-testid="user-email">{user?.email}</div>
           </div>
           <div>
             <Input

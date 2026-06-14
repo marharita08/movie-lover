@@ -1,7 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { PersonRole, personRoleMap } from "@/const";
+import { PersonRole } from "@/const";
+import { en } from "@/const/translations/en";
 import {
   useIsMobile,
   usePersonStats,
@@ -14,11 +15,17 @@ import { PersonsAnalytics } from "./PersonsAnalytics";
 const mockNavigate = vi.fn();
 
 vi.mock("react-router-dom", () => ({
-  useParams: () => ({ id: "list-123", role: PersonRole.DIRECTOR }),
+  useParams: () => ({
+    id: "list-123",
+    role: PersonRole.DIRECTOR,
+  }),
   useNavigate: () => mockNavigate,
 }));
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({
+    t: (k: keyof typeof en) => en[k] || k,
+  }),
   usePersonStats: vi.fn(),
   useSearch: vi.fn(),
   useIsMobile: vi.fn(),
@@ -37,22 +44,34 @@ vi.mock("@/components", () => ({
   Button: ({
     children,
     onClick,
+    ...props
   }: {
     children: React.ReactNode;
     onClick?: () => void;
-  }) => <button onClick={onClick}>{children}</button>,
+  }) => (
+    <button onClick={onClick} {...props}>
+      {children}
+    </button>
+  ),
+
   Loading: () => <div data-testid="loading" />,
+
   ErrorState: ({ onRetry }: { onRetry: () => void }) => (
     <div data-testid="error-state">
-      <button onClick={onRetry}>Retry</button>
+      <button data-testid="retry-btn" onClick={onRetry}>
+        Retry
+      </button>
     </div>
   ),
+
   EmptyState: ({ title }: { title: string }) => (
     <div data-testid="empty-state">{title}</div>
   ),
+
   Person: ({ person }: { person: { id: string; name: string } }) => (
     <div data-testid="person">{person.name}</div>
   ),
+
   Input: ({
     placeholder,
     value,
@@ -93,17 +112,22 @@ describe("PersonsAnalytics", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+
     vi.mocked(usePersonStats).mockReturnValue(defaultQueryResult as never);
+
     vi.mocked(useSearch).mockReturnValue({
       ...defaultSearchResult,
       setSearch: setSearchMock,
     });
+
     vi.mocked(useIsMobile).mockReturnValue(false);
+
     vi.mocked(useVirtualScrollRestoration).mockReturnValue(undefined);
   });
 
   it("calls usePersonStats with correct params", () => {
     render(<PersonsAnalytics />);
+
     expect(usePersonStats).toHaveBeenCalledWith("list-123", {
       role: PersonRole.DIRECTOR,
       limit: 20,
@@ -143,21 +167,27 @@ describe("PersonsAnalytics", () => {
 
   it("shows correct heading based on role", () => {
     render(<PersonsAnalytics />);
-    expect(
-      screen.getByText(personRoleMap[PersonRole.DIRECTOR]),
-    ).toBeInTheDocument();
+
+    expect(screen.getByTestId("persons-analytics-heading")).toBeInTheDocument();
   });
 
   it("renders search input", () => {
     render(<PersonsAnalytics />);
+
     expect(screen.getByTestId("search-input")).toBeInTheDocument();
+
     expect(screen.getByPlaceholderText("Search...")).toBeInTheDocument();
   });
 
   it("updates search value on input change", () => {
     render(<PersonsAnalytics />);
+
     const searchInput = screen.getByTestId("search-input");
-    fireEvent.change(searchInput, { target: { value: "Nolan" } });
+
+    fireEvent.change(searchInput, {
+      target: { value: "Nolan" },
+    });
+
     expect(setSearchMock).toHaveBeenCalledWith("Nolan");
   });
 
@@ -167,6 +197,7 @@ describe("PersonsAnalytics", () => {
       setSearch: setSearchMock,
       debouncedSearch: "Nolan",
     });
+
     render(<PersonsAnalytics />);
 
     expect(usePersonStats).toHaveBeenCalledWith("list-123", {
@@ -178,8 +209,13 @@ describe("PersonsAnalytics", () => {
 
   it("passes search parameter through useSearch", () => {
     render(<PersonsAnalytics />);
+
     const searchInput = screen.getByTestId("search-input");
-    fireEvent.change(searchInput, { target: { value: "Spielberg" } });
+
+    fireEvent.change(searchInput, {
+      target: { value: "Spielberg" },
+    });
+
     expect(setSearchMock).toHaveBeenCalledWith("Spielberg");
   });
 
@@ -188,7 +224,9 @@ describe("PersonsAnalytics", () => {
       ...defaultQueryResult,
       isLoading: true,
     } as never);
+
     render(<PersonsAnalytics />);
+
     expect(screen.getByTestId("loading")).toBeInTheDocument();
   });
 
@@ -198,20 +236,26 @@ describe("PersonsAnalytics", () => {
       isError: true,
       error: new Error("Failed"),
     } as never);
+
     render(<PersonsAnalytics />);
+
     expect(screen.getByTestId("error-state")).toBeInTheDocument();
   });
 
   it("calls refetch on retry click", () => {
     const refetch = vi.fn();
+
     vi.mocked(usePersonStats).mockReturnValue({
       ...defaultQueryResult,
       isError: true,
       error: new Error("Failed"),
       refetch,
     } as never);
+
     render(<PersonsAnalytics />);
-    fireEvent.click(screen.getByText("Retry"));
+
+    fireEvent.click(screen.getByTestId("retry-btn"));
+
     expect(refetch).toHaveBeenCalled();
   });
 
@@ -220,7 +264,9 @@ describe("PersonsAnalytics", () => {
       ...defaultQueryResult,
       data: { pages: [{ results: [] }] },
     } as never);
+
     render(<PersonsAnalytics />);
+
     expect(screen.getByTestId("empty-state")).toBeInTheDocument();
   });
 
@@ -230,16 +276,20 @@ describe("PersonsAnalytics", () => {
       setSearch: setSearchMock,
       debouncedSearch: "NonExistent",
     });
+
     vi.mocked(usePersonStats).mockReturnValue({
       ...defaultQueryResult,
       data: { pages: [{ results: [] }] },
     } as never);
+
     render(<PersonsAnalytics />);
+
     expect(screen.getByTestId("empty-state")).toBeInTheDocument();
   });
 
   it("renders persons when data is present", async () => {
     const { useVirtualizer } = await import("@tanstack/react-virtual");
+
     vi.mocked(useVirtualizer).mockReturnValue({
       getVirtualItems: () =>
         [{ index: 0, key: "0", start: 0, size: 150 }] as never,
@@ -260,12 +310,15 @@ describe("PersonsAnalytics", () => {
         ],
       },
     } as never);
+
     render(<PersonsAnalytics />);
+
     expect(screen.getAllByTestId("person")).toHaveLength(2);
   });
 
   it("flattens pages into single list", async () => {
     const { useVirtualizer } = await import("@tanstack/react-virtual");
+
     vi.mocked(useVirtualizer).mockReturnValue({
       getVirtualItems: () =>
         [{ index: 0, key: "0", start: 0, size: 150 }] as never,
@@ -282,12 +335,15 @@ describe("PersonsAnalytics", () => {
         ],
       },
     } as never);
+
     render(<PersonsAnalytics />);
+
     expect(screen.getAllByTestId("person")).toHaveLength(2);
   });
 
   it("calls fetchNextPage when near end of virtual list", async () => {
     const fetchNextPage = vi.fn();
+
     const { useVirtualizer } = await import("@tanstack/react-virtual");
 
     const persons = Array.from({ length: 40 }, (_, i) => ({
@@ -310,11 +366,13 @@ describe("PersonsAnalytics", () => {
     } as never);
 
     render(<PersonsAnalytics />);
+
     expect(fetchNextPage).toHaveBeenCalled();
   });
 
   it("does not call fetchNextPage when isFetchingNextPage is true", async () => {
     const fetchNextPage = vi.fn();
+
     const { useVirtualizer } = await import("@tanstack/react-virtual");
 
     const persons = Array.from({ length: 40 }, (_, i) => ({
@@ -338,18 +396,23 @@ describe("PersonsAnalytics", () => {
     } as never);
 
     render(<PersonsAnalytics />);
+
     expect(fetchNextPage).not.toHaveBeenCalled();
   });
 
   it("navigates back on Back button click", () => {
     render(<PersonsAnalytics />);
-    fireEvent.click(screen.getByText("Back"));
+
+    fireEvent.click(screen.getByTestId("persons-analytics-back-button"));
+
     expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 
   it("uses mobile layout when isMobile is true", () => {
     vi.mocked(useIsMobile).mockReturnValue(true);
+
     render(<PersonsAnalytics />);
+
     expect(useIsMobile).toHaveBeenCalled();
   });
 });

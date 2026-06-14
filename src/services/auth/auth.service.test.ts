@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { OtpPurpose } from "@/const";
+import { Language, OtpPurpose } from "@/const";
 
 import { httpService } from "../http/http.service";
 import { AuthService } from "./auth.service";
@@ -17,6 +17,10 @@ vi.mock("../http/http.service", () => ({
 describe("AuthService", () => {
   let authService: AuthService;
 
+  const baseQuery = {
+    language: Language.ENGLISH,
+  };
+
   beforeEach(() => {
     authService = new AuthService();
     vi.clearAllMocks();
@@ -24,19 +28,37 @@ describe("AuthService", () => {
 
   describe("login", () => {
     it("calls httpService.post with correct url and data", async () => {
-      const data = { email: "test@test.com", password: "123456" };
-      vi.mocked(httpService.post).mockResolvedValue({ accessToken: "token" });
+      const data = {
+        email: "test@test.com",
+        password: "123456",
+      };
 
-      await authService.login(data);
+      vi.mocked(httpService.post).mockResolvedValue({
+        accessToken: "token",
+      });
 
-      expect(httpService.post).toHaveBeenCalledWith("/auth/login", data);
+      await authService.login(data, baseQuery);
+
+      expect(httpService.post).toHaveBeenCalledWith(
+        "/auth/login",
+        data,
+        baseQuery,
+      );
     });
   });
 
   describe("signup", () => {
     it("calls httpService.post with correct url and data", async () => {
-      const data = { email: "test@test.com", password: "123456", name: "John" };
-      vi.mocked(httpService.post).mockResolvedValue({ message: "Success" });
+      const data = {
+        email: "test@test.com",
+        password: "123456",
+        name: "John",
+        language: Language.ENGLISH,
+      };
+
+      vi.mocked(httpService.post).mockResolvedValue({
+        message: "Success",
+      });
 
       await authService.signup(data);
 
@@ -46,8 +68,14 @@ describe("AuthService", () => {
 
   describe("verifyEmail", () => {
     it("calls httpService.post with correct url and data", async () => {
-      const data = { email: "test@test.com", code: "1234" };
-      vi.mocked(httpService.post).mockResolvedValue({ accessToken: "token" });
+      const data = {
+        email: "test@test.com",
+        code: "1234",
+      };
+
+      vi.mocked(httpService.post).mockResolvedValue({
+        accessToken: "token",
+      });
 
       await authService.verifyEmail(data);
 
@@ -74,11 +102,18 @@ describe("AuthService", () => {
         email: "test@test.com",
         purpose: OtpPurpose.EMAIL_VERIFICATION,
       };
-      vi.mocked(httpService.post).mockResolvedValue({ message: "OTP sent" });
 
-      await authService.sendOtp(data);
+      vi.mocked(httpService.post).mockResolvedValue({
+        message: "OTP sent",
+      });
 
-      expect(httpService.post).toHaveBeenCalledWith("/auth/send-otp", data);
+      await authService.sendOtp(data, baseQuery);
+
+      expect(httpService.post).toHaveBeenCalledWith(
+        "/auth/send-otp",
+        data,
+        baseQuery,
+      );
     });
   });
 
@@ -104,7 +139,10 @@ describe("AuthService", () => {
 
   describe("updateUser", () => {
     it("calls httpService.patch with correct url and data", async () => {
-      const data = { name: "John Updated" };
+      const data = {
+        name: "John Updated",
+      };
+
       vi.mocked(httpService.patch).mockResolvedValue(undefined);
 
       await authService.updateUser(data);
@@ -115,30 +153,41 @@ describe("AuthService", () => {
 
   describe("forgotPassword", () => {
     it("calls httpService.post with correct url and data", async () => {
-      const data = { email: "test@test.com" };
-      vi.mocked(httpService.post).mockResolvedValue({ message: "Email sent" });
+      const data = {
+        email: "test@test.com",
+      };
 
-      await authService.forgotPassword(data);
+      vi.mocked(httpService.post).mockResolvedValue({
+        message: "Email sent",
+      });
+
+      await authService.forgotPassword(data, baseQuery);
 
       expect(httpService.post).toHaveBeenCalledWith(
         "/auth/forgot-password",
         data,
+        baseQuery,
       );
     });
   });
 
   describe("verifyResetPassword", () => {
     it("calls httpService.post with correct url and data", async () => {
-      const data = { code: "1234", email: "test@test.com" };
+      const data = {
+        code: "1234",
+        email: "test@test.com",
+      };
+
       vi.mocked(httpService.post).mockResolvedValue({
         resetToken: "reset-token",
       });
 
-      await authService.verifyResetPassword(data);
+      await authService.verifyResetPassword(data, baseQuery);
 
       expect(httpService.post).toHaveBeenCalledWith(
         "/auth/verify-reset-password",
         data,
+        baseQuery,
       );
     });
   });
@@ -150,20 +199,26 @@ describe("AuthService", () => {
         email: "test@test.com",
         token: "reset-token",
       };
+
       vi.mocked(httpService.post).mockResolvedValue(undefined);
 
-      await authService.resetPassword(data);
+      await authService.resetPassword(data, baseQuery);
 
       expect(httpService.post).toHaveBeenCalledWith(
         "/auth/reset-password",
         data,
+        baseQuery,
       );
     });
   });
 
   describe("changePassword", () => {
     it("calls httpService.post with correct url and data", async () => {
-      const data = { oldPassword: "old123", password: "new123" };
+      const data = {
+        oldPassword: "old123",
+        password: "new123",
+      };
+
       vi.mocked(httpService.post).mockResolvedValue(undefined);
 
       await authService.changePassword(data);
@@ -177,12 +232,21 @@ describe("AuthService", () => {
 
   describe("loginWithGoogle", () => {
     it("calls httpService.post with correct url and data", async () => {
-      const data = { code: "code" };
-      vi.mocked(httpService.post).mockResolvedValue({ accessToken: "token" });
+      const data = {
+        code: "code",
+      };
 
-      await authService.loginWithGoogle(data);
+      vi.mocked(httpService.post).mockResolvedValue({
+        accessToken: "token",
+      });
 
-      expect(httpService.post).toHaveBeenCalledWith("/auth/google", data);
+      await authService.loginWithGoogle(data, baseQuery);
+
+      expect(httpService.post).toHaveBeenCalledWith(
+        "/auth/google",
+        data,
+        baseQuery,
+      );
     });
   });
 });

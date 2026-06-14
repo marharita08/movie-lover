@@ -52,13 +52,16 @@ export const DeleteListDialog: React.FC<DeleteListDialogProps> = ({
         </DialogHeader>
         <div className="flex flex-col gap-4 p-4">
           <div>
-            <p className="font-medium">
+            <p className="font-medium" data-testid="delete-list-confirm-text">
               {t(TranslationKey.DELETE_LIST_CONFIRM_TEXT).replace(
                 "{{listName}}",
                 listName,
               )}
             </p>
-            <p className="text-muted-foreground text-sm">
+            <p
+              className="text-muted-foreground text-sm"
+              data-testid="delete-list-confirm-subtext"
+            >
               {t(TranslationKey.DELETE_LIST_CONFIRM_SUBTEXT)}
             </p>
           </div>
@@ -67,6 +70,7 @@ export const DeleteListDialog: React.FC<DeleteListDialogProps> = ({
               className="min-w-[120px]"
               variant="outline"
               onClick={() => setIsOpen(false)}
+              data-testid="delete-list-cancel"
             >
               {t(TranslationKey.DELETE_LIST_CANCEL)}
             </Button>
@@ -75,6 +79,7 @@ export const DeleteListDialog: React.FC<DeleteListDialogProps> = ({
               className="min-w-[120px]"
               onClick={handleConfirm}
               disabled={isDeleting}
+              data-testid="delete-list-confirm"
             >
               {isDeleting ? (
                 <Loading size="sm" />

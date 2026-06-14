@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
 import { useSendMessage } from "@/hooks";
 
 import { MessageInput } from "./MessageInput";
@@ -15,6 +16,7 @@ vi.mock("@/hooks", async () => {
   const { useForm } = await import("react-hook-form");
   const { zodResolver } = await import("@hookform/resolvers/zod");
   return {
+    useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
     useSendMessage: vi.fn(),
     useAppForm: ({
       schema,

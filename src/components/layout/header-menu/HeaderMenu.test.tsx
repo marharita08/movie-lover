@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { RouterKey } from "@/const";
+import { en } from "@/const/translations/en";
 import { useLogout } from "@/hooks";
 import type { User } from "@/types";
 
@@ -15,6 +16,7 @@ vi.mock("react-router-dom", () => ({
 }));
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useLogout: vi.fn(),
 }));
 
@@ -42,20 +44,19 @@ describe("HeaderMenu", () => {
 
   it("shows user email", () => {
     render(<HeaderMenu user={mockUser} />);
-    expect(screen.getByText("test@test.com")).toBeInTheDocument();
+    expect(screen.getByTestId("user-email")).toHaveTextContent("test@test.com");
   });
 
   it("shows avatar fallback with initials", () => {
     render(<HeaderMenu user={mockUser} />);
-    expect(screen.getByText("JD")).toBeInTheDocument();
+    expect(screen.getByTestId("avatar-initials")).toHaveTextContent("JD");
   });
 
   it("calls mutate on logout click", async () => {
     render(<HeaderMenu user={mockUser} />);
 
-    await user.click(screen.getByRole("button"));
-    await screen.findByText("Logout");
-    await user.click(screen.getByText("Logout"));
+    await user.click(screen.getByTestId("menu-trigger"));
+    await user.click(screen.getByTestId("menu-logout"));
 
     expect(mutate).toHaveBeenCalled();
   });
@@ -63,19 +64,18 @@ describe("HeaderMenu", () => {
   it("navigates to profile on profile click", async () => {
     render(<HeaderMenu user={mockUser} />);
 
-    await user.click(screen.getByRole("button"));
-    await screen.findByText("Profile");
-    await user.click(screen.getByText("Profile"));
+    await user.click(screen.getByTestId("menu-trigger"));
+    await user.click(screen.getByTestId("menu-profile"));
 
     expect(mockNavigate).toHaveBeenCalledWith(RouterKey.USER_PROFILE);
   });
 
-  it("shows Profile and Logout menu items when dropdown is opened", async () => {
+  it("shows menu items when dropdown is opened", async () => {
     render(<HeaderMenu user={mockUser} />);
 
-    await user.click(screen.getByRole("button"));
+    await user.click(screen.getByTestId("menu-trigger"));
 
-    expect(await screen.findByText("Profile")).toBeInTheDocument();
-    expect(screen.getByText("Logout")).toBeInTheDocument();
+    expect(screen.getByTestId("menu-profile")).toBeInTheDocument();
+    expect(screen.getByTestId("menu-logout")).toBeInTheDocument();
   });
 });
