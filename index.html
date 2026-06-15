@@ -4,24 +4,93 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/movie-tape.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Movie Lover</title>
+
+    <title>
+      Movie Lover — AI Movie & TV Show Recommendations, IMDb Lists Analytics
+    </title>
+
     <meta
       name="description"
-      content="Upload your IMDb list, analyze your movie taste, explore statistics, and get AI-powered movie and TV show recommendations."
+      content="Upload your IMDb list, discover your movie taste through statistics, and chat with AI to get personalized movie and TV show recommendations."
     />
 
     <meta name="robots" content="index, follow" />
 
-    <meta property="og:title" content="Movie Lover" />
+    <meta
+      property="og:title"
+      content="Movie Lover — AI Movie & TV Show Recommendations"
+    />
     <meta
       property="og:description"
-      content="Analyze your IMDb lists and get personalized movie recommendations."
+      content="Turn your IMDb lists into insights. Upload CSV, explore your stats, and get AI-powered movie and TV show recommendations."
     />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/preview.png" />
+    <meta property="og:url" content="https://movie-lover-five.vercel.app" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Movie Lover",
+        "description": "Turn your IMDb lists into insights and personalized recommendations. Upload your CSV, explore statistics, and chat with AI to discover movies and TV shows.",
+        "applicationCategory": "EntertainmentApplication",
+        "url": "https://movie-lover-five.vercel.app",
+        "inLanguage": ["en", "uk"],
+        "featureList": [
+          "Export and upload IMDb CSV lists",
+          "Movie taste statistics and insights",
+          "AI-powered movie recommendations",
+          "TV show recommendations",
+          "Multiple IMDb lists support (watchlist, rated, custom)"
+        ],
+        "offers": {
+          "@type": "Offer",
+          "price": "0"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <main>
+        <h1>Movie Lover — AI Movie & TV Show Recommendations</h1>
+        <h2>How it works</h2>
+        <p>
+          Turn your IMDb lists into insights and personalized recommendations.
+        </p>
+        <ol>
+          <li>
+            <h3>Export your IMDb list</h3>
+            <p>
+              Download your IMDb list as a CSV file. Rated titles are
+              recommended for better insights.
+            </p>
+          </li>
+          <li>
+            <h3>Upload your list</h3>
+            <p>
+              Upload your CSV file to create your personal movie profile. You
+              can upload multiple IMDb lists — watchlist, rated, or custom
+              lists.
+            </p>
+          </li>
+          <li>
+            <h3>Explore your statistics</h3>
+            <p>Discover your movie taste through statistics and insights.</p>
+          </li>
+          <li>
+            <h3>Get AI recommendations</h3>
+            <p>
+              Chat with AI to receive personalized movie and TV show
+              recommendations based on your lists.
+            </p>
+          </li>
+        </ol>
+      </main>
+    </noscript>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
