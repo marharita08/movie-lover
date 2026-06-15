@@ -41,7 +41,7 @@ export const Header = () => {
         )}
 
         {!isLoading && !user && (
-          <div className="flex items-center gap-2" data-testid="auth-links">
+          <div className="items-center gap-2 hidden md:flex" data-testid="auth-links">
             <Button asChild variant="link">
               <Link to={RouterKey.LOGIN} data-testid="login-link">
                 {t(TranslationKey.AUTH_LOGIN)}
