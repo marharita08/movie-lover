@@ -1,19 +1,33 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { RouterKey } from "@/const";
+import { en } from "@/const/translations/en";
 import { useLists, useSearch } from "@/hooks";
 
 import { Lists } from "./Lists";
 
-vi.mock("react-router-dom", () => ({
-  useNavigate: () => vi.fn(),
-  Link: ({ children, to }: { children: React.ReactNode; to: string }) => (
-    <a href={to}>{children}</a>
-  ),
-}));
+vi.mock("react-router-dom", () => {
+  return {
+    useNavigate: () => vi.fn(),
+    Link: ({ children, to, ...rest }: any) => {
+      const arr = React.Children.toArray(children);
+      if (arr.length === 1 && React.isValidElement(arr[0])) {
+        return React.cloneElement(arr[0] as any, { href: to, ...rest });
+      }
+      const mapped = arr.map((child: any) =>
+        React.isValidElement(child)
+          ? React.cloneElement(child, { href: to, ...rest })
+          : child,
+      );
+      return React.createElement("a", { href: to, ...rest }, mapped);
+    },
+  };
+});
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useLists: vi.fn(),
   useSearch: vi.fn(),
 }));
@@ -43,7 +57,9 @@ vi.mock("@/components", async () => {
     Loading: () => <div data-testid="loading" />,
     ErrorState: ({ onRetry }: { onRetry: () => void }) => (
       <div data-testid="error-state">
-        <button onClick={onRetry}>Retry</button>
+        <button data-testid="retry-btn" onClick={onRetry}>
+          Retry
+        </button>
       </div>
     ),
     EmptyState: ({
@@ -54,8 +70,8 @@ vi.mock("@/components", async () => {
       description: string;
     }) => (
       <div data-testid="empty-state">
-        <div>{title}</div>
-        <div>{description}</div>
+        <div data-testid="empty-title">{title}</div>
+        <div data-testid="empty-desc">{description}</div>
       </div>
     ),
   };
@@ -129,7 +145,7 @@ describe("Lists", () => {
       refetch,
     } as never);
     render(<Lists />);
-    fireEvent.click(screen.getByText("Retry"));
+    fireEvent.click(screen.getByTestId("retry-btn"));
     expect(refetch).toHaveBeenCalled();
   });
 
@@ -139,9 +155,9 @@ describe("Lists", () => {
       data: { pages: [{ results: [] }] },
     } as never);
     render(<Lists />);
-    expect(
-      screen.getByText("Ready to analyze your cinema history?"),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("empty-title")).toHaveTextContent(
+      "Ready to analyze your cinema history?",
+    );
   });
 
   it("shows EmptyState with search text when search is active", () => {
@@ -155,8 +171,10 @@ describe("Lists", () => {
       data: { pages: [{ results: [] }] },
     } as never);
     render(<Lists />);
-    expect(screen.getByText("No matching lists found")).toBeInTheDocument();
-    expect(screen.getByText(/batman/)).toBeInTheDocument();
+    expect(screen.getByTestId("empty-title")).toHaveTextContent(
+      "No matching lists found",
+    );
+    expect(screen.getByTestId("empty-desc")).toHaveTextContent(/batman/);
   });
 
   it("renders list cards", () => {
@@ -228,7 +246,7 @@ describe("Lists", () => {
 
   it("shows Create List link", () => {
     render(<Lists />);
-    expect(screen.getByText("Create List").closest("a")).toHaveAttribute(
+    expect(screen.getByTestId("create-list-link")).toHaveAttribute(
       "href",
       RouterKey.CREATE_LIST,
     );

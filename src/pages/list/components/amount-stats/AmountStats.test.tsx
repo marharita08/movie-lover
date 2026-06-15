@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
 import { useAmountStats } from "@/hooks";
 
 import { AmountStats } from "./AmountStats";
@@ -10,6 +11,7 @@ vi.mock("react-router-dom", () => ({
 }));
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useAmountStats: vi.fn(),
 }));
 
@@ -75,8 +77,10 @@ describe("AmountStats", () => {
       isError: false,
     } as never);
     render(<AmountStats />);
-    expect(screen.getByText("42")).toBeInTheDocument();
-    expect(screen.getByText("Total items")).toBeInTheDocument();
+    expect(screen.getByTestId("amount-total")).toHaveTextContent("42");
+    expect(screen.getByTestId("amount-total-label")).toHaveTextContent(
+      "Total items",
+    );
   });
 
   it("formats and shows total movies runtime", () => {
@@ -86,8 +90,12 @@ describe("AmountStats", () => {
       isError: false,
     } as never);
     render(<AmountStats />);
-    expect(screen.getByText("2h 5min")).toBeInTheDocument();
-    expect(screen.getByText("Total movies runtime")).toBeInTheDocument();
+    expect(screen.getByTestId("amount-movies-runtime")).toHaveTextContent(
+      "2h 5min",
+    );
+    expect(screen.getByTestId("amount-movies-runtime-label")).toHaveTextContent(
+      "Total movies runtime",
+    );
   });
 
   it("formats and shows total TV shows runtime", () => {
@@ -97,8 +105,12 @@ describe("AmountStats", () => {
       isError: false,
     } as never);
     render(<AmountStats />);
-    expect(screen.getByText("1h 0min")).toBeInTheDocument();
-    expect(screen.getByText("Total TV shows runtime")).toBeInTheDocument();
+    expect(screen.getByTestId("amount-tv-runtime")).toHaveTextContent(
+      "1h 0min",
+    );
+    expect(screen.getByTestId("amount-tv-runtime-label")).toHaveTextContent(
+      "Total TV shows runtime",
+    );
   });
 
   it("formats and shows total runtime", () => {
@@ -108,8 +120,15 @@ describe("AmountStats", () => {
       isError: false,
     } as never);
     render(<AmountStats />);
-    expect(screen.getByText("3h 5min")).toBeInTheDocument();
-    expect(screen.getByText("Total runtime")).toBeInTheDocument();
+    expect(screen.getByTestId("amount-total-runtime")).toHaveTextContent(
+      "3h 5min",
+    );
+    expect(screen.getByTestId("amount-total-runtime")).toHaveTextContent(
+      "3h 5min",
+    );
+    expect(screen.getByTestId("amount-total-runtime-label")).toHaveTextContent(
+      "Total runtime",
+    );
   });
 
   it("calls useAmountStats with correct id", () => {

@@ -1,13 +1,15 @@
 import { z } from "zod";
 
-import { EMAIL_REGEX } from "@/const";
+import { EMAIL_REGEX, TranslationKey } from "@/const";
 
 export const LoginValidationSchema = z.object({
   email: z
     .string()
-    .min(1, { message: "Email is required" })
-    .regex(EMAIL_REGEX, { message: "Email is invalid" }),
-  password: z.string().min(1, { message: "Password is required" }),
+    .min(1, { message: TranslationKey.VALIDATION_EMAIL_REQUIRED })
+    .regex(EMAIL_REGEX, { message: TranslationKey.VALIDATION_EMAIL_INVALID }),
+  password: z
+    .string()
+    .min(1, { message: TranslationKey.VALIDATION_PASSWORD_REQUIRED }),
 });
 
 export type LoginValidationSchemaType = z.infer<typeof LoginValidationSchema>;

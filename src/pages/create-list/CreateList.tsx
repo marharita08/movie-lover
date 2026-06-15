@@ -11,7 +11,13 @@ import {
   Label,
   Sphere,
 } from "@/components";
-import { useAppForm, useCreateList, useListPolling } from "@/hooks";
+import { TranslationKey } from "@/const";
+import {
+  useAppForm,
+  useCreateList,
+  useListPolling,
+  useTranslation,
+} from "@/hooks";
 
 import {
   CreateListValidationSchema,
@@ -20,6 +26,7 @@ import {
 
 export const CreateList = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [processingListId, setProcessingListId] = useState<string | null>(null);
 
   const { isProcessing } = useListPolling(
@@ -65,7 +72,12 @@ export const CreateList = () => {
       <Sphere className="absolute top-28 right-30 h-13 w-13" />
       <Sphere className="absolute right-40 bottom-20 h-20 w-20" />
       <div className="bg-card h-full w-full p-6 shadow-md md:absolute md:top-2/5 md:left-1/2 md:h-fit md:w-[500px] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-xl">
-        <h1 className="text-center text-xl font-bold">Create List</h1>
+        <h1
+          className="text-center text-xl font-bold"
+          data-testid="create-list-title"
+        >
+          {t(TranslationKey.CREATE_LIST_TITLE)}
+        </h1>
         <form
           className="mt-8 flex flex-col gap-4"
           aria-label="create-list-form"
@@ -74,9 +86,9 @@ export const CreateList = () => {
           <div>
             <Input
               {...form.register("name")}
-              label="Name"
+              label={t(TranslationKey.CREATE_LIST_NAME)}
               error={!!form.formState.errors.name?.message}
-              placeholder="My Favorite Movies"
+              placeholder={t(TranslationKey.CREATE_LIST_NAME_PLACEHOLDER)}
               startIcon={<ListIcon className="h-4 w-4" />}
             />
             <InputError error={form.formState.errors.name?.message} />
@@ -84,7 +96,7 @@ export const CreateList = () => {
 
           <div>
             <Label className="mb-2 block text-sm font-medium">
-              Upload list from IMDB
+              {t(TranslationKey.CREATE_LIST_UPLOAD_LABEL)}
             </Label>
             <FileUploader
               validTypes={["csv"]}
@@ -96,21 +108,23 @@ export const CreateList = () => {
           <div className="mt-4 flex justify-end gap-2">
             <div className="flex gap-4">
               <Button
+                data-testid="create-list-back"
                 className="min-w-[120px]"
                 type="button"
                 variant="outline"
                 onClick={handleBack}
               >
                 <ArrowLeftIcon className="h-4 w-4" />
-                Back
+                {t(TranslationKey.AUTH_BACK)}
               </Button>
               <Button
+                data-testid="create-list-submit"
                 className="min-w-[120px]"
                 type="submit"
                 disabled={createListMutation.isPending}
               >
                 <SaveIcon className="h-4 w-4" />
-                Create
+                {t(TranslationKey.CREATE_LIST_SUBMIT)}
               </Button>
             </div>
           </div>

@@ -3,17 +3,21 @@ import userEvent from "@testing-library/user-event";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { StorageKey } from "@/const";
+import { StorageKey, TranslationKey } from "@/const";
+import { en } from "@/const/translations/en";
 import { useSignUp } from "@/hooks";
 
 import { Signup } from "./Signup";
 
-vi.mock("react-router-dom", () => ({
-  Link: ({ children, to }: { children: React.ReactNode; to: string }) => (
-    <a href={to}>{children}</a>
-  ),
-  useNavigate: () => vi.fn(),
-}));
+vi.mock("react-router-dom", () => {
+  return {
+    useNavigate: () => vi.fn(),
+    Link: ({ children, to, ...rest }: any) =>
+      React.isValidElement(children)
+        ? React.cloneElement(children as any, { href: to, ...rest })
+        : React.createElement("a", { href: to, ...rest }, children),
+  };
+});
 
 vi.mock("@/hooks", async () => {
   const { useForm } = await import("react-hook-form");
@@ -31,6 +35,12 @@ vi.mock("@/hooks", async () => {
         resolver: zodResolver(schema as never),
         defaultValues: defaultValues as never,
       }),
+    useTranslation: () => ({
+      t: (key: TranslationKey) => en[key] || key,
+    }),
+    useLanguageStore: () => ({
+      language: "en-US",
+    }),
   };
 });
 
@@ -157,7 +167,7 @@ describe("Signup", () => {
 
   it("has link to login page", () => {
     render(<Signup />);
-    expect(screen.getByText("Login").closest("a")).toHaveAttribute(
+    expect(screen.getByTestId("signup-login-link")).toHaveAttribute(
       "href",
       "/login",
     );

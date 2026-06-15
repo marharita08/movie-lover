@@ -1,6 +1,6 @@
 import { Button, Input, InputError } from "@/components";
-import { StorageKey } from "@/const";
-import { useAppForm, useResetPasswordEmail } from "@/hooks";
+import { StorageKey, TranslationKey } from "@/const";
+import { useAppForm, useResetPasswordEmail, useTranslation } from "@/hooks";
 
 import {
   EmailStepValidationSchema,
@@ -12,6 +12,7 @@ interface EmailStepProps {
 }
 
 export const EmailStep: React.FC<EmailStepProps> = ({ onSuccess }) => {
+  const { t } = useTranslation();
   const form = useAppForm<EmailStepValidationSchemaType>({
     schema: EmailStepValidationSchema,
     defaultValues: {
@@ -37,20 +38,20 @@ export const EmailStep: React.FC<EmailStepProps> = ({ onSuccess }) => {
       aria-label="email-step-form"
     >
       <h2 className="text-muted-foreground">
-        Enter your email to reset your password
+        {t(TranslationKey.RESET_PASSWORD_EMAIL_PROMPT)}
       </h2>
       <div className="flex flex-col gap-1">
         <Input
           {...form.register("email")}
-          label="Email"
+          label={t(TranslationKey.RESET_PASSWORD_EMAIL_LABEL)}
           error={!!form.formState.errors.email?.message}
-          placeholder="jane.smith@example.com"
+          placeholder={t(TranslationKey.AUTH_EMAIL_PLACEHOLDER)}
         />
         <InputError error={form.formState.errors.email?.message} />
       </div>
       <div className="mt-4 flex justify-end gap-4">
         <Button type="submit" disabled={resetPasswordEmailMutation.isPending}>
-          Reset Password
+          {t(TranslationKey.RESET_PASSWORD_SUBMIT)}
         </Button>
       </div>
     </form>

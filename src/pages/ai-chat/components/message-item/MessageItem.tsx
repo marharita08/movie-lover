@@ -54,6 +54,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
                 "text-sm leading-relaxed whitespace-pre-wrap",
                 message.isError && "text-error",
               )}
+              data-testid={`message-text-${message.id}`}
             >
               {message.text}
             </p>
@@ -69,7 +70,10 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
           </div>
         )}
 
-        <p className="text-muted-foreground px-1 text-xs">
+        <p
+          className="text-muted-foreground px-1 text-xs"
+          data-testid={`message-time-${message.id}`}
+        >
           {formatDateTime(message.createdAt)}
         </p>
       </div>

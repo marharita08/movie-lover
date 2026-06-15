@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Button, Sphere } from "@/components";
-import { StorageKey } from "@/const";
+import { StorageKey, TranslationKey } from "@/const";
+import { useTranslation } from "@/hooks";
 
 import { EmailStep, NewPasswordStep, OtpStep } from "./components";
 import { ResetPasswordStep } from "./const";
 
 export const ResetPassword = () => {
+  const { t } = useTranslation();
   const initialStep =
     (localStorage.getItem(
       StorageKey.RESET_PASSWORD_STEP,
@@ -46,10 +48,12 @@ export const ResetPassword = () => {
             type="button"
           >
             <ArrowLeft className="h-4 w-4" />
-            Exit
+            {t(TranslationKey.RESET_PASSWORD_EXIT)}
           </Button>
 
-          <h1 className="text-center text-2xl font-bold">Reset Password</h1>
+          <h1 className="text-center text-2xl font-bold">
+            {t(TranslationKey.RESET_PASSWORD_TITLE)}
+          </h1>
 
           <div />
         </div>

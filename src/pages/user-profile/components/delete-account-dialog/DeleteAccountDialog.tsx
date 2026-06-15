@@ -10,11 +10,13 @@ import {
   DialogTrigger,
   Loading,
 } from "@/components";
-import { useDeleteAccount } from "@/hooks";
+import { TranslationKey } from "@/const";
+import { useDeleteAccount, useTranslation } from "@/hooks";
 
 export const DeleteAccountDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: deleteAccount, isPending: isDeleting } = useDeleteAccount();
+  const { t } = useTranslation();
 
   const handleConfirm = () => {
     deleteAccount(undefined, {
@@ -31,21 +33,22 @@ export const DeleteAccountDialog = () => {
           className="hover:text-error text-sm"
         >
           <TrashIcon className="h-4 w-4" />
-          Delete Account
+          {t(TranslationKey.USER_PROFILE_DELETE_ACCOUNT)}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Account</DialogTitle>
+          <DialogTitle>
+            {t(TranslationKey.USER_PROFILE_DELETE_CONFIRM_TITLE)}
+          </DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-4 p-4">
           <div>
-            <p className="font-medium">
-              Are you sure you want to delete your account?
+            <p className="font-medium" data-testid="delete-confirm-text">
+              {t(TranslationKey.USER_PROFILE_DELETE_CONFIRM_TEXT)}
             </p>
-            <p>
-              This action is irreversible and will permanently delete your
-              account and all associated data.
+            <p data-testid="delete-confirm-subtext">
+              {t(TranslationKey.USER_PROFILE_DELETE_CONFIRM_SUBTEXT)}
             </p>
           </div>
           <div className="flex justify-end gap-4">
@@ -54,7 +57,7 @@ export const DeleteAccountDialog = () => {
               variant="outline"
               onClick={() => setIsOpen(false)}
             >
-              Cancel
+              {t(TranslationKey.USER_PROFILE_DELETE_CANCEL)}
             </Button>
             <Button
               variant="destructive"
@@ -66,7 +69,9 @@ export const DeleteAccountDialog = () => {
               ) : (
                 <TrashIcon className="h-4 w-4" />
               )}
-              {isDeleting ? "Deleting..." : "Delete Account"}
+              {isDeleting
+                ? t(TranslationKey.USER_PROFILE_DELETE_DELETING)
+                : t(TranslationKey.USER_PROFILE_DELETE_ACCOUNT)}
             </Button>
           </div>
         </div>

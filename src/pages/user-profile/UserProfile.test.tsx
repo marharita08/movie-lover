@@ -4,6 +4,8 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
+
 import { UserProfile } from "./UserProfile";
 
 const mutateMock = vi.fn<(data: { name: string }) => void>();
@@ -18,6 +20,7 @@ vi.mock("@/hooks", async () => {
   const { zodResolver } = await import("@hookform/resolvers/zod");
 
   return {
+    useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
     useCurrentUser: () => ({
       data: mockUser,
     }),

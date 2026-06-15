@@ -3,11 +3,12 @@ import { useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { Button, Input, InputError, Sphere } from "@/components";
-import { OtpPurpose, RouterKey, StorageKey } from "@/const";
+import { OtpPurpose, RouterKey, StorageKey, TranslationKey } from "@/const";
 import {
   useAppForm,
   useOtpCountdown,
   useSendOtp,
+  useTranslation,
   useVerifyEmail,
 } from "@/hooks";
 
@@ -19,6 +20,7 @@ import {
 export const EmailVerification = () => {
   const email = localStorage.getItem(StorageKey.EMAIL) || "";
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { secondsLeft, isFinished, reset } = useOtpCountdown();
 
@@ -74,7 +76,7 @@ export const EmailVerification = () => {
         aria-label="email-verification-form"
       >
         <h1 className="mb-6 text-center text-2xl font-bold">
-          Email Verification
+          {t(TranslationKey.AUTH_EMAIL_VERIFICATION_TITLE)}
         </h1>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
@@ -87,7 +89,7 @@ export const EmailVerification = () => {
                   e.target.value.replace(/\D/g, "").slice(0, 4),
                 )
               }
-              label="Code"
+              label={t(TranslationKey.AUTH_CODE)}
               placeholder="****"
               className="text-lg tracking-widest"
               error={!!form.formState.errors.code?.message}
@@ -99,22 +101,26 @@ export const EmailVerification = () => {
             className="mt-6 w-full"
             disabled={verifyEmailMutation.isPending}
           >
-            Verify
+            {t(TranslationKey.AUTH_VERIFY)}
           </Button>
         </div>
         <div className="mt-6 text-center">
-          Didn't receive the code?{" "}
+          {t(TranslationKey.AUTH_DIDNT_RECEIVE_CODE)}{" "}
           {isFinished ? (
             <Button
+              data-testid="resend-btn"
               type="button"
               variant="link"
               className="h-fit p-0"
               onClick={handleResend}
             >
-              Resend
+              {t(TranslationKey.AUTH_RESEND)}
             </Button>
           ) : (
-            <span>Resend available in {secondsLeft} seconds</span>
+            <span data-testid="resend-countdown">
+              {t(TranslationKey.AUTH_RESEND_AVAILABLE_IN)} {secondsLeft}{" "}
+              {t(TranslationKey.AUTH_SECONDS)}
+            </span>
           )}
         </div>
       </form>

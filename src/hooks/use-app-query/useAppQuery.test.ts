@@ -3,12 +3,14 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { createElement } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
 import { toast } from "@/hooks";
 import { HttpException } from "@/types";
 
 import { useAppQuery } from "./useAppQuery";
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   toast: vi.fn(),
 }));
 

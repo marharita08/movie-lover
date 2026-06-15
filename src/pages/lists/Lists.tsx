@@ -4,14 +4,14 @@ import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 
 import { Button, EmptyState, ErrorState, Input, Loading } from "@/components";
-import { RouterKey } from "@/const";
-import { useSearch } from "@/hooks";
-import { useLists } from "@/hooks";
+import { RouterKey, TranslationKey } from "@/const";
+import { useLists, useSearch, useTranslation } from "@/hooks";
 
 import { ListCard } from "./components";
 
 export const Lists = () => {
   const { search, setSearch, debouncedSearch } = useSearch();
+  const { t } = useTranslation();
 
   const {
     data,
@@ -39,11 +39,15 @@ export const Lists = () => {
   return (
     <div className="p-4 md:p-0">
       <div className="flex items-center justify-between md:pr-4">
-        <h1 className="text-xl font-bold">Lists</h1>
+        <h1 className="text-xl font-bold" data-testid="lists-title">
+          {t(TranslationKey.LISTS_TITLE)}
+        </h1>
         <Button asChild variant="outline">
           <Link to={RouterKey.CREATE_LIST}>
             <PlusIcon className="h-4 w-4" />
-            Create List
+            <span data-testid="create-list-link">
+              {t(TranslationKey.LISTS_CREATE_LIST)}
+            </span>
           </Link>
         </Button>
       </div>
@@ -56,26 +60,26 @@ export const Lists = () => {
           >
             <AlertTriangleIcon className="h-5 w-5" />
           </div>
-          <div>AI chat can process only your 10 most recent lists.</div>
+          <div>{t(TranslationKey.LISTS_AI_LIMIT_INFO)}</div>
         </div>
       )}
 
-      <search className="mt-4 mb-6 max-w-md">
+      <div className="mt-4 mb-6 max-w-md">
         <Input
-          placeholder="Search lists by name..."
+          placeholder={t(TranslationKey.LISTS_SEARCH_PLACEHOLDER)}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           startIcon={<SearchIcon className="h-4 w-4" />}
           maxLength={255}
           onClear={() => setSearch("")}
         />
-      </search>
+      </div>
 
       <div className="h-full flex-1 pr-4">
         {isError && (
           <ErrorState
-            title="Failed to load your lists"
-            description="We couldn't fetch your movie lists. Please try again."
+            title={t(TranslationKey.LISTS_LOAD_FAILED_TITLE)}
+            description={t(TranslationKey.LISTS_LOAD_FAILED_DESC)}
             error={error}
             onRetry={() => refetch()}
             type="server"
@@ -93,13 +97,16 @@ export const Lists = () => {
           <EmptyState
             title={
               debouncedSearch
-                ? "No matching lists found"
-                : "Ready to analyze your cinema history?"
+                ? t(TranslationKey.LISTS_EMPTY_MATCH_TITLE)
+                : t(TranslationKey.LISTS_EMPTY_TITLE)
             }
             description={
               debouncedSearch
-                ? `We couldn't find any lists matching "${debouncedSearch}". Try a different name.`
-                : "Upload your IMDB export file to create a list and unlock detailed analytics about your movie collection."
+                ? t(TranslationKey.LISTS_EMPTY_MATCH_DESC).replace(
+                    "{{search}}",
+                    debouncedSearch,
+                  )
+                : t(TranslationKey.LISTS_EMPTY_DESC)
             }
             icon={"film"}
           />

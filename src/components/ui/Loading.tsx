@@ -1,6 +1,8 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 
+import { TranslationKey } from "@/const";
+import { useTranslation } from "@/hooks";
 import { cn } from "@/utils";
 
 const loadingVariants = cva(
@@ -111,12 +113,13 @@ const CreateListLoading = React.forwardRef<HTMLDivElement, LoadingOverlayProps>(
     },
     ref,
   ) => {
+    const { t } = useTranslation();
     return (
       <div
         ref={ref}
         className={cn(loadingOverlayVariants({ background }), className)}
         role="dialog"
-        aria-label={ariaLabel || "Loading"}
+        aria-label={ariaLabel || t(TranslationKey.LOADING)}
         aria-modal="true"
         {...props}
       >
@@ -126,9 +129,9 @@ const CreateListLoading = React.forwardRef<HTMLDivElement, LoadingOverlayProps>(
             aria-live="polite"
             className="flex flex-col items-center justify-center gap-2"
           >
-            <p>Processing your list data...</p>
+            <p>{t(TranslationKey.CREATE_LIST_PROCESSING_DATA)}</p>
             <p className="text-muted-foreground">
-              This may take a few minutes...
+              {t(TranslationKey.CREATE_LIST_TAKE_MINUTES)}
             </p>
           </div>
         </div>

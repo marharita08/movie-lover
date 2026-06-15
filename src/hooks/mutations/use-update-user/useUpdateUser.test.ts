@@ -41,7 +41,7 @@ describe("useUpdateUser", () => {
     vi.mocked(useAppMutation).mockImplementation((_key, options) => {
       options.onSuccess?.(
         undefined as never,
-        undefined as never,
+        {} as never,
         undefined as never,
         {} as never,
       );

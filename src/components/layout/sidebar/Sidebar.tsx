@@ -7,8 +7,8 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
-import { RouterKey } from "@/const";
-import { useCurrentUser } from "@/hooks";
+import { RouterKey, TranslationKey } from "@/const";
+import { useCurrentUser, useTranslation } from "@/hooks";
 import { cn } from "@/utils";
 
 import { Button, Sheet, SheetContent, SheetTrigger } from "../../ui";
@@ -26,14 +26,14 @@ const navItems = [
   {
     to: RouterKey.DASHBOARD,
     icon: HomeIcon,
-    label: "Dashboard",
+    label: TranslationKey.SIDEBAR_DASHBOARD,
     activePath: [RouterKey.DASHBOARD] as string[],
     private: false,
   },
   {
     to: RouterKey.LISTS,
     icon: ListIcon,
-    label: "My Lists",
+    label: TranslationKey.SIDEBAR_MY_LISTS,
     activePath: [
       RouterKey.LISTS,
       RouterKey.CREATE_LIST,
@@ -45,14 +45,14 @@ const navItems = [
   {
     to: RouterKey.CHAT,
     icon: MessageCircle,
-    label: "AI Chat",
+    label: TranslationKey.SIDEBAR_AI_CHAT,
     activePath: [RouterKey.CHAT] as string[],
     private: true,
   },
   {
     to: RouterKey.SEARCH,
     icon: SearchIcon,
-    label: "Search",
+    label: TranslationKey.SIDEBAR_SEARCH,
     activePath: [RouterKey.SEARCH] as string[],
     private: false,
   },
@@ -61,6 +61,7 @@ const navItems = [
 export const Sidebar = () => {
   const pathname = useLocation().pathname;
   const { data: user } = useCurrentUser();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -100,7 +101,9 @@ export const Sidebar = () => {
             </Button>
           </SheetTrigger>
           <SheetContent side={"left"}>
-            <h2 className="mb-8 text-center text-xl font-bold">Menu</h2>
+            <h2 className="mb-8 text-center text-xl font-bold">
+              {t(TranslationKey.SIDEBAR_MENU)}
+            </h2>
             <nav className="flex flex-col gap-1">
               {navItems.map((item) =>
                 item.private && !user ? null : (
@@ -115,7 +118,7 @@ export const Sidebar = () => {
                   >
                     <Link to={item.to}>
                       <item.icon className="h-5 w-5" />
-                      {item.label}
+                      {t(item.label)}
                     </Link>
                   </Button>
                 ),

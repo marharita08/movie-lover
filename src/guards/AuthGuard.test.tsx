@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { OtpPurpose, RouterKey, StorageKey } from "@/const";
+import { en } from "@/const/translations/en";
 import { useCurrentUser, useSendOtp } from "@/hooks";
 
 import { AuthGuard } from "./AuthGuard";
@@ -16,6 +17,7 @@ vi.mock("react-router-dom", () => ({
 }));
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useCurrentUser: vi.fn(),
   useSendOtp: vi.fn(),
 }));
@@ -69,10 +71,10 @@ describe("AuthGuard", () => {
     } as never);
     render(
       <AuthGuard>
-        <div>Protected</div>
+        <div data-testid="protected-child">Protected</div>
       </AuthGuard>,
     );
-    expect(screen.getByText("Protected")).toBeInTheDocument();
+    expect(screen.getByTestId("protected-child")).toBeInTheDocument();
   });
 
   it("calls sendOtpMutation when user email is not verified", async () => {
@@ -82,7 +84,7 @@ describe("AuthGuard", () => {
     } as never);
     render(
       <AuthGuard>
-        <div>Protected</div>
+        <div data-testid="protected-child">Protected</div>
       </AuthGuard>,
     );
 
@@ -112,10 +114,9 @@ describe("AuthGuard", () => {
 
     render(
       <AuthGuard>
-        <div>Protected</div>
+        <div data-testid="protected-child">Protected</div>
       </AuthGuard>,
     );
-
     await waitFor(() => {
       expect(setItem).toHaveBeenCalledWith(
         StorageKey.EMAIL,
@@ -139,7 +140,7 @@ describe("AuthGuard", () => {
 
     render(
       <AuthGuard>
-        <div>Protected</div>
+        <div data-testid="protected-child">Protected</div>
       </AuthGuard>,
     );
 

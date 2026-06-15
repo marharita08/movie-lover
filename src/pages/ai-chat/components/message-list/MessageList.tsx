@@ -4,8 +4,8 @@ import { useInView } from "react-intersection-observer";
 import { useLocation } from "react-router-dom";
 
 import { Loading, LoadingBubbles } from "@/components";
-import { MessageAuthor } from "@/const";
-import { useChatHistory } from "@/hooks";
+import { MessageAuthor, TranslationKey } from "@/const";
+import { useChatHistory, useTranslation } from "@/hooks";
 import { type ChatMessageResponse } from "@/types";
 
 import { MessageItem } from "../message-item/MessageItem";
@@ -15,6 +15,7 @@ interface MessageListProps {
 }
 
 export const MessageList = ({ pendingMessage }: MessageListProps) => {
+  const { t } = useTranslation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const lastMessageIdRef = useRef<string | null>(null);
@@ -124,7 +125,9 @@ export const MessageList = ({ pendingMessage }: MessageListProps) => {
   if (allMessages.length === 0 && !pendingMessage) {
     return (
       <div className="flex flex-1 items-center justify-center overflow-hidden">
-        <p className="text-muted-foreground">No messages yet</p>
+        <p className="text-muted-foreground" data-testid="no-messages">
+          {t(TranslationKey.AI_CHAT_NO_MESSAGES)}
+        </p>
       </div>
     );
   }

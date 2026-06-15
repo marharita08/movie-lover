@@ -1,6 +1,6 @@
 import { Button, Input, InputError } from "@/components";
-import { StorageKey } from "@/const";
-import { useAppForm, useResetPasswordVerify } from "@/hooks";
+import { StorageKey, TranslationKey } from "@/const";
+import { useAppForm, useResetPasswordVerify, useTranslation } from "@/hooks";
 
 import {
   OtpStepValidationSchema,
@@ -12,6 +12,7 @@ interface OtpStepProps {
 }
 
 export const OtpStep: React.FC<OtpStepProps> = ({ onSuccess }) => {
+  const { t } = useTranslation();
   const form = useAppForm<OtpStepValidationSchemaType>({
     schema: OtpStepValidationSchema,
     defaultValues: {
@@ -36,7 +37,7 @@ export const OtpStep: React.FC<OtpStepProps> = ({ onSuccess }) => {
       aria-label="otp-step-form"
     >
       <h2 className="text-muted-foreground">
-        Enter the code sent to your email
+        {t(TranslationKey.RESET_PASSWORD_OTP_PROMPT)}
       </h2>
       <div className="flex flex-col gap-1">
         <Input
@@ -45,7 +46,7 @@ export const OtpStep: React.FC<OtpStepProps> = ({ onSuccess }) => {
           onChange={(e) =>
             form.setValue("code", e.target.value.replace(/\D/g, "").slice(0, 4))
           }
-          label="Code"
+          label={t(TranslationKey.RESET_PASSWORD_OTP_LABEL)}
           placeholder="****"
           className="text-lg tracking-widest"
           error={!!form.formState.errors.code?.message}
@@ -58,7 +59,7 @@ export const OtpStep: React.FC<OtpStepProps> = ({ onSuccess }) => {
           className="min-w-[150px]"
           disabled={resetPasswordVerifyMutation.isPending}
         >
-          Verify
+          {t(TranslationKey.RESET_PASSWORD_VERIFY)}
         </Button>
       </div>
     </form>

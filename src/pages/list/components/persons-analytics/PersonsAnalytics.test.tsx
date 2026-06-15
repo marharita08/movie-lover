@@ -1,7 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { PersonRole, personRoleMap } from "@/const";
+import { PersonRole } from "@/const";
+import { en } from "@/const/translations/en";
 import { usePersonStats } from "@/hooks";
 
 import { PersonsAnalytics } from "./PersonsAnalytics";
@@ -10,12 +11,22 @@ vi.mock("react-router-dom", () => ({
   useParams: () => ({ id: "list-123" }),
   generatePath: (_path: string, params: Record<string, string>) =>
     `/list/${params.id}/persons/${params.role}`,
-  Link: ({ children, to }: { children: React.ReactNode; to: string }) => (
-    <a href={to}>{children}</a>
+  Link: ({
+    children,
+    to,
+    ...props
+  }: {
+    children: React.ReactNode;
+    to: string;
+  }) => (
+    <a href={to} {...props}>
+      {children}
+    </a>
   ),
 }));
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   usePersonStats: vi.fn(),
 }));
 
@@ -23,7 +34,9 @@ vi.mock("@/components", () => ({
   Loading: () => <div data-testid="loading" />,
   ErrorState: ({ onRetry }: { onRetry: () => void }) => (
     <div data-testid="error-state">
-      <button onClick={onRetry}>Retry</button>
+      <button data-testid="retry-btn" onClick={onRetry}>
+        Retry
+      </button>
     </div>
   ),
   EmptyState: ({ title }: { title: string }) => (
@@ -59,6 +72,7 @@ describe("PersonsAnalytics", () => {
 
   it("calls usePersonStats with correct id and role", () => {
     render(<PersonsAnalytics role={PersonRole.DIRECTOR} />);
+
     expect(usePersonStats).toHaveBeenCalledWith("list-123", {
       role: PersonRole.DIRECTOR,
       limit: 10,
@@ -67,9 +81,8 @@ describe("PersonsAnalytics", () => {
 
   it("shows correct heading based on role", () => {
     render(<PersonsAnalytics role={PersonRole.DIRECTOR} />);
-    expect(
-      screen.getByText(personRoleMap[PersonRole.DIRECTOR]),
-    ).toBeInTheDocument();
+
+    expect(screen.getByTestId("persons-analytics-heading")).toBeInTheDocument();
   });
 
   it("shows Loading when isLoading is true", () => {
@@ -77,7 +90,9 @@ describe("PersonsAnalytics", () => {
       ...defaultQueryResult,
       isLoading: true,
     } as never);
+
     render(<PersonsAnalytics role={PersonRole.DIRECTOR} />);
+
     expect(screen.getByTestId("loading")).toBeInTheDocument();
   });
 
@@ -89,7 +104,9 @@ describe("PersonsAnalytics", () => {
       error: new Error("Failed"),
       refetch,
     } as never);
+
     render(<PersonsAnalytics role={PersonRole.DIRECTOR} />);
+
     expect(screen.getByTestId("error-state")).toBeInTheDocument();
   });
 
@@ -101,8 +118,11 @@ describe("PersonsAnalytics", () => {
       error: new Error("Failed"),
       refetch,
     } as never);
+
     render(<PersonsAnalytics role={PersonRole.DIRECTOR} />);
-    fireEvent.click(screen.getByText("Retry"));
+
+    fireEvent.click(screen.getByTestId("retry-btn"));
+
     expect(refetch).toHaveBeenCalled();
   });
 
@@ -111,7 +131,9 @@ describe("PersonsAnalytics", () => {
       ...defaultQueryResult,
       data: { pages: [{ results: [] }] },
     } as never);
+
     render(<PersonsAnalytics role={PersonRole.DIRECTOR} />);
+
     expect(screen.getByTestId("empty-state")).toBeInTheDocument();
   });
 
@@ -129,7 +151,9 @@ describe("PersonsAnalytics", () => {
         ],
       },
     } as never);
+
     render(<PersonsAnalytics role={PersonRole.DIRECTOR} />);
+
     expect(screen.getAllByTestId("person")).toHaveLength(2);
   });
 
@@ -143,7 +167,9 @@ describe("PersonsAnalytics", () => {
         ],
       },
     } as never);
+
     render(<PersonsAnalytics role={PersonRole.DIRECTOR} />);
+
     expect(screen.getAllByTestId("person")).toHaveLength(2);
   });
 
@@ -154,8 +180,11 @@ describe("PersonsAnalytics", () => {
         pages: [{ results: [{ id: "1", name: "Person 1" }] }],
       },
     } as never);
+
     render(<PersonsAnalytics role={PersonRole.DIRECTOR} />);
-    const link = screen.getByText("View all");
+
+    const link = screen.getByTestId("persons-analytics-view-all-link");
+
     expect(link).toHaveAttribute("href", expect.stringContaining("list-123"));
   });
 });

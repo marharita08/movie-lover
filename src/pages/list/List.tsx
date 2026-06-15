@@ -1,8 +1,8 @@
 import { useCallback, useRef, useState } from "react";
 
 import { Separator } from "@/components";
-import { PersonRole } from "@/const";
-import { useScrollRestoration } from "@/hooks";
+import { PersonRole, TranslationKey } from "@/const";
+import { useScrollRestoration, useTranslation } from "@/hooks";
 
 import {
   AmountStats,
@@ -21,6 +21,7 @@ import { ListSection } from "./const";
 const ALL_SECTIONS = new Set(Object.values(ListSection));
 
 export const List = () => {
+  const { t } = useTranslation();
   const readySectionsRef = useRef<Set<ListSection>>(new Set());
   const [isReady, setIsReady] = useState(false);
 
@@ -39,7 +40,9 @@ export const List = () => {
       <UpcomingTVShows onReady={markReady} />
       <Separator />
       <section>
-        <h2 className="mb-4 px-2 text-2xl font-bold md:px-0">Analitics</h2>
+        <h2 className="mb-4 px-2 text-2xl font-bold md:px-0">
+          {t(TranslationKey.LIST_ANALYTICS_TITLE)}
+        </h2>
         <div className="flex flex-col gap-12 px-0 py-2">
           <AmountStats onReady={markReady} />
           <Separator />

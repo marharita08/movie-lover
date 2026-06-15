@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { EmptyState, ErrorState, Loading } from "@/components";
-import { useCountryStats } from "@/hooks";
+import { TranslationKey } from "@/const";
+import { useCountryStats, useTranslation } from "@/hooks";
 
 import { ListSection } from "../../const";
 import { WorldMap } from "./WorldMap";
@@ -15,6 +16,7 @@ export const CountriesAnalytics: React.FC<CountriesAnalyticsProps> = ({
   onReady,
 }) => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
 
   const { data, isLoading, isError, error, refetch } = useCountryStats(id!);
 
@@ -26,7 +28,9 @@ export const CountriesAnalytics: React.FC<CountriesAnalyticsProps> = ({
 
   return (
     <section className="flex flex-col gap-4">
-      <h3 className="px-2 text-lg font-bold">Production countries</h3>
+      <h3 className="px-2 text-lg font-bold">
+        {t(TranslationKey.LIST_COUNTRIES_TITLE)}
+      </h3>
       {isLoading && (
         <div className="flex items-center justify-center">
           <Loading />
@@ -34,7 +38,7 @@ export const CountriesAnalytics: React.FC<CountriesAnalyticsProps> = ({
       )}
       {isError && (
         <ErrorState
-          title="Failed to load production countries analitics"
+          title={t(TranslationKey.LIST_COUNTRIES_LOAD_FAILED)}
           error={error}
           onRetry={refetch}
         />
@@ -44,8 +48,9 @@ export const CountriesAnalytics: React.FC<CountriesAnalyticsProps> = ({
       )}
       {!isLoading && !isError && (!data || Object.keys(data).length === 0) && (
         <EmptyState
-          title="No production countries found"
-          description="No production countries found in your list"
+          title={t(TranslationKey.LIST_COUNTRIES_EMPTY_TITLE)}
+          description={t(TranslationKey.LIST_COUNTRIES_EMPTY_DESC)}
+          icon={"film"}
         />
       )}
     </section>

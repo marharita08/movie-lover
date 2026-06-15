@@ -1,7 +1,8 @@
 import { PaperclipIcon } from "lucide-react";
 import { useRef, useState } from "react";
 
-import { toast } from "@/hooks";
+import { TranslationKey } from "@/const";
+import { toast, useTranslation } from "@/hooks";
 import { cn } from "@/utils";
 
 interface FileInputProps {
@@ -13,6 +14,7 @@ export const FileInput: React.FC<FileInputProps> = ({
   onChange,
   validTypes,
 }) => {
+  const { t } = useTranslation();
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -25,7 +27,7 @@ export const FileInput: React.FC<FileInputProps> = ({
     } else {
       toast({
         variant: "destructive",
-        title: "Invalid file type",
+        title: t(TranslationKey.FILE_UPLOADER_INVALID_TYPE),
       });
     }
 
@@ -46,7 +48,7 @@ export const FileInput: React.FC<FileInputProps> = ({
     } else {
       toast({
         variant: "destructive",
-        title: "Invalid file type",
+        title: t(TranslationKey.FILE_UPLOADER_INVALID_TYPE),
       });
     }
 
@@ -73,6 +75,7 @@ export const FileInput: React.FC<FileInputProps> = ({
         isDragging && "border-primary",
       )}
       onClick={openFileDialog}
+      data-testid="file-dropzone"
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -83,17 +86,28 @@ export const FileInput: React.FC<FileInputProps> = ({
         </div>
 
         {isDragging ? (
-          <p className="p-3 text-sm font-medium">Drop file here</p>
+          <p className="p-3 text-sm font-medium" data-testid="drop-text">
+            {t(TranslationKey.FILE_UPLOADER_DROP_HERE)}
+          </p>
         ) : (
           <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-1">
-              <p className="text-sm">Drag and drop file here</p>
+              <p className="text-sm" data-testid="drag-text">
+                {t(TranslationKey.FILE_UPLOADER_DRAG_DROP)}
+              </p>
               <p className="text-xs">
-                or <span className="text-primary">click</span> to browse
+                {t(TranslationKey.FILE_UPLOADER_OR)}{" "}
+                <span className="text-primary">
+                  {t(TranslationKey.FILE_UPLOADER_CLICK_BROWSE)}
+                </span>{" "}
+                {t(TranslationKey.FILE_UPLOADER_TO_BROWSE)}
               </p>
             </div>
-            <p className="text-xs text-neutral-700">
-              Only {validTypes.join(", ")} files are allowed
+            <p className="text-xs text-neutral-700" data-testid="file-types">
+              {t(TranslationKey.FILE_UPLOADER_ONLY_TYPES).replace(
+                "{{types}}",
+                validTypes.join(", "),
+              )}
             </p>
           </div>
         )}

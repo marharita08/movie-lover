@@ -2,22 +2,32 @@ import { render, screen } from "@testing-library/react";
 import { useEffect } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
 import { useCurrentUser, useScrollRestoration } from "@/hooks";
 
 import { Dashboard } from "./Dashboard";
 
+vi.mock("react-router-dom", () => ({
+  Link: ({ children, to }: { children: React.ReactNode; to: string }) => (
+    <a href={to}>{children}</a>
+  ),
+}));
+
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useCurrentUser: vi.fn(),
   useScrollRestoration: vi.fn(),
 }));
 
 vi.mock("./components", () => ({
   DiscoverMovies: vi.fn(() => <div data-testid="discover-movies" />),
+  HowItWorksCard: vi.fn(() => <div data-testid="how-it-works-card" />),
 }));
 
 describe("Dashboard", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+
     vi.mocked(useCurrentUser).mockReturnValue({
       data: null,
       isLoading: false,
@@ -30,15 +40,20 @@ describe("Dashboard", () => {
     render(<Dashboard />);
 
     const currentYear = new Date().getFullYear();
+
     const expectedYears = [currentYear, currentYear - 1, currentYear - 2];
 
     expect(vi.mocked(DiscoverMovies)).toHaveBeenCalledTimes(3);
 
     expectedYears.forEach((year, index) => {
       const props = vi.mocked(DiscoverMovies).mock.calls[index][0];
+
       expect(props).toEqual(
         expect.objectContaining({
-          query: { primaryReleaseYear: year, sortBy: "vote_count.desc" },
+          query: {
+            primaryReleaseYear: year,
+            sortBy: "vote_count.desc",
+          },
         }),
       );
     });
@@ -50,7 +65,9 @@ describe("Dashboard", () => {
     render(<Dashboard />);
 
     const calls = vi.mocked(DiscoverMovies).mock.calls;
+
     expect(calls).toHaveLength(3);
+
     calls.forEach(([props]) => {
       expect(typeof props.onReady).toBe("function");
     });
@@ -69,15 +86,19 @@ describe("Dashboard", () => {
       useEffect(() => {
         onReady(query.primaryReleaseYear!);
       }, [onReady, query.primaryReleaseYear]);
+
       return <div data-testid="discover-movies" />;
     });
 
     render(<Dashboard />);
 
     const calls = vi.mocked(useScrollRestoration).mock.calls;
+
     const lastCall = calls[calls.length - 1];
+
     expect(lastCall[0]).toBe(true);
   });
+
   it("shows info banner when user is not logged in", () => {
     vi.mocked(useCurrentUser).mockReturnValue({
       data: null,
@@ -86,7 +107,7 @@ describe("Dashboard", () => {
 
     render(<Dashboard />);
 
-    expect(screen.getByText(/Log in or sign up/i)).toBeInTheDocument();
+    expect(screen.getByTestId("dashboard-info-banner")).toBeInTheDocument();
   });
 
   it("hides info banner when user is logged in", () => {
@@ -97,7 +118,9 @@ describe("Dashboard", () => {
 
     render(<Dashboard />);
 
-    expect(screen.queryByText(/Log in or sign up/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId("dashboard-info-banner"),
+    ).not.toBeInTheDocument();
   });
 
   it("hides info banner while user is loading", () => {
@@ -108,6 +131,8 @@ describe("Dashboard", () => {
 
     render(<Dashboard />);
 
-    expect(screen.queryByText(/Log in or sign up/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId("dashboard-info-banner"),
+    ).not.toBeInTheDocument();
   });
 });

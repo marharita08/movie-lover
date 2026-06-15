@@ -7,4 +7,5 @@ export const StorageKey = {
   MESSAGE_MEDIA_ITEMS: "messageMediaItems",
   LIST_MEDIA_ITEMS: "listMediaItems",
   UPCOMING_TV_SHOWS: "upcomingTVShows",
+  LANGUAGE: "language",
 } as const;

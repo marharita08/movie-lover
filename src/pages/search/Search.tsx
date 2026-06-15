@@ -3,10 +3,12 @@ import { SearchIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 import { EmptyState, ErrorState, Input, Loading } from "@/components";
+import { TranslationKey } from "@/const";
 import {
   useIsMobile,
   useMultiSearch,
   useSearch,
+  useTranslation,
   useVirtualScrollRestoration,
 } from "@/hooks";
 import type { MultiSearchResponseItem } from "@/types";
@@ -14,6 +16,7 @@ import type { MultiSearchResponseItem } from "@/types";
 import { SearchResultCard } from "./components/SearchResultCard";
 
 export const Search = () => {
+  const { t } = useTranslation();
   const { search, setSearch, debouncedSearch } = useSearch();
   const parentRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
@@ -70,12 +73,12 @@ export const Search = () => {
   const isEmpty = results.length === 0 && !isLoading && !isError;
 
   return (
-    <search className="flex h-[calc(100vh-88px)] flex-col overflow-hidden px-4 md:px-0">
+    <div className="flex h-[calc(100vh-88px)] flex-col overflow-hidden px-4 md:px-0">
       <div className="shrink-0">
-        <h2 className="text-xl font-bold">Search</h2>
+        <h2 className="text-xl font-bold">{t(TranslationKey.SEARCH_TITLE)}</h2>
         <div className="my-4 max-w-md">
           <Input
-            placeholder="Search..."
+            placeholder={t(TranslationKey.SEARCH_PLACEHOLDER)}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             startIcon={<SearchIcon className="h-4 w-4" />}
@@ -88,8 +91,8 @@ export const Search = () => {
       {isError && (
         <div className="flex-1 overflow-auto pt-4">
           <ErrorState
-            title="Failed to load your search results"
-            description="We couldn't fetch your search results. Please try again."
+            title={t(TranslationKey.SEARCH_LOAD_FAILED_TITLE)}
+            description={t(TranslationKey.SEARCH_LOAD_FAILED_DESC)}
             error={error}
             onRetry={() => refetch()}
             type="server"
@@ -102,13 +105,16 @@ export const Search = () => {
           <EmptyState
             title={
               debouncedSearch
-                ? "No matching results found"
-                : "Search for movies, TV shows, or people"
+                ? t(TranslationKey.SEARCH_EMPTY_MATCH_TITLE)
+                : t(TranslationKey.SEARCH_EMPTY_TITLE)
             }
             description={
               debouncedSearch
-                ? `We couldn't find any results matching "${debouncedSearch}". Try a different name.`
-                : "Start typing to search..."
+                ? t(TranslationKey.SEARCH_EMPTY_MATCH_DESC).replace(
+                    "{{search}}",
+                    debouncedSearch,
+                  )
+                : t(TranslationKey.SEARCH_EMPTY_DESC)
             }
             icon={"film"}
           />
@@ -152,6 +158,6 @@ export const Search = () => {
           )}
         </div>
       )}
-    </search>
+    </div>
   );
 };

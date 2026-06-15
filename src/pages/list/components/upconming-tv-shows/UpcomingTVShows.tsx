@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { MediaList, Separator } from "@/components";
-import { StorageKey } from "@/const";
-import { useUpcomingTVShows } from "@/hooks";
+import { StorageKey, TranslationKey } from "@/const";
+import { useTranslation, useUpcomingTVShows } from "@/hooks";
 
 import { ListSection } from "../../const";
 
@@ -15,6 +15,7 @@ export const UpcomingTVShows: React.FC<UpcomingTVShowsProps> = ({
   onReady,
 }) => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
 
   const {
     data,
@@ -44,7 +45,7 @@ export const UpcomingTVShows: React.FC<UpcomingTVShowsProps> = ({
       <Separator />
       <section className="flex flex-col gap-4">
         <h2 className="px-2 text-xl font-bold md:px-0">
-          TV shows with upcoming episodes
+          {t(TranslationKey.LIST_UPCOMING_TITLE)}
         </h2>
         <MediaList
           medias={items}

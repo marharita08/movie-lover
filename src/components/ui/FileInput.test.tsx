@@ -1,11 +1,13 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
 import { toast } from "@/hooks";
 
 import { FileInput } from "./FileInput";
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   toast: vi.fn(),
 }));
 
@@ -22,12 +24,14 @@ describe("FileInput", () => {
 
   it("renders drop zone", () => {
     render(<FileInput onChange={onChange} validTypes={validTypes} />);
-    expect(screen.getByText("Drag and drop file here")).toBeInTheDocument();
+    expect(screen.getByTestId("drag-text")).toBeInTheDocument();
   });
 
   it("shows valid types in hint", () => {
     render(<FileInput onChange={onChange} validTypes={validTypes} />);
-    expect(screen.getByText(/image\/png, image\/jpeg/)).toBeInTheDocument();
+    expect(screen.getByTestId("file-types")).toHaveTextContent(
+      /image\/png, image\/jpeg/,
+    );
   });
 
   describe("handleChange", () => {
@@ -76,31 +80,27 @@ describe("FileInput", () => {
   describe("drag and drop", () => {
     it('shows "Drop file here" text when dragging over', () => {
       render(<FileInput onChange={onChange} validTypes={validTypes} />);
-      const dropZone = screen
-        .getByText("Drag and drop file here")
-        .closest("div[class]")!;
+      const dropZone = screen.getByTestId("file-dropzone");
 
       fireEvent.dragOver(dropZone);
 
-      expect(screen.getByText("Drop file here")).toBeInTheDocument();
+      expect(screen.getByTestId("drop-text")).toBeInTheDocument();
     });
 
     it('hides "Drop file here" text on drag leave', () => {
       render(<FileInput onChange={onChange} validTypes={validTypes} />);
-      const dropZone = document.querySelector('div[class*="bg-card"]')!;
+      const dropZone = screen.getByTestId("file-dropzone");
 
       fireEvent.dragOver(dropZone);
-      expect(screen.getByText("Drop file here")).toBeInTheDocument();
+      expect(screen.getByTestId("drop-text")).toBeInTheDocument();
 
       fireEvent.dragLeave(dropZone);
-      expect(screen.getByText("Drag and drop file here")).toBeInTheDocument();
+      expect(screen.getByTestId("drag-text")).toBeInTheDocument();
     });
 
     it("calls onChange with valid dropped file", () => {
       render(<FileInput onChange={onChange} validTypes={validTypes} />);
-      const dropZone = screen
-        .getByText("Drag and drop file here")
-        .closest("div[class]")!;
+      const dropZone = screen.getByTestId("file-dropzone");
       const file = createFile("photo.png", "image/png");
 
       fireEvent.drop(dropZone, { dataTransfer: { files: [file] } });
@@ -111,9 +111,7 @@ describe("FileInput", () => {
 
     it("shows toast for invalid dropped file type", () => {
       render(<FileInput onChange={onChange} validTypes={validTypes} />);
-      const dropZone = screen
-        .getByText("Drag and drop file here")
-        .closest("div[class]")!;
+      const dropZone = screen.getByTestId("file-dropzone");
       const file = createFile("doc.pdf", "application/pdf");
 
       fireEvent.drop(dropZone, { dataTransfer: { files: [file] } });

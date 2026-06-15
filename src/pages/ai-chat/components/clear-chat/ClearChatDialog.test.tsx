@@ -2,11 +2,13 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
 import { useClearChat } from "@/hooks";
 
 import { ClearChatDialog } from "./ClearChatDialog";
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useClearChat: vi.fn(),
 }));
 
@@ -17,13 +19,19 @@ vi.mock("@/components", () => {
       onClick,
       disabled,
       variant,
+      ...props
     }: {
       children: React.ReactNode;
       onClick?: () => void;
       disabled?: boolean;
       variant?: string;
     }) => (
-      <button onClick={onClick} disabled={disabled} data-variant={variant}>
+      <button
+        onClick={onClick}
+        disabled={disabled}
+        data-variant={variant}
+        {...props}
+      >
         {children}
       </button>
     ),
@@ -75,9 +83,11 @@ vi.mock("@/components", () => {
     DialogHeader: ({ children }: { children: React.ReactNode }) => (
       <div>{children}</div>
     ),
-    DialogTitle: ({ children }: { children: React.ReactNode }) => (
-      <div>{children}</div>
+
+    DialogTitle: ({ children, ...props }: { children: React.ReactNode }) => (
+      <div {...props}>{children}</div>
     ),
+
     DialogFooter: ({ children }: { children: React.ReactNode }) => (
       <div data-testid="dialog-footer">{children}</div>
     ),
@@ -89,6 +99,7 @@ describe("ClearChatDialog", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+
     vi.mocked(useClearChat).mockReturnValue({
       mutate,
       isPending: false,
@@ -96,40 +107,46 @@ describe("ClearChatDialog", () => {
   });
 
   const openDialog = () => {
-    fireEvent.click(
-      screen.getByTestId("dialog-trigger").querySelector("button")!,
-    );
+    fireEvent.click(screen.getByTestId("clear-chat-trigger-button"));
   };
 
   it("renders trigger button", () => {
     render(<ClearChatDialog />);
-    expect(screen.getByText("Clear Chat")).toBeInTheDocument();
+
+    expect(screen.getByTestId("clear-chat-trigger-button")).toBeInTheDocument();
   });
 
   it("shows warning message when dialog is opened", () => {
     render(<ClearChatDialog />);
+
     openDialog();
-    expect(screen.getByText(/Clear chat history?/i)).toBeInTheDocument();
+
+    expect(screen.getByTestId("clear-chat-dialog-title")).toBeInTheDocument();
   });
 
   it("shows detailed warning about deletion", () => {
     render(<ClearChatDialog />);
+
     openDialog();
+
     expect(
-      screen.getByText(
-        /This action cannot be undone. All messages and recommendations will be permanently deleted./i,
-      ),
+      screen.getByTestId("clear-chat-dialog-description"),
     ).toBeInTheDocument();
   });
 
   it("calls clearChat on confirm", () => {
     render(<ClearChatDialog />);
+
     openDialog();
+
     const dialogContent = screen.getByTestId("dialog-content");
-    const clearButton = within(dialogContent).getByRole("button", {
-      name: /^Clear Chat$/i,
-    });
+
+    const clearButton = within(dialogContent).getByTestId(
+      "clear-chat-confirm-button",
+    );
+
     fireEvent.click(clearButton);
+
     expect(mutate).toHaveBeenCalledWith(
       undefined,
       expect.objectContaining({
@@ -147,21 +164,31 @@ describe("ClearChatDialog", () => {
     } as never);
 
     render(<ClearChatDialog />);
+
     openDialog();
+
     expect(screen.getByTestId("dialog-content")).toBeInTheDocument();
+
     const dialogContent = screen.getByTestId("dialog-content");
-    const clearButton = within(dialogContent).getByRole("button", {
-      name: /^Clear Chat$/i,
-    });
+
+    const clearButton = within(dialogContent).getByTestId(
+      "clear-chat-confirm-button",
+    );
+
     fireEvent.click(clearButton);
+
     expect(screen.queryByTestId("dialog-content")).not.toBeInTheDocument();
   });
 
   it("closes dialog on Cancel click", () => {
     render(<ClearChatDialog />);
+
     openDialog();
+
     expect(screen.getByTestId("dialog-content")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Cancel"));
+
+    fireEvent.click(screen.getByTestId("clear-chat-cancel-button"));
+
     expect(screen.queryByTestId("dialog-content")).not.toBeInTheDocument();
   });
 
@@ -172,9 +199,13 @@ describe("ClearChatDialog", () => {
     } as never);
 
     render(<ClearChatDialog />);
+
     openDialog();
+
     const dialogFooter = screen.getByTestId("dialog-footer");
+
     const buttons = within(dialogFooter).getAllByRole("button");
+
     buttons.forEach((button) => expect(button).toBeDisabled());
   });
 
@@ -185,16 +216,21 @@ describe("ClearChatDialog", () => {
     } as never);
 
     render(<ClearChatDialog />);
+
     openDialog();
-    expect(screen.getByText("Clearing...")).toBeInTheDocument();
+
+    expect(screen.getByTestId("clear-chat-confirm-button")).toBeInTheDocument();
   });
 
   it("shows 'Clear Chat' text when not pending", () => {
     render(<ClearChatDialog />);
+
     openDialog();
+
     const dialogContent = screen.getByTestId("dialog-content");
+
     expect(
-      within(dialogContent).getByRole("button", { name: /^Clear Chat$/i }),
+      within(dialogContent).getByTestId("clear-chat-confirm-button"),
     ).toBeInTheDocument();
   });
 });

@@ -2,7 +2,8 @@ import { Send } from "lucide-react";
 import { type KeyboardEvent } from "react";
 
 import { Button, InputError, Textarea } from "@/components";
-import { useAppForm, useSendMessage } from "@/hooks";
+import { TranslationKey } from "@/const";
+import { useAppForm, useSendMessage, useTranslation } from "@/hooks";
 import {
   type ChatMessageValidationSchema,
   chatMessageValidationSchema,
@@ -17,6 +18,7 @@ export const MessageInput = ({
   pendingMessage,
   onPendingMessageChange,
 }: MessageInputProps) => {
+  const { t } = useTranslation();
   const form = useAppForm({
     schema: chatMessageValidationSchema,
     defaultValues: {
@@ -62,18 +64,18 @@ export const MessageInput = ({
           <Textarea
             {...form.register("message")}
             onKeyDown={handleKeyDown}
-            placeholder="Ask for recommendations... (e.g., 'Recommend me something similar to Inception')"
+            placeholder={t(TranslationKey.AI_CHAT_INPUT_PLACEHOLDER)}
             disabled={!!pendingMessage}
             className="max-h-[200px] min-h-[60px] resize-none"
             rows={2}
-            aria-label="Message input"
+            aria-label={t(TranslationKey.AI_CHAT_INPUT_ARIA)}
           />
           <Button
             type="submit"
             disabled={!form.watch("message").trim() || !!pendingMessage}
             size="icon"
             className="h-[60px] w-[60px] shrink-0"
-            aria-label="Send message"
+            aria-label={t(TranslationKey.AI_CHAT_SEND_ARIA)}
           >
             <Send className="h-5 w-5" />
           </Button>

@@ -2,7 +2,14 @@ import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { Button, ErrorState, LoadingOverlay, PosterImage } from "@/components";
-import { ImdbUrl, MediaType, mediaTypeToLabel, TMDBImageUrl } from "@/const";
+import {
+  ImdbUrl,
+  MediaType,
+  mediaTypeToLabel,
+  TMDBImageUrl,
+  TranslationKey,
+} from "@/const";
+import { useTranslation } from "@/hooks";
 import type { MovieDetailsDto, TVShowResponse } from "@/types";
 import { cn, formatDate, formatRuntime } from "@/utils";
 
@@ -22,6 +29,7 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
   refetch,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   if (isLoading) {
     return <LoadingOverlay />;
@@ -30,8 +38,11 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
   if (error || !media) {
     return (
       <ErrorState
-        title="Movie not found"
-        description={`We couldn't load this ${mediaTypeToLabel[type]}'s details. The reel might be missing or damaged.`}
+        title={t(TranslationKey.MEDIA_DETAILS_NOT_FOUND)}
+        description={t(TranslationKey.MEDIA_DETAILS_LOAD_FAILED).replace(
+          "{{type}}",
+          mediaTypeToLabel[type],
+        )}
         error={error}
         onRetry={() => refetch()}
         type="generic"
@@ -62,7 +73,9 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
           onClick={() => navigate(-1)}
         >
           <ArrowLeft className="h-4 w-4" />
-          Back
+          <span data-testid="back-btn">
+            {t(TranslationKey.MEDIA_DETAILS_BACK)}
+          </span>
         </Button>
         <div className="flex flex-col gap-8 lg:flex-row">
           <div className="flex h-fit shrink-0 justify-center">
@@ -74,8 +87,10 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
           </div>
           <div className="flex flex-col gap-4">
             <h1 className="text-4xl font-bold">
-              <span>{mediaTitle}</span>{" "}
-              {originalTitle !== mediaTitle && <span>({originalTitle})</span>}
+              <span data-testid="media-title">{mediaTitle}</span>{" "}
+              {originalTitle !== mediaTitle && (
+                <span data-testid="media-original">({originalTitle})</span>
+              )}
             </h1>
             {media.tagline && (
               <p className="text-muted-foreground text-xl italic">
@@ -97,39 +112,47 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
               {"releaseDate" in media && media.releaseDate && (
                 <div>
                   <span className="text-muted-foreground block text-sm font-medium">
-                    Release Date
+                    {t(TranslationKey.MEDIA_DETAILS_RELEASE_DATE)}
                   </span>
-                  <span>{formatDate(media.releaseDate)}</span>
+                  <span data-testid="media-release-date">
+                    {formatDate(media.releaseDate)}
+                  </span>
                 </div>
               )}
               {"runtime" in media && !!media.runtime && (
                 <div>
                   <span className="text-muted-foreground block text-sm font-medium">
-                    Runtime
+                    {t(TranslationKey.MEDIA_DETAILS_RUNTIME)}
                   </span>
-                  <span>{formatRuntime(media.runtime)}</span>
+                  <span data-testid="media-runtime">
+                    {formatRuntime(media.runtime)}
+                  </span>
                 </div>
               )}
               {"numberOfSeasons" in media && !!media.numberOfSeasons && (
                 <div>
                   <span className="text-muted-foreground block text-sm font-medium">
-                    Number of Seasons
+                    {t(TranslationKey.MEDIA_DETAILS_SEASONS)}
                   </span>
-                  <span>{media.numberOfSeasons}</span>
+                  <span data-testid="media-seasons">
+                    {media.numberOfSeasons}
+                  </span>
                 </div>
               )}
               {"numberOfEpisodes" in media && !!media.numberOfEpisodes && (
                 <div>
                   <span className="text-muted-foreground block text-sm font-medium">
-                    Number of Episodes
+                    {t(TranslationKey.MEDIA_DETAILS_EPISODES)}
                   </span>
-                  <span>{media.numberOfEpisodes}</span>
+                  <span data-testid="media-episodes">
+                    {media.numberOfEpisodes}
+                  </span>
                 </div>
               )}
               {"firstAirDate" in media && media.firstAirDate && (
                 <div>
                   <span className="text-muted-foreground block text-sm font-medium">
-                    First Episode Release Date
+                    {t(TranslationKey.MEDIA_DETAILS_FIRST_AIR)}
                   </span>
                   <span>{formatDate(media.firstAirDate)}</span>
                 </div>
@@ -137,7 +160,7 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
               {"lastAirDate" in media && media.lastAirDate && (
                 <div>
                   <span className="text-muted-foreground block text-sm font-medium">
-                    Last Episode Release Date
+                    {t(TranslationKey.MEDIA_DETAILS_LAST_AIR)}
                   </span>
                   <span>{formatDate(media.lastAirDate)}</span>
                 </div>
@@ -147,7 +170,7 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
                 media.nextEpisodeToAir.airDate && (
                   <div>
                     <span className="text-muted-foreground block text-sm font-medium">
-                      Next Episode Release Date
+                      {t(TranslationKey.MEDIA_DETAILS_NEXT_AIR)}
                     </span>
                     <span>{formatDate(media.nextEpisodeToAir.airDate)}</span>
                   </div>
@@ -155,14 +178,14 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
               {!!media.voteAverage && (
                 <div>
                   <span className="text-muted-foreground block text-sm font-medium">
-                    Vote Average
+                    {t(TranslationKey.MEDIA_DETAILS_VOTE_AVG)}
                   </span>
                   <span>{media.voteAverage.toFixed(1)}</span>
                 </div>
               )}
               <div>
                 <span className="text-muted-foreground block text-sm font-medium">
-                  Status
+                  {t(TranslationKey.MEDIA_DETAILS_STATUS)}
                 </span>
                 <span>{media.status}</span>
               </div>
@@ -174,7 +197,7 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
                   )}
                 >
                   <span className="text-muted-foreground block text-sm font-medium">
-                    Production Countries
+                    {t(TranslationKey.MEDIA_DETAILS_COUNTRIES)}
                   </span>
                   <div>
                     {media.productionCountries
@@ -191,7 +214,7 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
                   )}
                 >
                   <span className="text-muted-foreground block text-sm font-medium">
-                    Production Companies
+                    {t(TranslationKey.MEDIA_DETAILS_COMPANIES)}
                   </span>
                   <div>
                     {media.productionCompanies
@@ -209,7 +232,7 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Open in IMDB
+                  {t(TranslationKey.MEDIA_DETAILS_OPEN_IMDB)}
                 </a>
               </Button>
             )}

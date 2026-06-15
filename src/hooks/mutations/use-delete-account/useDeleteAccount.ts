@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
-import { MutationKey, RouterKey } from "@/const";
+import { MutationKey, RouterKey, TranslationKey } from "@/const";
+import { useTranslation } from "@/hooks";
 import { authService } from "@/services";
 import { useAccessTokenStore } from "@/store/access-token.store";
 
@@ -10,6 +11,7 @@ import { toast } from "../../use-toast/useToast";
 export const useDeleteAccount = () => {
   const navigate = useNavigate();
   const { removeAccessToken } = useAccessTokenStore();
+  const { t } = useTranslation();
 
   return useAppMutation([MutationKey.DELETE_ACCOUNT], {
     mutationFn: authService.deleteAccount,
@@ -17,7 +19,7 @@ export const useDeleteAccount = () => {
       removeAccessToken();
       navigate(RouterKey.LOGIN);
       toast({
-        title: "Account deleted successfully",
+        title: t(TranslationKey.USER_PROFILE_DELETE_SUCCESS),
         variant: "success",
       });
     },

@@ -36,7 +36,9 @@ describe("MessageItem", () => {
     it("should render user message with user icon", () => {
       render(<MessageItem message={baseMessage} />);
 
-      expect(screen.getByText("Test message")).toBeInTheDocument();
+      expect(screen.getByTestId("message-text-1")).toHaveTextContent(
+        "Test message",
+      );
       expect(screen.getByTestId("user-icon")).toBeInTheDocument();
       expect(screen.queryByTestId("bot-icon")).not.toBeInTheDocument();
     });
@@ -44,9 +46,9 @@ describe("MessageItem", () => {
     it("should display formatted timestamp", () => {
       render(<MessageItem message={baseMessage} />);
 
-      expect(
-        screen.getByText("Formatted: 2024-01-01T12:00:00Z"),
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("message-time-1")).toHaveTextContent(
+        "Formatted: 2024-01-01T12:00:00Z",
+      );
     });
   });
 
@@ -59,7 +61,9 @@ describe("MessageItem", () => {
 
       render(<MessageItem message={assistantMessage} />);
 
-      expect(screen.getByText("Test message")).toBeInTheDocument();
+      expect(screen.getByTestId("message-text-1")).toHaveTextContent(
+        "Test message",
+      );
       expect(screen.getByTestId("bot-icon")).toBeInTheDocument();
       expect(screen.queryByTestId("user-icon")).not.toBeInTheDocument();
     });
@@ -75,7 +79,9 @@ describe("MessageItem", () => {
       render(<MessageItem message={errorMessage} />);
 
       expect(screen.getByTestId("alert-icon")).toBeInTheDocument();
-      expect(screen.getByText("Test message")).toBeInTheDocument();
+      expect(screen.getByTestId("message-text-1")).toHaveTextContent(
+        "Test message",
+      );
     });
 
     it("should not display error icon when message has no error", () => {
@@ -109,7 +115,7 @@ describe("MessageItem", () => {
       render(<MessageItem message={messageWithMedia} />);
 
       expect(screen.getByTestId("media-list")).toBeInTheDocument();
-      expect(screen.getByText("Media: 2")).toBeInTheDocument();
+      expect(screen.getByTestId("media-list")).toHaveTextContent("Media: 2");
     });
 
     it("should not render media list when mediaItems is empty", () => {
@@ -152,7 +158,9 @@ describe("MessageItem", () => {
       expect(screen.getByTestId("bot-icon")).toBeInTheDocument();
       expect(screen.getByTestId("alert-icon")).toBeInTheDocument();
       expect(screen.getByTestId("media-list")).toBeInTheDocument();
-      expect(screen.getByText("Test message")).toBeInTheDocument();
+      expect(screen.getByTestId("message-text-1")).toHaveTextContent(
+        "Test message",
+      );
     });
   });
 });

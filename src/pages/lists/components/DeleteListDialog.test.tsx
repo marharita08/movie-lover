@@ -2,11 +2,13 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
 import { useDeleteList } from "@/hooks";
 
 import { DeleteListDialog } from "./DeleteListDialog";
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useDeleteList: vi.fn(),
 }));
 
@@ -16,12 +18,14 @@ vi.mock("@/components", () => {
       children,
       onClick,
       disabled,
+      ...props
     }: {
       children: React.ReactNode;
       onClick?: () => void;
       disabled?: boolean;
+      [key: string]: any;
     }) => (
-      <button onClick={onClick} disabled={disabled}>
+      <button onClick={onClick} disabled={disabled} {...props}>
         {children}
       </button>
     ),
@@ -102,7 +106,9 @@ describe("DeleteListDialog", () => {
   it("shows list name in confirmation text", () => {
     render(<DeleteListDialog listId="123" listName="My Favorite Movies" />);
     openDialog();
-    expect(screen.getByText(/My Favorite Movies/)).toBeInTheDocument();
+    expect(screen.getByTestId("delete-list-confirm-text")).toHaveTextContent(
+      /My Favorite Movies/,
+    );
   });
 
   it("calls deleteList with correct listId on confirm", () => {
@@ -135,7 +141,7 @@ describe("DeleteListDialog", () => {
     render(<DeleteListDialog listId="123" listName="My List" />);
     openDialog();
     expect(screen.getByTestId("dialog-content")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Cancel"));
+    fireEvent.click(screen.getByTestId("delete-list-cancel"));
     expect(screen.queryByTestId("dialog-content")).not.toBeInTheDocument();
   });
 

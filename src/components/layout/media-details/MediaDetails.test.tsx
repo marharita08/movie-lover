@@ -15,7 +15,9 @@ vi.mock("@/components", () => ({
   LoadingOverlay: () => <div data-testid="loading-overlay" />,
   ErrorState: ({ onRetry }: { onRetry: () => void }) => (
     <div data-testid="error-state">
-      <button onClick={onRetry}>Retry</button>
+      <button data-testid="retry-btn" onClick={onRetry}>
+        Retry
+      </button>
     </div>
   ),
   Button: ({
@@ -118,7 +120,7 @@ describe("MediaDetails", () => {
         refetch={refetch}
       />,
     );
-    fireEvent.click(screen.getByText("Retry"));
+    fireEvent.click(screen.getByTestId("retry-btn"));
     expect(refetch).toHaveBeenCalled();
   });
 
@@ -132,7 +134,7 @@ describe("MediaDetails", () => {
         refetch={refetch}
       />,
     );
-    expect(screen.getByText("Inception")).toBeInTheDocument();
+    expect(screen.getByTestId("media-title")).toHaveTextContent("Inception");
   });
 
   it("shows TV show name", () => {
@@ -145,7 +147,7 @@ describe("MediaDetails", () => {
         refetch={refetch}
       />,
     );
-    expect(screen.getByText("Breaking Bad")).toBeInTheDocument();
+    expect(screen.getByTestId("media-title")).toHaveTextContent("Breaking Bad");
   });
 
   it("shows runtime for movie", () => {
@@ -158,7 +160,7 @@ describe("MediaDetails", () => {
         refetch={refetch}
       />,
     );
-    expect(screen.getByText("2h 28min")).toBeInTheDocument();
+    expect(screen.getByTestId("media-runtime")).toHaveTextContent("2h 28min");
   });
 
   it("shows release date for movie", () => {
@@ -171,7 +173,9 @@ describe("MediaDetails", () => {
         refetch={refetch}
       />,
     );
-    expect(screen.getByText("16 Jul 2010")).toBeInTheDocument();
+    expect(screen.getByTestId("media-release-date")).toHaveTextContent(
+      "16 Jul 2010",
+    );
   });
 
   it("shows numberOfSeasons and numberOfEpisodes for TV show", () => {
@@ -184,8 +188,8 @@ describe("MediaDetails", () => {
         refetch={refetch}
       />,
     );
-    expect(screen.getByText("5")).toBeInTheDocument();
-    expect(screen.getByText("62")).toBeInTheDocument();
+    expect(screen.getByTestId("media-seasons")).toHaveTextContent("5");
+    expect(screen.getByTestId("media-episodes")).toHaveTextContent("62");
   });
 
   it("shows imdb link for movie", () => {
@@ -227,7 +231,7 @@ describe("MediaDetails", () => {
         refetch={refetch}
       />,
     );
-    fireEvent.click(screen.getByText("Back"));
+    fireEvent.click(screen.getByTestId("back-btn"));
     expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 });

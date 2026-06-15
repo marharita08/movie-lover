@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MediaType } from "@/const";
+import { en } from "@/const/translations/en";
 import { useListGenres, useListYears, useRatingStats } from "@/hooks";
 
 import { RatingAnalytics } from "./RatingAnalytics";
@@ -11,6 +12,7 @@ vi.mock("react-router-dom", () => ({
 }));
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useListGenres: vi.fn(),
   useListYears: vi.fn(),
   useRatingStats: vi.fn(),
@@ -20,7 +22,9 @@ vi.mock("@/components", () => ({
   Loading: () => <div data-testid="loading" />,
   ErrorState: ({ onRetry }: { onRetry: () => void }) => (
     <div data-testid="error-state">
-      <button onClick={onRetry}>Retry</button>
+      <button data-testid="retry-btn" onClick={onRetry}>
+        Retry
+      </button>
     </div>
   ),
   Select: ({
@@ -125,7 +129,7 @@ describe("RatingAnalytics", () => {
       refetch,
     } as never);
     render(<RatingAnalytics />);
-    fireEvent.click(screen.getByText("Retry"));
+    fireEvent.click(screen.getByTestId("retry-btn"));
     expect(refetch).toHaveBeenCalled();
   });
 

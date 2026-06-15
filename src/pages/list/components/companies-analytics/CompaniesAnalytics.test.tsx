@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { en } from "@/const/translations/en";
 import { useCompanyStats } from "@/hooks";
 
 import { CompaniesAnalytics } from "./CompaniesAnalytics";
@@ -10,6 +11,7 @@ vi.mock("react-router-dom", () => ({
 }));
 
 vi.mock("@/hooks", () => ({
+  useTranslation: () => ({ t: (k: keyof typeof en) => en[k] || k }),
   useCompanyStats: vi.fn(),
 }));
 
@@ -17,7 +19,9 @@ vi.mock("@/components", () => ({
   Loading: () => <div data-testid="loading" />,
   ErrorState: ({ onRetry }: { onRetry: () => void }) => (
     <div data-testid="error-state">
-      <button onClick={onRetry}>Retry</button>
+      <button data-testid="retry-btn" onClick={onRetry}>
+        Retry
+      </button>
     </div>
   ),
   EmptyState: ({ title }: { title: string }) => (
@@ -73,7 +77,7 @@ describe("CompaniesAnalytics", () => {
       refetch,
     } as never);
     render(<CompaniesAnalytics />);
-    fireEvent.click(screen.getByText("Retry"));
+    fireEvent.click(screen.getByTestId("retry-btn"));
     expect(refetch).toHaveBeenCalled();
   });
 
