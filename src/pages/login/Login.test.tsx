@@ -10,7 +10,6 @@ import { useLogin } from "@/hooks";
 import { Login } from "./Login";
 
 vi.mock("react-router-dom", () => {
-  const React = require("react");
   return {
     Link: ({ children, to, ...rest }: any) =>
       React.isValidElement(children)

@@ -10,7 +10,6 @@ import { useSignUp } from "@/hooks";
 import { Signup } from "./Signup";
 
 vi.mock("react-router-dom", () => {
-  const React = require("react");
   return {
     useNavigate: () => vi.fn(),
     Link: ({ children, to, ...rest }: any) =>
