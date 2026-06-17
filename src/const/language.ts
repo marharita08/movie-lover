@@ -11,3 +11,8 @@ export const languageToLabel = {
   [Language.ENGLISH]: TranslationKey.LANG_EN,
   [Language.UKRAINIAN]: TranslationKey.LANG_UK,
 } as const;
+
+export const languageToShort: Record<Language, string> = {
+  [Language.UKRAINIAN]: "UA",
+  [Language.ENGLISH]: "EN",
+} as const;

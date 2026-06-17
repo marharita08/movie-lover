@@ -160,6 +160,8 @@ export const uk: Record<TranslationKey, string> = {
   [TranslationKey.AI_CHAT_CLEARING]: "Очищення...",
   [TranslationKey.AI_CHAT_INPUT_PLACEHOLDER]:
     "Запитай про рекомендації... (наприклад, 'Порекомендуй щось схоже на Початок')",
+  [TranslationKey.AI_CHAT_INPUT_PLACEHOLDER_SHORT]:
+    "Запитай про рекомендації...",
   [TranslationKey.AI_CHAT_INPUT_ARIA]: "Поле вводу повідомлення",
   [TranslationKey.AI_CHAT_SEND_ARIA]: "Надіслати повідомлення",
   [TranslationKey.AI_CHAT_NO_MESSAGES]: "Поки що немає повідомлень",

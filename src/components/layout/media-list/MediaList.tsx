@@ -136,7 +136,7 @@ export const MediaList: React.FC<MediaListProps> = ({
         }}
         breakpoints={{
           320: {
-            slidesPerView: 2,
+            slidesPerView: 3,
             slidesPerGroup: 2,
           },
           480: {

@@ -11,7 +11,13 @@ import { RouterKey, TranslationKey } from "@/const";
 import { useCurrentUser, useTranslation } from "@/hooks";
 import { cn } from "@/utils";
 
-import { Button, Sheet, SheetContent, SheetTrigger } from "../../ui";
+import {
+  Button,
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "../../ui";
 
 const isActive = (item: (typeof navItems)[number], pathname: string) => {
   return item.activePath.some((path) => {
@@ -100,10 +106,10 @@ export const Sidebar = () => {
               <MenuIcon className="h-5 w-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side={"left"}>
-            <h2 className="mb-8 text-center text-xl font-bold">
+          <SheetContent side={"left"} aria-describedby={undefined}>
+            <SheetTitle className="mb-8 text-center text-xl font-bold">
               {t(TranslationKey.SIDEBAR_MENU)}
-            </h2>
+            </SheetTitle>
             <nav className="flex flex-col gap-1">
               {navItems.map((item) =>
                 item.private && !user ? null : (

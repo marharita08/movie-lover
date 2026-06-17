@@ -156,6 +156,8 @@ export const en: Record<TranslationKey, string> = {
   [TranslationKey.AI_CHAT_CLEARING]: "Clearing...",
   [TranslationKey.AI_CHAT_INPUT_PLACEHOLDER]:
     "Ask for recommendations... (e.g., 'Recommend me something similar to Inception')",
+  [TranslationKey.AI_CHAT_INPUT_PLACEHOLDER_SHORT]:
+    "Ask for recommendations...",
   [TranslationKey.AI_CHAT_INPUT_ARIA]: "Message input",
   [TranslationKey.AI_CHAT_SEND_ARIA]: "Send message",
   [TranslationKey.AI_CHAT_NO_MESSAGES]: "No messages yet",

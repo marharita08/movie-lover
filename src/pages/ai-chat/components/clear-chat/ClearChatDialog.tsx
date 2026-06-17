@@ -5,6 +5,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -43,11 +44,14 @@ export const ClearChatDialog = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <div className="px-4" data-testid="clear-chat-dialog-description">
+        <DialogDescription
+          className="px-6"
+          data-testid="clear-chat-dialog-description"
+        >
           {t(TranslationKey.AI_CHAT_CLEAR_CONFIRM_DESC)}
-        </div>
+        </DialogDescription>
 
-        <DialogFooter className="p-4">
+        <DialogFooter className="px-6 py-4">
           <Button
             variant="outline"
             onClick={() => setOpen(false)}
