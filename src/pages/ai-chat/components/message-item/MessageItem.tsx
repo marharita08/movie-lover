@@ -28,12 +28,12 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
       <div
         className={cn(
           "max-w-[80%] space-y-3",
-          isAssistant ? "items-start" : "items-end",
+          isAssistant ? "w-[80%] items-start" : "items-end",
         )}
       >
         <div
           className={cn(
-            "rounded-lg px-4 py-3",
+            "w-fit rounded-lg px-4 py-3",
             isAssistant
               ? "bg-muted text-foreground"
               : "bg-primary text-primary-foreground",

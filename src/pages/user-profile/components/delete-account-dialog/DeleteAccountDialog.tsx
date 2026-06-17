@@ -5,6 +5,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -42,15 +43,18 @@ export const DeleteAccountDialog = () => {
             {t(TranslationKey.USER_PROFILE_DELETE_CONFIRM_TITLE)}
           </DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col gap-4 p-4">
-          <div>
-            <p className="font-medium" data-testid="delete-confirm-text">
+        <div className="flex flex-col gap-6 px-6 pt-2 pb-4">
+          <DialogDescription className="flex flex-col gap-2">
+            <span className="font-medium" data-testid="delete-confirm-text">
               {t(TranslationKey.USER_PROFILE_DELETE_CONFIRM_TEXT)}
-            </p>
-            <p data-testid="delete-confirm-subtext">
+            </span>
+            <span
+              className="text-muted-foreground text-sm"
+              data-testid="delete-confirm-subtext"
+            >
               {t(TranslationKey.USER_PROFILE_DELETE_CONFIRM_SUBTEXT)}
-            </p>
-          </div>
+            </span>
+          </DialogDescription>
           <div className="flex justify-end gap-4">
             <Button
               className="min-w-[120px]"

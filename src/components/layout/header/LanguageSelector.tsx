@@ -1,5 +1,3 @@
-import { LanguagesIcon } from "lucide-react";
-
 import {
   Select,
   SelectContent,
@@ -7,7 +5,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components";
-import { Language, languageToLabel, TranslationKey } from "@/const";
+import {
+  Language,
+  languageToLabel,
+  languageToShort,
+  TranslationKey,
+} from "@/const";
 import { useCurrentUser, useTranslation, useUpdateUser } from "@/hooks";
 import { useLanguageStore } from "@/store/language.store";
 
@@ -25,18 +28,21 @@ export const LanguageSelector = () => {
   };
 
   return (
-    <div className="w-40">
+    <div className="w-18 sm:w-40">
       <Select
         value={language}
         onValueChange={(val) => handleLanguageChange(val as Language)}
       >
-        <SelectTrigger startIcon={<LanguagesIcon className="h-4 w-4" />}>
+        <SelectTrigger shortLabel={languageToShort[language]}>
           <SelectValue placeholder={t(TranslationKey.LOADING)} />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent viewportClassName="min-w-fit max-w-none w-auto">
           {Object.values(Language).map((lang) => (
             <SelectItem key={lang} value={lang}>
-              {t(languageToLabel[lang])}
+              <div className="flex items-center gap-2">
+                <span className="font-bold">{languageToShort[lang]}</span>
+                <span>{t(languageToLabel[lang])}</span>
+              </div>
             </SelectItem>
           ))}
         </SelectContent>

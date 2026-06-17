@@ -62,7 +62,7 @@ export const ChangePasswordDialog = () => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent>
+      <DialogContent aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>
             {t(TranslationKey.USER_PROFILE_CHANGE_PASSWORD_TITLE)}
@@ -72,7 +72,7 @@ export const ChangePasswordDialog = () => {
         <form
           data-testid="change-password-form"
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col gap-4 p-4"
+          className="flex flex-col gap-4 px-6 py-4"
           aria-label="change-password-form"
         >
           <div className="flex flex-col gap-1">

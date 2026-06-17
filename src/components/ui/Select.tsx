@@ -17,14 +17,14 @@ interface SelectTriggerProps extends React.ComponentPropsWithoutRef<
 > {
   label?: string;
   error?: boolean;
-  startIcon?: React.ReactNode;
+  shortLabel?: React.ReactNode;
   placeholder?: string;
 }
 
 const SelectTrigger = React.forwardRef<
   React.ComponentRef<typeof SelectPrimitive.Trigger>,
   SelectTriggerProps
->(({ id, className, label, error, startIcon, placeholder, ...props }, ref) => {
+>(({ id, className, label, error, shortLabel, placeholder, ...props }, ref) => {
   return (
     <div className="w-full">
       {label && <Label htmlFor={id}>{label}</Label>}
@@ -40,12 +40,18 @@ const SelectTrigger = React.forwardRef<
         {...props}
       >
         <div className="flex min-w-0 flex-1 items-center gap-2">
-          {startIcon && (
-            <div className="group-data-[state=open]:text-primary left-3 flex h-[18px] w-[18px] shrink-0 cursor-pointer items-center text-neutral-600">
-              {startIcon}
-            </div>
+          {shortLabel ? (
+            <>
+              <span className="text-sm font-medium sm:hidden">
+                {shortLabel}
+              </span>
+              <span className="hidden min-w-0 flex-1 sm:flex">
+                <SelectValue placeholder={placeholder} />
+              </span>
+            </>
+          ) : (
+            <SelectValue placeholder={placeholder} />
           )}
-          <SelectValue placeholder={placeholder} />
         </div>
         <SelectPrimitive.Icon asChild>
           <ChevronDown

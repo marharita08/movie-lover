@@ -3,7 +3,12 @@ import { type KeyboardEvent } from "react";
 
 import { Button, InputError, Textarea } from "@/components";
 import { TranslationKey } from "@/const";
-import { useAppForm, useSendMessage, useTranslation } from "@/hooks";
+import {
+  useAppForm,
+  useIsMobile,
+  useSendMessage,
+  useTranslation,
+} from "@/hooks";
 import {
   type ChatMessageValidationSchema,
   chatMessageValidationSchema,
@@ -19,6 +24,7 @@ export const MessageInput = ({
   onPendingMessageChange,
 }: MessageInputProps) => {
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
   const form = useAppForm({
     schema: chatMessageValidationSchema,
     defaultValues: {
@@ -64,7 +70,11 @@ export const MessageInput = ({
           <Textarea
             {...form.register("message")}
             onKeyDown={handleKeyDown}
-            placeholder={t(TranslationKey.AI_CHAT_INPUT_PLACEHOLDER)}
+            placeholder={t(
+              isMobile
+                ? TranslationKey.AI_CHAT_INPUT_PLACEHOLDER_SHORT
+                : TranslationKey.AI_CHAT_INPUT_PLACEHOLDER,
+            )}
             disabled={!!pendingMessage}
             className="max-h-[200px] min-h-[60px] resize-none"
             rows={2}

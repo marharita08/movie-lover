@@ -5,6 +5,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -51,20 +52,23 @@ export const DeleteListDialog: React.FC<DeleteListDialogProps> = ({
           </DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-4 p-4">
-          <div>
-            <p className="font-medium" data-testid="delete-list-confirm-text">
+          <DialogDescription className="flex flex-col gap-1">
+            <span
+              className="font-medium"
+              data-testid="delete-list-confirm-text"
+            >
               {t(TranslationKey.DELETE_LIST_CONFIRM_TEXT).replace(
                 "{{listName}}",
                 listName,
               )}
-            </p>
-            <p
+            </span>
+            <span
               className="text-muted-foreground text-sm"
               data-testid="delete-list-confirm-subtext"
             >
               {t(TranslationKey.DELETE_LIST_CONFIRM_SUBTEXT)}
-            </p>
-          </div>
+            </span>
+          </DialogDescription>
           <div className="flex justify-end gap-4">
             <Button
               className="min-w-[120px]"
