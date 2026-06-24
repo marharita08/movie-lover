@@ -78,6 +78,8 @@
   --sphere-dark: #0f1e1b;
   --sphere-medium: #3e5b4b;
   --sphere-light: #bfc47c;
+
+  --header-height: 96px;
 }
 
 @theme {
