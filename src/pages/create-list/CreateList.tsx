@@ -66,12 +66,12 @@ export const CreateList = () => {
   }
 
   return (
-    <div className="relative h-[calc(100vh-88px)]">
+    <div className="relative h-[calc(100vh-var(--header-height))]">
       <Sphere className="absolute bottom-40 left-50 h-10 w-10" />
       <Sphere className="absolute top-20 left-30 h-15 w-15" />
       <Sphere className="absolute top-28 right-30 h-13 w-13" />
       <Sphere className="absolute right-40 bottom-20 h-20 w-20" />
-      <div className="bg-card h-full w-full p-6 shadow-md md:absolute md:top-2/5 md:left-1/2 md:h-fit md:w-[500px] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-xl">
+      <div className="bg-card h-full w-full p-6 shadow-md md:absolute md:top-2/5 md:left-1/2 md:h-fit md:w-125 md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-xl">
         <h1
           className="text-center text-xl font-bold"
           data-testid="create-list-title"
@@ -109,7 +109,7 @@ export const CreateList = () => {
             <div className="flex gap-4">
               <Button
                 data-testid="create-list-back"
-                className="min-w-[120px]"
+                className="min-w-30"
                 type="button"
                 variant="outline"
                 onClick={handleBack}
@@ -119,7 +119,7 @@ export const CreateList = () => {
               </Button>
               <Button
                 data-testid="create-list-submit"
-                className="min-w-[120px]"
+                className="min-w-30"
                 type="submit"
                 disabled={createListMutation.isPending}
               >

@@ -55,7 +55,7 @@ export const MediaDetails: React.FC<MediaDetailsProps> = ({
     "originalTitle" in media ? media.originalTitle : media.originalName;
 
   return (
-    <div className="relative flex min-h-[calc(100vh-(--spacing(22)))] w-full items-center justify-center p-4 md:p-10">
+    <div className="relative flex min-h-[calc(100vh-var(--header-height))] w-full items-center justify-center p-4 md:p-10">
       <div
         className="absolute inset-0 z-0 md:rounded-tl-md"
         style={{

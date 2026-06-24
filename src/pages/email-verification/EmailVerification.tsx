@@ -71,7 +71,7 @@ export const EmailVerification = () => {
       <Sphere className="absolute top-28 left-[calc(50%+7.5rem)] h-13 w-13" />
       <Sphere className="absolute right-40 bottom-20 h-20 w-20" />
       <form
-        className="bg-card w-full max-w-[500px] rounded-xl p-8 shadow-md"
+        className="bg-card w-full max-w-125 rounded-xl p-8 shadow-md"
         onSubmit={form.handleSubmit(handleSubmit)}
         aria-label="email-verification-form"
       >
