@@ -36,7 +36,7 @@ export const FileInput: React.FC<FileInputProps> = ({
     }
   };
 
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (event: React.DragEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setIsDragging(false);
 
@@ -57,7 +57,7 @@ export const FileInput: React.FC<FileInputProps> = ({
     }
   };
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (event: React.DragEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setIsDragging(true);
   };
@@ -69,7 +69,8 @@ export const FileInput: React.FC<FileInputProps> = ({
   };
 
   return (
-    <div
+    <button
+      type="button"
       className={cn(
         "bg-card h-32 cursor-pointer rounded-lg border border-neutral-300 p-4 text-center",
         isDragging && "border-primary",
@@ -120,6 +121,6 @@ export const FileInput: React.FC<FileInputProps> = ({
         onChange={handleChange}
         className="hidden"
       />
-    </div>
+    </button>
   );
 };

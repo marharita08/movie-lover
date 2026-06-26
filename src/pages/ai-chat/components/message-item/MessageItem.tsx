@@ -1,5 +1,6 @@
 import { AlertTriangleIcon, Bot, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import rehypeSanitize from "rehype-sanitize";
 
 import { MediaList } from "@/components";
 import { MessageAuthor, StorageKey } from "@/const";
@@ -58,6 +59,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
               data-testid={`message-text-${message.id}`}
             >
               <ReactMarkdown
+                rehypePlugins={[rehypeSanitize]}
                 components={{
                   p: ({ children }) => (
                     <p className="my-0.5 last:mb-0">{children}</p>
