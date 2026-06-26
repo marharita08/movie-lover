@@ -1,5 +1,5 @@
 import { AlertTriangleIcon, Bot, User } from "lucide-react";
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from "react-markdown";
 
 import { MediaList } from "@/components";
 import { MessageAuthor, StorageKey } from "@/const";
@@ -51,25 +51,35 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
               </div>
             )}
             <div
-                className={cn(
-                  "text-sm leading-relaxed",
-                  message.isError && "text-error",
-                )}
-                data-testid={`message-text-${message.id}`}
+              className={cn(
+                "text-sm leading-relaxed",
+                message.isError && "text-error",
+              )}
+              data-testid={`message-text-${message.id}`}
+            >
+              <ReactMarkdown
+                components={{
+                  p: ({ children }) => (
+                    <p className="my-0.5 last:mb-0">{children}</p>
+                  ),
+                  ul: ({ children }) => (
+                    <ul className="my-1 list-disc pl-4">{children}</ul>
+                  ),
+                  ol: ({ children }) => (
+                    <ol className="my-1 list-decimal pl-4">{children}</ol>
+                  ),
+                  li: ({ children }) => <li className="my-0">{children}</li>,
+                  code: ({ children }) => (
+                    <code className="rounded bg-black/10 px-1 text-xs">
+                      {children}
+                    </code>
+                  ),
+                }}
               >
-                <ReactMarkdown
-                  components={{
-                    p: ({ children }) => <p className="my-0.5 last:mb-0">{children}</p>,
-                    ul: ({ children }) => <ul className="my-1 list-disc pl-4">{children}</ul>,
-                    ol: ({ children }) => <ol className="my-1 list-decimal pl-4">{children}</ol>,
-                    li: ({ children }) => <li className="my-0">{children}</li>,
-                    code: ({ children }) => <code className="bg-black/10 rounded px-1 text-xs">{children}</code>,
-                  }}
-                >
-                  {message.text}
-                </ReactMarkdown>
-              </div>
+                {message.text}
+              </ReactMarkdown>
             </div>
+          </div>
         </div>
 
         {message.mediaItems && message.mediaItems.length > 0 && (

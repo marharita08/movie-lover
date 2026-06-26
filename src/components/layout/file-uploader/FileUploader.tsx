@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { TranslationKey } from "@/const";
 import { toast, useDeleteFile, useFileData, useTranslation } from "@/hooks";
@@ -28,49 +28,41 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   const handleFileChange = (file: File) => {
     setFile(file);
     setUploadProgress(0);
+    void handleUpload(file);
   };
 
-  useEffect(() => {
-    const handleUpload = async () => {
-      if (!file) return;
+  const handleUpload = async (file: File) => {
+    setIsUploading(true);
+    setUploadProgress(0);
+    abortControllerRef.current = new AbortController();
 
-      setIsUploading(true);
-      setUploadProgress(0);
-      abortControllerRef.current = new AbortController();
-
-      try {
-        const result = await fileService.upload(file, undefined, {
-          onUploadProgress: (progress) => {
-            setUploadProgress(progress);
-          },
-          signal: abortControllerRef.current.signal,
+    try {
+      const result = await fileService.upload(file, undefined, {
+        onUploadProgress: setUploadProgress,
+        signal: abortControllerRef.current.signal,
+      });
+      setFileId(result.id);
+    } catch (error) {
+      if (error instanceof Error && error.message === "Upload aborted") {
+        toast({
+          variant: "destructive",
+          title: t(TranslationKey.FILE_UPLOADER_CANCELLED),
         });
-
-        setFileId(result.id);
-      } catch (error) {
-        if (error instanceof Error && error.message === "Upload aborted") {
-          toast({
-            variant: "destructive",
-            title: t(TranslationKey.FILE_UPLOADER_CANCELLED),
-          });
-        } else {
-          toast({
-            variant: "destructive",
-            title: t(TranslationKey.FILE_UPLOADER_FAILED),
-            description:
-              error instanceof Error
-                ? error.message
-                : t(TranslationKey.COMMON_UNKNOWN_ERROR),
-          });
-        }
-      } finally {
-        setIsUploading(false);
-        abortControllerRef.current = null;
+      } else {
+        toast({
+          variant: "destructive",
+          title: t(TranslationKey.FILE_UPLOADER_FAILED),
+          description:
+            error instanceof Error
+              ? error.message
+              : t(TranslationKey.COMMON_UNKNOWN_ERROR),
+        });
       }
-    };
-
-    handleUpload();
-  }, [file, setFileId, t]);
+    } finally {
+      setIsUploading(false);
+      abortControllerRef.current = null;
+    }
+  };
 
   const handleCancel = () => {
     abortControllerRef.current?.abort();

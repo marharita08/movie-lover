@@ -71,7 +71,7 @@ export const FileInput: React.FC<FileInputProps> = ({
   return (
     <div
       className={cn(
-        "bg-card h-[128px] cursor-pointer rounded-lg border border-neutral-300 p-4 text-center",
+        "bg-card h-32 cursor-pointer rounded-lg border border-neutral-300 p-4 text-center",
         isDragging && "border-primary",
       )}
       onClick={openFileDialog}
